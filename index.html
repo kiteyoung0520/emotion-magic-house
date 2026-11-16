@@ -2271,8 +2271,10 @@
     const place = catWeatherState.location;
     const url = new URL('https://api.open-meteo.com/v1/forecast');
     url.search = new URLSearchParams({ latitude: place.latitude, longitude: place.longitude, current: 'temperature_2m,apparent_temperature,is_day,weather_code,precipitation,snowfall,cloud_cover', timezone: place.timezone || 'auto', forecast_days: '1' });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
     try {
-      const response = await fetch(url.toString());
+      const response = await fetch(url.toString(), { signal: controller.signal });
       if (!response.ok) throw new Error('weather request failed');
       const data = await response.json();
       if (!data.current) throw new Error('weather data unavailable');
@@ -2286,7 +2288,7 @@
       const status = document.getElementById('cat-weather-search-status');
       if (status && document.getElementById('cat-weather-dialog').classList.contains('is-open')) status.textContent = catWeatherState.current ? '暫時無法連線，先顯示上次更新的天氣。' : '暫時無法取得天氣，請稍後再試。';
       return false;
-    }
+    } finally { clearTimeout(timeout); }
   }
 
   function initCatWeather() {
@@ -2323,12 +2325,19 @@
     if (query.length < 2) { status.textContent = '請輸入至少兩個字。'; return; }
     status.textContent = '正在搜尋地區……';
     try {
-      const url = new URL('https://geocoding-api.open-meteo.com/v1/search');
-      url.search = new URLSearchParams({ name: query, count: '6', language: 'zh', format: 'json' });
-      const response = await fetch(url.toString());
-      if (!response.ok) throw new Error('location search failed');
-      const data = await response.json();
-      const places = (data.results || []).filter(place => Number.isFinite(place.latitude) && Number.isFinite(place.longitude));
+      const aliases = { '台北': 'Taipei', '臺北': 'Taipei', '新北': 'New Taipei City', '桃園': 'Taoyuan', '台中': 'Taichung', '臺中': 'Taichung', '彰化': 'Changhua', '南投': 'Nantou', '雲林': 'Yunlin', '嘉義': 'Chiayi', '台南': 'Tainan', '臺南': 'Tainan', '高雄': 'Kaohsiung', '屏東': 'Pingtung', '宜蘭': 'Yilan', '花蓮': 'Hualien', '台東': 'Taitung', '臺東': 'Taitung', '澎湖': 'Penghu', '金門': 'Kinmen', '連江': 'Lienchiang', '基隆': 'Keelung', '新竹': 'Hsinchu', '苗栗': 'Miaoli' };
+      const normalized = query.replace(/[縣市區鄉鎮]+$/g, '').trim();
+      const searchNames = [...new Set([query, aliases[query] || aliases[normalized]].filter(Boolean))];
+      let places = [];
+      for (const searchName of searchNames) {
+        const url = new URL('https://geocoding-api.open-meteo.com/v1/search');
+        url.search = new URLSearchParams({ name: searchName, count: '6', language: 'zh', format: 'json' });
+        const response = await fetch(url.toString());
+        if (!response.ok) throw new Error('location search failed');
+        const data = await response.json();
+        places = (data.results || []).filter(place => Number.isFinite(place.latitude) && Number.isFinite(place.longitude));
+        if (places.length) break;
+      }
       if (!places.length) { status.textContent = '找不到這個地區，試試附近的城市名稱。'; return; }
       status.textContent = '選擇地區後，窗景就會顯示當地天氣。';
       places.forEach(place => {
