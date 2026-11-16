@@ -104,18 +104,16 @@
 
   .cat-companion {
     position: fixed;
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
+    inset: 0;
     width: auto;
-    height: 154px;
+    height: auto;
     z-index: 10000;
     pointer-events: none;
   }
   .cat-sprite {
     position: absolute;
     left: 0;
-    bottom: 25px;
+    bottom: 35px;
     width: 118px;
     height: 132px;
     background-image: url('assets/orange-cat-walk.png?v=3');
@@ -134,8 +132,8 @@
   .cat-sprite.alert { background-image: url('assets/orange-cat-alert.png?v=4'); animation: cat-page-alert .8s ease-in-out infinite alternate; }
   .cat-panel {
     position: absolute;
-    right: 0;
-    bottom: 0;
+    right: 10px;
+    bottom: 10px;
     display: flex;
     align-items: center;
     gap: 4px;
@@ -157,6 +155,35 @@
     font-weight: bold;
     padding: 3px 6px;
   }
+  .cat-sprite.chasing { animation: none !important; transition: left var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1), top var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1); }
+  .interactive-toy {
+    position: fixed;
+    z-index: 10004;
+    display: none;
+    width: 64px;
+    height: 64px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255,243,218,.88);
+    border-radius: 50%;
+    background: radial-gradient(circle at 34% 28%, #fff8ed, #f7d9b5 68%, #dba982);
+    color: #754a39;
+    font-size: 2.3rem;
+    line-height: 1;
+    box-shadow: 0 8px 22px rgba(37,24,24,.28), inset 0 2px 3px rgba(255,255,255,.82);
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: filter .15s ease, scale .15s ease;
+  }
+  .interactive-toy.is-visible { display: flex; }
+  .interactive-toy.dragging { cursor: grabbing; scale: 1.1; filter: drop-shadow(0 0 16px rgba(255,216,152,.72)); }
+  .interactive-toy:focus-visible { outline: 3px solid #38bdf8; outline-offset: 3px; }
+  .cat-play-bubble { position: fixed; z-index: 10005; left: 50%; bottom: 118px; display: none; max-width: 82vw; transform: translateX(-50%); padding: 8px 14px; border: 1px solid rgba(255,234,197,.76); border-radius: 999px; background: rgba(255,249,236,.96); color: #664636; font-size: .84rem; font-weight: 900; box-shadow: 0 6px 20px rgba(0,0,0,.2); pointer-events: none; }
+  .cat-play-bubble.is-visible { display: block; animation: play-bubble-pop .22s ease-out both; }
+  @keyframes play-bubble-pop { from { opacity: 0; transform: translate(-50%,8px) scale(.94); } to { opacity: 1; transform: translate(-50%,0) scale(1); } }
   @keyframes cat-wander {
     0% { transform: translate(0, 0) rotate(-1deg); }
     48% { transform: translate(calc(100vw - 160px), -5px) rotate(1deg); }
@@ -740,6 +767,9 @@
   @media (prefers-reduced-motion: reduce) {
     .cat-home-cat { transition-duration: .01ms; animation: none !important; }
     .cat-visit-cat, .cat-visit-stage.playing .cat-visit-toy { animation: none !important; }
+    .cat-sprite.chasing { transition-duration: .01ms !important; }
+    .interactive-toy { transition: none; }
+    .cat-play-bubble.is-visible { animation: none; }
     .room-lantern, .cat-room::before { animation: none !important; }
     .cat-home-action, .cat-call-button, .room-light-switch, .room-light-overlay { transition-duration: .01ms; }
   }
@@ -773,6 +803,8 @@
     <button class="cat-feed" onclick="feedCat()">餵食</button>
   </div>
 </div>
+<button class="interactive-toy" id="interactive-toy" type="button" aria-label="拖曳毛線球，讓小橘貓追著玩" title="拖曳毛線球和小橘貓玩">🧶</button>
+<div class="cat-play-bubble" id="cat-play-bubble" role="status"></div>
 
 
 <section class="cat-home" id="cat-home" aria-hidden="true" aria-label="小橘貓之家">
@@ -1472,6 +1504,172 @@
     if (bubble) bubble.textContent = message;
   }
 
+  function placeInteractiveToy() {
+    const toy = document.getElementById('interactive-toy');
+    if (!toy) return;
+    let x = window.innerWidth * .62;
+    let y = window.innerHeight * .72;
+    if (document.body.classList.contains('cat-home-open')) {
+      const room = document.getElementById('cat-room').getBoundingClientRect();
+      x = room.left + room.width * .18;
+      y = room.top + room.height * .78;
+    }
+    toy.style.left = Math.max(4, Math.min(window.innerWidth - 68, x - 32)) + 'px';
+    toy.style.top = Math.max(4, Math.min(window.innerHeight - 68, y - 32)) + 'px';
+  }
+
+  function updateInteractiveToyVisibility() {
+    const toy = document.getElementById('interactive-toy');
+    if (!toy) return;
+    const homeOpen = document.body.classList.contains('cat-home-open');
+    const gameOpen = document.getElementById('overlay').style.display === 'none' && !document.body.classList.contains('menu-open');
+    const show = (homeOpen || gameOpen) && !document.body.classList.contains('cat-visit-open');
+    const wasVisible = toy.classList.contains('is-visible');
+    toy.classList.toggle('is-visible', show);
+    if (show && !wasVisible) placeInteractiveToy();
+  }
+
+  let toyDrag = null;
+  let catChaseTimer = null;
+  let catPlayBubbleTimer = null;
+  function showCatPlayBubble(message) {
+    const bubble = document.getElementById('cat-play-bubble');
+    if (!bubble) return;
+    clearTimeout(catPlayBubbleTimer);
+    bubble.textContent = message;
+    bubble.classList.add('is-visible');
+    catPlayBubbleTimer = setTimeout(function () { bubble.classList.remove('is-visible'); }, 1800);
+  }
+
+  function resetPageCatChase() {
+    clearTimeout(catChaseTimer);
+    clearInterval(pageCatFrameTimer);
+    const cat = document.getElementById('cat-sprite');
+    if (!cat) return;
+    cat.style.removeProperty('top');
+    cat.style.removeProperty('left');
+    cat.style.removeProperty('bottom');
+    cat.style.removeProperty('--chase-duration');
+    cat.style.removeProperty('background-image');
+    cat.className = document.body.classList.contains('menu-open') ? 'cat-sprite sitting' : 'cat-sprite';
+    if (!document.body.classList.contains('menu-open')) startPageCatWalkFrames();
+  }
+
+  function chasePageCatTo(x, y) {
+    const host = document.querySelector('.cat-companion');
+    const cat = document.getElementById('cat-sprite');
+    if (!host || !cat) return;
+    const hostRect = host.getBoundingClientRect();
+    const catRect = cat.getBoundingClientRect();
+    const currentX = catRect.left + catRect.width / 2;
+    const currentY = catRect.top + catRect.height / 2;
+    const targetLeft = Math.max(0, Math.min(hostRect.width - catRect.width, x - hostRect.left - catRect.width / 2));
+    const targetTop = Math.max(4, Math.min(hostRect.height - catRect.height - 4, y - hostRect.top - catRect.height / 2));
+    const distance = Math.hypot(x - currentX, y - currentY);
+    const duration = Math.max(.8, Math.min(2.8, distance / 260));
+    clearTimeout(catChaseTimer);
+    clearInterval(pageCatFrameTimer);
+    cat.className = 'cat-sprite chasing';
+    cat.style.bottom = 'auto';
+    cat.style.left = targetLeft + 'px';
+    cat.style.top = targetTop + 'px';
+    cat.style.setProperty('--chase-duration', duration + 's');
+    startPageCatWalkFrames();
+    showCatPlayBubble('小橘貓追著毛線球跑過來了！');
+    catChaseTimer = setTimeout(function () {
+      clearInterval(pageCatFrameTimer);
+      cat.className = 'cat-sprite happy';
+      cat.style.removeProperty('background-image');
+      showCatPlayBubble('抓到毛線球啦！');
+      catChaseTimer = setTimeout(resetPageCatChase, 1400);
+    }, duration * 1000);
+  }
+
+  function playWithInteractiveToy(x, y) {
+    if (document.body.classList.contains('cat-home-open')) {
+      const room = document.getElementById('cat-room').getBoundingClientRect();
+      if (x < room.left || x > room.right || y < room.top || y > room.bottom) {
+        setCatBubble('把毛線球拖進房間裡，我們再一起玩吧！');
+        return;
+      }
+      const roomX = Math.max(12, Math.min(88, (x - room.left) / room.width * 100));
+      const roomY = Math.max(24, Math.min(88, (y - room.top) / room.height * 100));
+      moveCatHomeToPosition(roomX, roomY, '追到毛線球了！小橘貓開心地拍了拍。', 'happy');
+      return;
+    }
+    chasePageCatTo(x, y);
+  }
+
+  function bindInteractiveToy() {
+    const toy = document.getElementById('interactive-toy');
+    if (!toy) return;
+    toy.addEventListener('pointerdown', function (event) {
+      if (!toy.classList.contains('is-visible')) return;
+      event.preventDefault();
+      const rect = toy.getBoundingClientRect();
+      toyDrag = { pointerId: event.pointerId, offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top };
+      toy.classList.add('dragging');
+      toy.setPointerCapture(event.pointerId);
+    });
+    toy.addEventListener('pointermove', function (event) {
+      if (!toyDrag || toyDrag.pointerId !== event.pointerId) return;
+      const left = Math.max(4, Math.min(window.innerWidth - 68, event.clientX - toyDrag.offsetX));
+      const top = Math.max(4, Math.min(window.innerHeight - 68, event.clientY - toyDrag.offsetY));
+      toy.style.left = left + 'px';
+      toy.style.top = top + 'px';
+    });
+    function finishDrag(event, cancelled) {
+      if (!toyDrag || toyDrag.pointerId !== event.pointerId) return;
+      toyDrag = null;
+      toy.classList.remove('dragging');
+      if (toy.hasPointerCapture(event.pointerId)) toy.releasePointerCapture(event.pointerId);
+      if (cancelled) return;
+      const rect = toy.getBoundingClientRect();
+      playWithInteractiveToy(rect.left + rect.width / 2, rect.top + rect.height / 2);
+    }
+    toy.addEventListener('pointerup', finishDrag);
+    toy.addEventListener('pointercancel', function (event) { finishDrag(event, true); });
+    toy.addEventListener('keydown', function (event) {
+      const rect = toy.getBoundingClientRect();
+      const step = 26;
+      const moves = { ArrowUp: [0,-step], ArrowDown: [0,step], ArrowLeft: [-step,0], ArrowRight: [step,0] };
+      if (moves[event.key]) {
+        event.preventDefault();
+        toy.style.left = Math.max(4, Math.min(window.innerWidth - 68, rect.left + moves[event.key][0])) + 'px';
+        toy.style.top = Math.max(4, Math.min(window.innerHeight - 68, rect.top + moves[event.key][1])) + 'px';
+      } else if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        playWithInteractiveToy(rect.left + rect.width / 2, rect.top + rect.height / 2);
+      }
+    });
+  }
+
+  function moveCatHomeToPosition(x, y, message, pose) {
+    const cat = document.getElementById('cat-home-cat');
+    if (!cat) return;
+    clearTimeout(catHomeMoveTimer);
+    const room = document.getElementById('cat-room');
+    const halfWidthPercent = (cat.offsetWidth / 2 + 8) / room.clientWidth * 100;
+    const halfHeightPercent = (cat.offsetHeight / 2 + 10) / room.clientHeight * 100;
+    x = Math.max(halfWidthPercent, Math.min(100 - halfWidthPercent, x));
+    y = Math.max(halfHeightPercent, Math.min(100 - halfHeightPercent, y));
+    const currentX = parseFloat(cat.style.left) || 50;
+    const currentY = parseFloat(cat.style.top) || 72;
+    const distance = Math.hypot((x - currentX) * room.clientWidth / 100, (y - currentY) * room.clientHeight / 100);
+    const duration = Math.max(1.8, Math.min(4.6, 1.5 + distance / 230));
+    cat.style.setProperty('--face', x < currentX ? -1 : 1);
+    cat.style.setProperty('--move-duration', duration + 's');
+    setCatHomePose('alert');
+    setCatBubble('小橘貓發現毛線球了……');
+    setTimeout(function () { setCatHomePose('walking'); }, 360);
+    cat.style.left = x + '%';
+    cat.style.top = y + '%';
+    catHomeMoveTimer = setTimeout(function () {
+      setCatHomePose(pose || 'happy');
+      setCatBubble(message || '抓到毛線球啦！');
+    }, duration * 1000 + 380);
+  }
+
   function setCatHomePose(pose) {
     const cat = document.getElementById('cat-home-cat');
     if (!cat) return;
@@ -1509,23 +1707,7 @@
 
   function moveCatHomeTo(name, customMessage) {
     const spot = catHomeSpots[name] || catHomeSpots.center;
-    const cat = document.getElementById('cat-home-cat');
-    if (!cat) return;
-    clearTimeout(catHomeMoveTimer);
-    const currentX = parseFloat(cat.style.left) || 50;
-    const distance = Math.abs(spot.x - currentX);
-    const duration = Math.max(1.8, Math.min(4.6, 1.6 + distance * 0.045));
-    cat.style.setProperty('--face', spot.x < currentX ? -1 : 1);
-    cat.style.setProperty('--move-duration', duration + 's');
-    setCatHomePose('alert');
-    setCatBubble('小橘貓先看看四周……');
-    setTimeout(function () { setCatHomePose('walking'); }, 360);
-    cat.style.left = spot.x + '%';
-    cat.style.top = spot.y + '%';
-    catHomeMoveTimer = setTimeout(function () {
-      setCatHomePose(spot.pose);
-      setCatBubble(customMessage || spot.message);
-    }, duration * 1000 + 380);
+    moveCatHomeToPosition(spot.x, spot.y, customMessage || spot.message, spot.pose);
   }
 
   function scheduleCatHomeRoaming() {
@@ -1717,6 +1899,15 @@
 
   showMainMenu();
   updateCatUI();
+  bindInteractiveToy();
+  const catToyBodyObserver = new MutationObserver(updateInteractiveToyVisibility);
+  catToyBodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+  const catToyOverlayObserver = new MutationObserver(updateInteractiveToyVisibility);
+  catToyOverlayObserver.observe(document.getElementById('overlay'), { attributes: true, attributeFilter: ['style'] });
+  window.addEventListener('resize', function () {
+    if (document.getElementById('interactive-toy').classList.contains('is-visible')) placeInteractiveToy();
+  });
+  updateInteractiveToyVisibility();
 
   function shuffle(array) {
     const arr = [...array];
@@ -1735,6 +1926,7 @@
 
   function showMainMenu() {
     document.body.classList.add('menu-open');
+    resetPageCatChase();
     stopPageCatWalkFrames();
     document.getElementById('cat-sprite').className = 'cat-sprite sitting';
     schedulePageCatLife();
@@ -1759,6 +1951,7 @@
   // ================= 模式一：依序尋找 =================
   function startSequentialGame() {
     document.body.classList.remove('menu-open');
+    resetPageCatChase();
     clearTimeout(pageCatLifeTimer);
     document.getElementById('cat-sprite').className = 'cat-sprite';
     startPageCatWalkFrames();
@@ -1795,6 +1988,7 @@
   // ================= 模式二：情緒找碴 =================
   function startDiffGame() {
     document.body.classList.remove('menu-open');
+    resetPageCatChase();
     clearTimeout(pageCatLifeTimer);
     document.getElementById('cat-sprite').className = 'cat-sprite';
     startPageCatWalkFrames();
@@ -1841,6 +2035,7 @@
   // ================= 模式四：記憶翻牌配對 =================
   function startMemoryGame() {
     document.body.classList.remove('menu-open');
+    resetPageCatChase();
     clearTimeout(pageCatLifeTimer);
     document.getElementById('cat-sprite').className = 'cat-sprite';
     startPageCatWalkFrames();
@@ -2019,5 +2214,4 @@
 </script>
 </body>
 </html>
-
 
