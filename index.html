@@ -156,6 +156,9 @@
     padding: 3px 6px;
   }
   .cat-sprite.chasing { animation: none !important; transition: left var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1), top var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1); }
+  .cat-sprite { pointer-events: auto; cursor: grab; touch-action: none; }
+  .cat-sprite.being-held { z-index: 10003; bottom: auto; background-image: url('assets/orange-cat-held.png?v=1'); background-size: contain; animation: cat-page-held .34s ease-in-out infinite alternate !important; cursor: grabbing; transform-origin: center top; }
+  @keyframes cat-page-held { from { transform: rotate(-3deg) scale(.98); } to { transform: translateY(-6px) rotate(3deg) scale(1.01); } }
   .interactive-toy {
     position: fixed;
     z-index: 10004;
@@ -646,6 +649,7 @@
     background-repeat: no-repeat;
     background-size: auto 100%;
     background-position: center;
+    touch-action: none;
     filter: drop-shadow(0 8px 5px rgba(69,26,3,.28));
     transform: translate(-50%, -50%) scaleX(var(--face));
     transition: left var(--move-duration, 2.5s) cubic-bezier(.35,.05,.25,1), top var(--move-duration, 2.5s) cubic-bezier(.35,.05,.25,1);
@@ -665,6 +669,7 @@
   .cat-home-cat.alert { background-image: url('assets/orange-cat-alert.png?v=4'); animation: cat-home-alert .75s ease-in-out infinite alternate; }
   .cat-home-cat.loaf { background-image: url('assets/orange-cat-loaf.png?v=1'); animation: cat-home-breathe 2.8s ease-in-out infinite; }
   .cat-home-cat.curious { background-image: url('assets/orange-cat-curious.png?v=1'); animation: cat-home-curious 1.25s ease-in-out infinite alternate; }
+  .cat-home-cat.being-held { z-index: 10003; background-image: url('assets/orange-cat-held.png?v=1'); background-size: contain; animation: cat-home-held .34s ease-in-out infinite alternate; cursor: grabbing; touch-action: none; }
   @keyframes cat-home-step { to { transform: translate(-50%, calc(-50% - 5px)) scaleX(var(--face)) rotate(-1deg); } }
   @keyframes cat-home-breathe { 50% { transform: translate(-50%, -50%) scaleX(var(--face)) scale(1.025); } }
   @keyframes cat-home-nibble { to { transform: translate(-50%, -47%) scaleX(var(--face)) rotate(2deg); } }
@@ -673,6 +678,7 @@
   @keyframes cat-home-stretch { 50% { transform: translate(-50%, -47%) scaleX(var(--face)) scaleX(1.08); } }
   @keyframes cat-home-alert { to { transform: translate(-50%, -52%) scaleX(var(--face)); } }
   @keyframes cat-home-curious { to { transform: translate(-50%, -52%) scaleX(var(--face)) rotate(1deg); } }
+  @keyframes cat-home-held { from { transform: translate(-50%,-50%) rotate(-3deg) scale(.98); } to { transform: translate(-50%,-53%) rotate(3deg) scale(1.01); } }
   .cat-bubble {
     position: absolute;
     z-index: 10003;
@@ -732,7 +738,7 @@
   .cat-visit-stage { position: relative; flex: 1; width: min(760px,100%); min-height: 255px; margin: 0 auto; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid rgba(255,235,205,.25); border-radius: 30px; background: radial-gradient(ellipse at 50% 72%, rgba(255,218,157,.22), transparent 44%), linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.025)); box-shadow: inset 0 1px rgba(255,255,255,.12), 0 22px 50px rgba(0,0,0,.22); }
   .cat-visit-stage::before { content: "✦     ·       ✧       ·     ✦"; position: absolute; inset: 13% 0 auto; color: rgba(255,239,212,.48); font-size: 1rem; letter-spacing: .8rem; text-align: center; }
   .cat-visit-bubble { position: absolute; z-index: 2; top: 9%; left: 50%; max-width: min(82%,520px); transform: translateX(-50%); padding: 10px 16px; border: 1px solid rgba(255,234,197,.72); border-radius: 18px 18px 18px 5px; background: rgba(255,249,236,.96); color: #664636; font-size: .92rem; font-weight: 900; line-height: 1.45; text-align: center; box-shadow: 0 8px 26px rgba(30,20,30,.22); }
-  .cat-visit-cat { position: absolute; z-index: 1; top: 57%; left: 50%; width: clamp(170px,54vw,290px); height: clamp(220px,70vw,370px); padding: 0; transform: translate(-50%,-50%); border: 0; background-color: transparent; background-image: url('assets/orange-cat-idle.png?v=3'); background-repeat: no-repeat; background-size: auto 100%; background-position: center; filter: drop-shadow(0 14px 12px rgba(31,20,22,.28)); cursor: pointer; animation: cat-visit-breathe 2.1s ease-in-out infinite; }
+  .cat-visit-cat { position: absolute; z-index: 1; top: 57%; left: 50%; width: clamp(170px,54vw,290px); height: clamp(220px,70vw,370px); padding: 0; transform: translate(-50%,-50%); border: 0; background-color: transparent; background-image: url('assets/orange-cat-idle.png?v=3'); background-repeat: no-repeat; background-size: auto 100%; background-position: center; filter: drop-shadow(0 14px 12px rgba(31,20,22,.28)); cursor: grab; touch-action: none; animation: cat-visit-breathe 2.1s ease-in-out infinite; }
   .cat-visit-cat.sleeping { background-image: url('assets/orange-cat-sleep.png?v=3'); }
   .cat-visit-cat.eating { background-image: url('assets/orange-cat-eat.png?v=3'); animation: cat-visit-nibble .38s ease-in-out infinite alternate; }
   .cat-visit-cat.happy { background-image: url('assets/orange-cat-happy.png?v=3'); animation: cat-visit-happy .62s ease-in-out infinite alternate; }
@@ -742,6 +748,7 @@
   .cat-visit-cat.loaf { background-image: url('assets/orange-cat-loaf.png?v=1'); animation: cat-visit-breathe 2.8s ease-in-out infinite; }
   .cat-visit-cat.curious { background-image: url('assets/orange-cat-curious.png?v=1'); animation: cat-visit-curious 1.25s ease-in-out infinite alternate; }
   .cat-visit-cat.walking { animation: none; transition: left var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1), top var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1); }
+  .cat-visit-cat.being-held { z-index: 4; background-image: url('assets/orange-cat-held.png?v=1'); background-size: contain; animation: cat-visit-held .34s ease-in-out infinite alternate; cursor: grabbing; }
   .cat-visit-cat.growth-juvenile { width: clamp(178px,57vw,302px); height: clamp(231px,74vw,386px); }
   .cat-visit-cat.growth-adult { width: clamp(186px,60vw,315px); height: clamp(242px,77vw,400px); }
   .cat-visit-cat.arriving { animation: cat-visit-arrive .8s cubic-bezier(.2,.8,.2,1) both; }
@@ -753,6 +760,7 @@
   @keyframes cat-visit-groom { to { transform: translate(-50%,-49%) rotate(-1deg); } }
   @keyframes cat-visit-stretch { 50% { transform: translate(-50%,-49%) scaleX(1.035); } }
   @keyframes cat-visit-curious { to { transform: translate(-50%,-52%) rotate(1deg); } }
+  @keyframes cat-visit-held { from { transform: translate(-50%,-50%) rotate(-3deg) scale(.98); } to { transform: translate(-50%,-53%) rotate(3deg) scale(1.01); } }
   @keyframes cat-visit-arrive { from { opacity: 0; transform: translate(-50%,-36%) scale(.76); } to { opacity: 1; transform: translate(-50%,-50%) scale(1); } }
   @keyframes cat-yarn-play { 0% { opacity: 0; transform: translate(0,0) rotate(0); } 15%,75% { opacity: 1; } 50% { transform: translate(42vw,-34px) rotate(240deg); } 100% { opacity: 0; transform: translate(70vw,0) rotate(420deg); } }
   .cat-visit-actions { width: min(760px,100%); margin: 0 auto; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
@@ -799,7 +807,7 @@
 </div>
 
 <div class="cat-companion" aria-label="小橘貓陪伴區">
-  <div class="cat-sprite" id="cat-sprite"></div>
+    <div class="cat-sprite" id="cat-sprite" role="img" aria-label="小橘貓，可以拖曳移動" title="拖曳小橘貓可以帶牠移動"></div>
   <div class="cat-panel">
     <span id="cat-food">🐟 0</span>
     <button class="cat-feed" onclick="feedCat()">餵食</button>
@@ -846,7 +854,7 @@
     <button class="room-object spot-bed" onclick="moveCatHomeTo('bed')" aria-label="到貓窩休息">
       <span class="room-emoji">🧺</span><span>貓窩</span>
     </button>
-    <button class="cat-home-cat sitting" id="cat-home-cat" onclick="catHomeRequest()" aria-label="聽聽小橘貓想做什麼"></button>
+    <button class="cat-home-cat sitting" id="cat-home-cat" onclick="catHomeRequest()" aria-label="拖曳移動小橘貓，點一下聽牠說話"></button>
     <div class="cat-bubble" id="cat-bubble" role="status">歡迎回家，摸摸我吧！</div>
   </div>
   <nav class="cat-home-actions" aria-label="小橘貓互動">
@@ -866,7 +874,7 @@
   </header>
   <div class="cat-visit-stage" id="cat-visit-stage">
     <div class="cat-visit-bubble" id="cat-visit-bubble" role="status">聽見你叫我了！</div>
-    <button class="cat-visit-cat sitting" id="cat-visit-cat" type="button" onclick="catVisitAction('pet')" aria-label="摸摸小橘貓"></button>
+    <button class="cat-visit-cat sitting" id="cat-visit-cat" type="button" onclick="catVisitAction('pet')" aria-label="拖曳移動小橘貓，點一下摸摸牠"></button>
     <div class="cat-visit-toy" aria-hidden="true">🧶</div>
   </div>
   <nav class="cat-visit-actions" aria-label="和小橘貓互動">
@@ -1646,6 +1654,119 @@
     });
   }
 
+  function bindCatDragging(cat, mode) {
+    if (!cat) return;
+    let drag = null;
+    cat.addEventListener('pointerdown', function (event) {
+      const homeOpen = document.body.classList.contains('cat-home-open');
+      const visitOpen = document.body.classList.contains('cat-visit-open');
+      const menuOpen = document.body.classList.contains('menu-open');
+      if ((mode === 'home' && !homeOpen) || (mode === 'visit' && !visitOpen) || (mode === 'game' && (menuOpen || homeOpen || visitOpen))) return;
+      if (event.button !== undefined && event.button !== 0) return;
+      const parent = mode === 'game' ? document.querySelector('.cat-companion') : document.getElementById(mode === 'home' ? 'cat-room' : 'cat-visit-stage');
+      const parentRect = parent.getBoundingClientRect();
+      const catRect = cat.getBoundingClientRect();
+      const centerX = catRect.left + catRect.width / 2;
+      const centerY = catRect.top + catRect.height / 2;
+      drag = { pointerId: event.pointerId, parent, mode, offsetX: event.clientX - centerX, offsetY: event.clientY - centerY, startX: event.clientX, startY: event.clientY, moved: false };
+      if (mode === 'game') {
+        clearTimeout(catChaseTimer);
+        clearInterval(pageCatFrameTimer);
+        cat.className = 'cat-sprite being-held';
+        cat.style.bottom = 'auto';
+        cat.style.left = (centerX - parentRect.left - catRect.width / 2) + 'px';
+        cat.style.top = (centerY - parentRect.top - catRect.height / 2) + 'px';
+        cat.style.backgroundImage = "url('assets/orange-cat-held.png?v=1')";
+      } else {
+        if (mode === 'home') {
+          clearTimeout(catHomeTimer);
+          clearTimeout(catHomeMoveTimer);
+          clearInterval(catHomeFrameTimer);
+        } else {
+          stopCatVisitNaturalMotion();
+        }
+        cat.classList.add('being-held');
+        cat.style.transition = 'none';
+        cat.style.left = ((centerX - parentRect.left - parent.clientLeft) / parent.clientWidth * 100) + '%';
+        cat.style.top = ((centerY - parentRect.top - parent.clientTop) / parent.clientHeight * 100) + '%';
+        if (mode === 'home') setCatBubble('抓起小橘貓，帶牠到喜歡的位置吧！');
+        else setCatVisitBubble('抓起小橘貓，帶牠到喜歡的位置吧！');
+      }
+      cat.setPointerCapture(event.pointerId);
+    });
+    cat.addEventListener('pointermove', function (event) {
+      if (!drag || drag.pointerId !== event.pointerId) return;
+      if (Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) > 6) {
+        drag.moved = true;
+        event.preventDefault();
+      }
+      const parentRect = drag.parent.getBoundingClientRect();
+      const width = cat.offsetWidth;
+      const height = cat.offsetHeight;
+      const localX = event.clientX - drag.parent.getBoundingClientRect().left - drag.parent.clientLeft - drag.offsetX;
+      const localY = event.clientY - drag.parent.getBoundingClientRect().top - drag.parent.clientTop - drag.offsetY;
+      const centerX = Math.max(width * .48, Math.min(drag.parent.clientWidth - width * .48, localX));
+      const centerY = Math.max(height * .48, Math.min(drag.parent.clientHeight - height * .48, localY));
+      if (mode === 'game') {
+        cat.style.left = (centerX - width / 2) + 'px';
+        cat.style.top = (centerY - height / 2) + 'px';
+      } else {
+        cat.style.left = (centerX / drag.parent.clientWidth * 100) + '%';
+        cat.style.top = (centerY / drag.parent.clientHeight * 100) + '%';
+      }
+    });
+    function finish(event, cancelled) {
+      if (!drag || drag.pointerId !== event.pointerId) return;
+      const wasMoved = drag.moved;
+      const scene = drag.mode;
+      drag = null;
+      if (cat.hasPointerCapture(event.pointerId)) cat.releasePointerCapture(event.pointerId);
+      if (scene === 'game') {
+        cat.classList.remove('being-held');
+        cat.style.removeProperty('background-image');
+        if (wasMoved) {
+          cat.style.bottom = 'auto';
+          cat.className = 'cat-sprite sitting';
+        } else {
+          cat.style.removeProperty('top');
+          cat.style.removeProperty('left');
+          cat.style.removeProperty('bottom');
+          cat.className = 'cat-sprite';
+          if (!document.body.classList.contains('menu-open')) startPageCatWalkFrames();
+        }
+        if (wasMoved && !cancelled) showCatPlayBubble('小橘貓被你帶到新地方了！');
+      } else {
+        cat.classList.remove('being-held');
+        cat.style.removeProperty('transition');
+        if (scene === 'home') {
+          setCatHomePose('sitting');
+          setCatBubble(wasMoved && !cancelled ? '放下來啦，這裡看起來很舒服。' : '小橘貓呼嚕呼嚕～');
+          scheduleCatHomeRoaming();
+        } else {
+          setCatVisitPose('sitting');
+          setCatVisitBubble(wasMoved && !cancelled ? '放下來啦，謝謝你抱我過來。' : '小橘貓呼嚕呼嚕～');
+          scheduleCatVisitNaturalMotion(wasMoved && !cancelled ? 1300 : 2200);
+        }
+      }
+      if (wasMoved && scene === 'home') {
+        cat.dataset.dragged = 'true';
+        setTimeout(function () { delete cat.dataset.dragged; }, 0);
+      }
+      if (wasMoved && scene === 'visit') {
+        cat.dataset.dragged = 'true';
+        setTimeout(function () { delete cat.dataset.dragged; }, 0);
+      }
+    }
+    cat.addEventListener('pointerup', finish);
+    cat.addEventListener('pointercancel', function (event) { finish(event, true); });
+    cat.addEventListener('click', function (event) {
+      if (cat.dataset.dragged === 'true') {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      }
+    }, true);
+  }
+
   function moveCatHomeToPosition(x, y, message, pose) {
     const cat = document.getElementById('cat-home-cat');
     if (!cat) return;
@@ -1971,6 +2092,9 @@
   showMainMenu();
   updateCatUI();
   bindInteractiveToy();
+  bindCatDragging(document.getElementById('cat-home-cat'), 'home');
+  bindCatDragging(document.getElementById('cat-visit-cat'), 'visit');
+  bindCatDragging(document.getElementById('cat-sprite'), 'game');
   const catToyBodyObserver = new MutationObserver(updateInteractiveToyVisibility);
   catToyBodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
   const catToyOverlayObserver = new MutationObserver(updateInteractiveToyVisibility);
