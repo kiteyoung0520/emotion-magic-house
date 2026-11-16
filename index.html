@@ -549,6 +549,9 @@
     left: 7%;
     width: 42%;
     height: 37%;
+    padding: 0;
+    appearance: none;
+    -webkit-appearance: none;
     z-index: 1;
     border: 8px solid #765844;
     border-radius: 7px;
@@ -558,7 +561,9 @@
       radial-gradient(ellipse at 72% 25%, #fff8e7 0%, #f9e4c7 25%, transparent 26%),
       linear-gradient(145deg, #c9d9e3, #fff7ed 70%);
     box-shadow: inset 0 0 0 3px rgba(255,255,255,.52), 0 9px 22px rgba(99,69,61,.2);
+    cursor: pointer;
   }
+  .shoji-window:focus-visible { outline: 4px solid #0ea5e9; outline-offset: 4px; }
   .shoji-window::after {
     content: "☁️  ☀️";
     position: absolute;
@@ -628,7 +633,6 @@
     filter: drop-shadow(0 5px 3px rgba(69,26,3,.22));
   }
   .room-object:focus-visible { outline: 4px solid #0ea5e9; outline-offset: 3px; border-radius: 12px; }
-  .spot-window { left: 10%; top: 39%; }
   .spot-toy { left: 12%; bottom: 5%; }
   .spot-bed { right: 7%; bottom: 6%; }
   .spot-bowl { right: 28%; bottom: 3%; }
@@ -701,7 +705,7 @@
     width: min(760px, 100%);
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(6, minmax(0, 1fr));
     gap: 7px;
   }
   .cat-home-action {
@@ -718,6 +722,19 @@
   }
   .cat-home-action:hover { transform: translateY(-2px); box-shadow: inset 0 1px rgba(255,255,255,.94), 0 10px 20px rgba(0,0,0,.24); }
   .cat-home-action:active { transform: translateY(1px) scale(.99); }
+  .cat-companion-dialog { position: fixed; inset: 0; z-index: 11000; display: none; align-items: center; justify-content: center; padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); background: rgba(18,20,38,.56); backdrop-filter: blur(8px); }
+  .cat-companion-dialog.is-open { display: flex; }
+  .cat-companion-card { width: min(430px,100%); padding: 22px 18px 18px; border: 1px solid rgba(255,232,201,.48); border-radius: 24px; background: radial-gradient(ellipse at 50% 0, rgba(255,221,166,.16), transparent 48%), linear-gradient(155deg,#292641,#1b2035 72%); color: #fff7ed; text-align: center; box-shadow: 0 24px 65px rgba(0,0,0,.4), inset 0 1px rgba(255,255,255,.1); }
+  .cat-companion-card h3 { margin: 0 0 7px; font-size: 1.25rem; }
+  .cat-companion-card p { margin: 0 0 16px; color: #e6d9dc; font-size: .9rem; line-height: 1.55; }
+  .cat-companion-choices { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; }
+  .cat-companion-choice { min-height: 58px; padding: 10px 8px; border: 1px solid rgba(255,226,188,.45); border-radius: 14px; background: linear-gradient(145deg,rgba(255,250,239,.98),rgba(238,220,200,.98)); color: #684633; font: inherit; font-size: .9rem; font-weight: 900; cursor: pointer; box-shadow: inset 0 1px rgba(255,255,255,.82); }
+  .cat-companion-choice:focus-visible, .cat-companion-close:focus-visible { outline: 3px solid #38bdf8; outline-offset: 3px; }
+  .cat-companion-close { margin-top: 13px; border: 0; background: transparent; color: #e4d6db; font: inherit; font-size: .84rem; text-decoration: underline; cursor: pointer; }
+  .cat-breath-orb-wrap { display: grid; place-items: center; min-height: 188px; }
+  .cat-breath-orb { display: grid; place-items: center; width: 132px; aspect-ratio: 1; border: 1px solid rgba(255,236,197,.78); border-radius: 50%; background: radial-gradient(circle at 35% 30%,#fff3cd,#f6c881 56%,#dc987b); color: #593c3d; font-size: 2.6rem; box-shadow: 0 0 35px rgba(255,202,135,.26), inset 0 3px 9px rgba(255,255,255,.58); animation: cat-breath-cycle 7s ease-in-out infinite; }
+  @keyframes cat-breath-cycle { 0%,100% { transform: scale(.86); opacity: .82; } 50% { transform: scale(1.12); opacity: 1; } }
+  #cat-breath-text { min-height: 2.9em; }
   .cat-visit {
     position: fixed;
     inset: 0;
@@ -779,6 +796,7 @@
     .cat-visit-cat.walking { transition-duration: .01ms !important; }
     .cat-sprite.chasing { transition-duration: .01ms !important; }
     .interactive-toy { transition: none; }
+    .cat-breath-orb { animation: none !important; }
     .cat-play-bubble.is-visible { animation: none; }
     .room-lantern, .cat-room::before { animation: none !important; }
     .cat-home-action, .cat-call-button, .room-light-switch, .room-light-overlay { transition-duration: .01ms; }
@@ -836,15 +854,12 @@
     </div>
   </div>
   <div class="cat-room" id="cat-room">
-    <div class="shoji-window" aria-hidden="true"></div>
+    <button class="shoji-window" type="button" onclick="moveCatHomeTo('window', '小橘貓陪你一起看看窗外。')" aria-label="邀請小橘貓到原本的障子窗邊看風景" title="點這扇窗，邀請小橘貓來看風景"></button>
     <div class="room-shelf" aria-hidden="true">🪴 📚 🧶</div>
     <div class="room-lantern" aria-hidden="true"></div>
     <div class="room-beam" aria-hidden="true"></div>
     <div class="room-light-overlay" aria-hidden="true"></div>
     <button class="room-light-switch" id="cat-light-switch" type="button" onclick="toggleCatLighting()" aria-pressed="false">💡 開啟暖燈</button>
-    <button class="room-object spot-window" onclick="moveCatHomeTo('window')" aria-label="到窗邊看風景">
-      <span class="room-emoji">🪟</span><span>窗邊</span>
-    </button>
     <button class="room-object spot-toy" onclick="moveCatHomeTo('toy')" aria-label="玩毛線球">
       <span class="room-emoji">🧶</span><span>玩具</span>
     </button>
@@ -860,10 +875,33 @@
   <nav class="cat-home-actions" aria-label="小橘貓互動">
     <button class="cat-home-action" onclick="catHomeAction('walk')">🐾 散步</button>
     <button class="cat-home-action" onclick="catHomeAction('pet')">🤲 摸摸</button>
+    <button class="cat-home-action" onclick="openCatCompanionDialog()">💛 陪伴</button>
     <button class="cat-home-action" onclick="catHomeAction('feed')">🐟 餵食</button>
     <button class="cat-home-action" onclick="catHomeAction('sleep')">🌙 睡覺</button>
     <button class="cat-home-action cat-call-button" id="cat-call-button" type="button" onclick="summonCat()">✨ 呼喚</button>
   </nav>
+  <div class="cat-companion-dialog" id="cat-companion-dialog" aria-hidden="true" onclick="if(event.target===this) closeCatCompanionDialog()">
+    <section class="cat-companion-card" role="dialog" aria-modal="true" aria-labelledby="cat-companion-title">
+      <div id="cat-companion-choices">
+        <h3 id="cat-companion-title">今天想要哪種陪伴？</h3>
+        <p>沒有標準答案，也可以只是選一個最舒服的方式。</p>
+        <div class="cat-companion-choices">
+          <button class="cat-companion-choice" onclick="chooseCatCompanion('quiet')">🌙 安靜待著</button>
+          <button class="cat-companion-choice" onclick="chooseCatCompanion('breathe')">🌬️ 一起呼吸</button>
+          <button class="cat-companion-choice" onclick="chooseCatCompanion('play')">🧶 輕鬆玩一下</button>
+          <button class="cat-companion-choice" onclick="chooseCatCompanion('unsure')">☁️ 還說不清楚</button>
+        </div>
+      </div>
+      <div id="cat-breath-panel" hidden>
+        <h3>陪小橘貓慢下來</h3>
+        <p id="cat-breath-text" role="status" aria-live="polite">吸氣，跟著小橘貓慢慢鼓起……</p>
+        <div class="cat-breath-orb-wrap"><div class="cat-breath-orb" id="cat-breath-orb" aria-hidden="true">🐱</div></div>
+        <p>不用勉強深呼吸，想停的時候隨時可以。</p>
+        <button class="cat-companion-close" id="cat-breath-close" onclick="closeCatCompanionDialog()">隨時結束</button>
+      </div>
+      <button class="cat-companion-close" id="cat-companion-cancel" onclick="closeCatCompanionDialog()">先不用，回到貓屋</button>
+    </section>
+  </div>
 </section>
 
 <section class="cat-visit" id="cat-visit" aria-hidden="true" aria-label="和小橘貓單獨互動">
@@ -1496,6 +1534,7 @@
   let catHomeMoveTimer = null;
   let catHomeApproachTimer = null;
   let catHomeFrameTimer = null;
+  let catBreathInterval = null;
   let pageCatFrameTimer = null;
   let catVisitTimer = null;
   let catVisitIdleTimer = null;
@@ -1535,7 +1574,8 @@
     if (!toy) return;
     const homeOpen = document.body.classList.contains('cat-home-open');
     const gameOpen = document.getElementById('overlay').style.display === 'none' && !document.body.classList.contains('menu-open');
-    const show = (homeOpen || gameOpen) && !document.body.classList.contains('cat-visit-open');
+    const companionOpen = document.getElementById('cat-companion-dialog')?.classList.contains('is-open');
+    const show = (homeOpen || gameOpen) && !document.body.classList.contains('cat-visit-open') && !companionOpen;
     const wasVisible = toy.classList.contains('is-visible');
     toy.classList.toggle('is-visible', show);
     if (show && !wasVisible) placeInteractiveToy();
@@ -2066,7 +2106,7 @@
     const room = document.getElementById('cat-room');
     if (!room) return;
     room.addEventListener('click', function (event) {
-      if (event.target.closest('.room-object, .room-light-switch, .cat-home-cat')) return;
+      if (event.target.closest('.room-object, .room-light-switch, .shoji-window, .cat-home-cat')) return;
       const bounds = room.getBoundingClientRect();
       const x = (event.clientX - bounds.left - room.clientLeft) / room.clientWidth * 100;
       const y = (event.clientY - bounds.top - room.clientTop) / room.clientHeight * 100;
@@ -2076,8 +2116,90 @@
         '小橘貓過來看看你，呼嚕呼嚕～',
         '牠在你身旁坐下，陪你慢慢休息。'
       ];
+      clearTimeout(catHomeTimer);
       moveCatHomeToPosition(x, y, replies[Math.floor(Math.random() * replies.length)], 'curious', '小橘貓注意到你了，正跑過來……');
+      scheduleCatHomeRoaming();
     });
+  }
+
+  function openCatCompanionDialog() {
+    clearTimeout(catHomeTimer);
+    document.getElementById('cat-companion-choices').hidden = false;
+    document.getElementById('cat-breath-panel').hidden = true;
+    document.getElementById('cat-companion-cancel').hidden = false;
+    const dialog = document.getElementById('cat-companion-dialog');
+    dialog.classList.add('is-open');
+    dialog.setAttribute('aria-hidden', 'false');
+    updateInteractiveToyVisibility();
+    dialog.querySelector('.cat-companion-choice').focus();
+  }
+
+  function closeCatCompanionDialog() {
+    clearInterval(catBreathInterval);
+    catBreathInterval = null;
+    const orb = document.getElementById('cat-breath-orb');
+    if (orb) orb.style.removeProperty('animation');
+    const dialog = document.getElementById('cat-companion-dialog');
+    if (!dialog) return;
+    dialog.classList.remove('is-open');
+    dialog.setAttribute('aria-hidden', 'true');
+    updateInteractiveToyVisibility();
+    document.getElementById('cat-companion-choices').hidden = false;
+    document.getElementById('cat-breath-panel').hidden = true;
+    document.getElementById('cat-companion-cancel').hidden = false;
+    if (document.body.classList.contains('cat-home-open')) scheduleCatHomeRoaming();
+    const trigger = document.querySelector('.cat-home-actions button[onclick="openCatCompanionDialog()"]');
+    if (trigger && document.body.classList.contains('cat-home-open')) trigger.focus();
+  }
+
+  function chooseCatCompanion(mode) {
+    document.getElementById('cat-companion-dialog').setAttribute('aria-hidden', 'true');
+    document.getElementById('cat-companion-dialog').classList.remove('is-open');
+    updateInteractiveToyVisibility();
+    clearTimeout(catHomeTimer);
+    if (mode === 'quiet') {
+      moveCatHomeToPosition(50, 72, '我在這裡陪你，不用說話也可以。', 'loaf', '小橘貓慢慢走到你身邊……');
+    } else if (mode === 'play') {
+      moveCatHomeTo('toy', '來陪你玩一小會兒吧！');
+    } else if (mode === 'unsure') {
+      moveCatHomeToPosition(50, 70, '還不知道也沒關係，我先安靜陪著你。', 'curious', '小橘貓靠近一點，陪你一起想……');
+    } else if (mode === 'breathe') {
+      document.getElementById('cat-companion-choices').hidden = true;
+      document.getElementById('cat-breath-panel').hidden = false;
+      document.getElementById('cat-companion-cancel').hidden = true;
+      const dialog = document.getElementById('cat-companion-dialog');
+      dialog.classList.add('is-open');
+      dialog.setAttribute('aria-hidden', 'false');
+      updateInteractiveToyVisibility();
+      const breathText = document.getElementById('cat-breath-text');
+      const orb = document.getElementById('cat-breath-orb');
+      const closeButton = document.getElementById('cat-breath-close');
+      orb.style.removeProperty('animation');
+      void orb.offsetWidth;
+      orb.style.animation = '';
+      closeButton.textContent = '隨時結束';
+      closeButton.focus();
+      moveCatHomeToPosition(50, 69, '跟著小橘貓慢慢呼吸，不用勉強。', 'loaf', '小橘貓在你身邊坐下來了。');
+      breathText.textContent = '吸氣，跟著小橘貓慢慢鼓起……';
+      let step = 0;
+      catBreathInterval = setInterval(function () {
+        step++;
+        if (step >= 6) {
+          clearInterval(catBreathInterval);
+          catBreathInterval = null;
+          orb.style.animation = 'none';
+          breathText.textContent = '三回合完成。這樣就很好，謝謝你和小橘貓一起慢下來。';
+          closeButton.textContent = '回到貓屋';
+          return;
+        }
+        breathText.textContent = step % 2 ? '吐氣，讓肩膀鬆一點……' : '吸氣，跟著小橘貓慢慢鼓起……';
+      }, 3500);
+    }
+    if (mode !== 'breathe') {
+      scheduleCatHomeRoaming();
+      const trigger = document.querySelector('.cat-home-actions button[onclick="openCatCompanionDialog()"]');
+      if (trigger) trigger.focus();
+    }
   }
 
   function closeCatHome() {
@@ -2127,6 +2249,9 @@
   bindCatDragging(document.getElementById('cat-visit-cat'), 'visit');
   bindCatDragging(document.getElementById('cat-sprite'), 'game');
   bindCatRoomTapInteraction();
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && document.getElementById('cat-companion-dialog').classList.contains('is-open')) closeCatCompanionDialog();
+  });
   const catToyBodyObserver = new MutationObserver(updateInteractiveToyVisibility);
   catToyBodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
   const catToyOverlayObserver = new MutationObserver(updateInteractiveToyVisibility);
@@ -2305,140 +2430,4 @@
     secondCard = cardEl;
     const isMatch = firstCard.dataset.id === secondCard.dataset.id;
     if (isMatch) {
-      playCorrectSound(); firstCard.classList.add('matched'); secondCard.classList.add('matched');
-      matchedPairsCount++; updateMemoryProgress();
-      firstCard = null; secondCard = null;
-      if (matchedPairsCount === 8) endGame("🧠 記憶翻牌配對全數成功！");
-    } else {
-      playWrongSound(); lockBoard = true; penaltySeconds += 2; wrongCount++;
-      setTimeout(() => {
-        firstCard.classList.remove('flipped'); firstCard.textContent = '❓';
-        secondCard.classList.remove('flipped'); secondCard.textContent = '❓';
-        firstCard = null; secondCard = null; lockBoard = false;
-      }, 900);
-    }
-  }
-
-  // ================= 模式五：心情日記與每日一籤 =================
-  function openJournalModal() {
-    stopBGM();
-    document.getElementById('modal-content').classList.remove('main-menu-modal');
-    const savedDiary = localStorage.getItem('my_emotion_diary') || '';
-    document.getElementById('overlay').style.display = 'flex';
-    document.getElementById('modal-content').innerHTML = `
-      <h2>📖 心情日記與每日一籤</h2>
-      <p>寫下今天的感受，或是前往心閱網抽籤：</p>
-      <textarea id="diary-input" placeholder="今天心情怎麼樣？寫下來沉澱一下吧...">${savedDiary}</textarea>
-      <button class="menu-btn primary" onclick="saveDiary()">儲存日記</button>
-      <button class="menu-btn" onclick="openDiaryRecords()">🗂️ 查看心情紀錄</button>
-      <div id="diary-save-status" role="status" style="min-height: 1.4em; color: #86efac; font-size: .9rem;"></div>
-      <div style="margin-top: 10px;">
-        <a href="https://www.bwpublish.com/random-quote" target="_blank" class="menu-btn" style="background: #0284c7; color: #fff;">🥠 前往抽取今日心靈籤詩 (原文連結)</a>
-      </div>
-      <button class="back-menu" onclick="showMainMenu()">返回主選單</button>
-    `;
-  }
-
-  function saveDiary() {
-    const entry = document.getElementById('diary-input').value.trim();
-    if (!entry) {
-      document.getElementById('diary-save-status').textContent = '先寫下一些今天的感受，再儲存喔。';
-      return;
-    }
-    const records = JSON.parse(localStorage.getItem('emotion_diary_records') || '[]');
-    const now = new Date();
-    records.unshift({ id: String(now.getTime()), createdAt: now.toISOString(), text: entry });
-    localStorage.setItem('emotion_diary_records', JSON.stringify(records));
-    localStorage.setItem('my_emotion_diary', entry);
-    awardCatExperience('diary');
-    document.getElementById('diary-save-status').textContent = '已儲存這次心情紀錄。';
-  }
-
-  function openDiaryRecords() {
-    let records = JSON.parse(localStorage.getItem('emotion_diary_records') || '[]');
-    const oldEntry = localStorage.getItem('my_emotion_diary') || '';
-    if (!records.length && oldEntry.trim()) {
-      const migrated = { id: 'legacy-diary', createdAt: new Date().toISOString(), text: oldEntry.trim() };
-      records = [migrated];
-      localStorage.setItem('emotion_diary_records', JSON.stringify(records));
-    }
-    const escapeHtml = value => String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
-    const cards = records.map(record => {
-      const date = new Date(record.createdAt);
-      const stamp = Number.isNaN(date.getTime()) ? '日期未記錄' : date.toLocaleString('zh-TW', { dateStyle: 'medium', timeStyle: 'short' });
-      return `<article class="quote-box"><strong>${escapeHtml(stamp)}</strong><p style="white-space:pre-wrap; margin-bottom:0;">${escapeHtml(record.text)}</p></article>`;
-    }).join('');
-    document.getElementById('modal-content').innerHTML = `
-      <h2>🗂️ 心情紀錄</h2>
-      <p>每次儲存的內容都會保留在這台裝置，隨時可以回看。</p>
-      <div style="max-height:48vh; overflow-y:auto; text-align:left;">${cards || '<p>還沒有心情紀錄。寫下今天的感受並儲存後，就會出現在這裡。</p>'}</div>
-      <button class="menu-btn primary" onclick="openJournalModal()">回到心情日記</button>
-      <button class="back-menu" onclick="showMainMenu()">返回主選單</button>
-    `;
-  }
-
-  // ================= 模式六：心情故事集 (直接對應專屬原文連結) =================
-  function openStoryModal() {
-    stopBGM();
-    renderRandomStory();
-  }
-
-  function renderRandomStory() {
-    const randomStory = mindStories[Math.floor(Math.random() * mindStories.length)];
-    document.getElementById('modal-content').classList.remove('main-menu-modal');
-    awardCatExperience('story');
-    awardCatFood(2);
-    document.getElementById('overlay').style.display = 'flex';
-    document.getElementById('modal-content').innerHTML = `
-      <h2>📚 心情故事集</h2>
-      <div class="quote-box" style="border-left-color: #0284c7;">
-        <strong style="color: #38bdf8; display: block; margin-bottom: 6px;">${randomStory.title}</strong>
-        <p style="margin: 0 0 10px 0; font-size: 0.88rem; color: #cbd5e1; line-height: 1.5;">${randomStory.summary}</p>
-        <div style="text-align: right; border-top: 1px solid #1e293b; padding-top: 6px;">
-          <a href="${randomStory.url}" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; font-size: 0.85rem; text-decoration: underline;">🔗 點擊閱讀${randomStory.sourceType}原文</a>
-        </div>
-      </div>
-      <button class="menu-btn primary" onclick="renderRandomStory()">🔄 隨機閱讀下一篇摘要</button>
-      <button class="back-menu" onclick="showMainMenu()">返回主選單</button>
-    `;
-  }
-
-  // ================= 通用結算與計時 =================
-  function updateTimer() {
-    const elapsed = (Date.now() - startTime) / 1000 + penaltySeconds;
-    const mins = String(Math.floor(elapsed / 60)).padStart(2, '0');
-    const secs = (elapsed % 60).toFixed(1).padStart(4, '0');
-    document.getElementById('timer').textContent = `${mins}:${secs}`;
-  }
-
-  function renderGrid(items, clickHandler) {
-    const grid = document.getElementById('grid');
-    grid.className = `grid cols-4`; grid.innerHTML = '';
-    items.forEach(item => {
-      const cell = document.createElement('div');
-      cell.className = 'cell'; cell.textContent = item.icon;
-      cell.onclick = () => clickHandler(item, cell);
-      grid.appendChild(cell);
-    });
-  }
-
-  function endGame(titleMsg) {
-    clearInterval(timerId); stopBGM();
-    awardCatExperience('game');
-    awardCatFood(3);
-    const totalTime = (Date.now() - startTime) / 1000 + penaltySeconds;
-    const mins = String(Math.floor(totalTime / 60)).padStart(2, '0');
-    const secs = (totalTime % 60).toFixed(1).padStart(4, '0');
-    document.getElementById('modal-content').classList.remove('main-menu-modal');
-    document.getElementById('overlay').style.display = 'flex';
-    document.getElementById('modal-content').innerHTML = `
-      <h2>${titleMsg}</h2>
-      <p>總失誤次數：<strong style="color: #ef4444;">${wrongCount} 次</strong>（含加罰）<br>
-         最終通關時間：<br><strong style="color: #38bdf8; font-size: 1.3rem;">${mins}:${secs}</strong></p>
-      <button class="menu-btn primary" onclick="showMainMenu()">返回主選單</button>
-    `;
-  }
-</script>
-</body>
-</html>
-
+      playCorrectSound(); firstCard.classList.add('matched'); secondCard.classList.add('m
