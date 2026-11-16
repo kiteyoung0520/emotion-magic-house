@@ -434,20 +434,10 @@
     box-shadow: inset 0 1px rgba(255,255,255,.08), 0 5px 16px rgba(0,0,0,.18);
   }
   .cat-home-stats { display: flex; gap: 6px; }
-  .cat-callbar {
-    width: min(760px, 100%);
-    margin: 0 auto;
-    padding: 8px 10px;
-    display: flex;
-    align-items: end;
-    gap: 9px;
-    border: 1px solid rgba(255,221,166,.26);
-    border-radius: 15px;
-    background: linear-gradient(130deg, rgba(39,39,66,.78), rgba(72,52,71,.58));
-    box-shadow: inset 0 1px rgba(255,255,255,.08), 0 8px 24px rgba(0,0,0,.14);
-  }
-  .cat-name-field { display: grid; flex: 1; min-width: 0; gap: 3px; color: #e9ddec; font-size: .68rem; font-weight: 800; }
-  .cat-name-field input { width: 100%; min-width: 0; height: 40px; margin: 0; padding: 7px 10px; border: 1px solid rgba(255,255,255,.19); border-radius: 10px; background: rgba(15,23,42,.52); color: #fff7ed; text-align: left; font-size: .95rem; }
+  .cat-calendar-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 4px; }
+  .cat-calendar { margin: 0; color: #fde68a; font-size: .72rem; line-height: 1.25; text-align: left; }
+  .cat-name-field { display: flex; align-items: center; flex: 0 0 auto; gap: 5px; color: #e9ddec; font-size: .68rem; font-weight: 800; }
+  .cat-name-field input { width: 104px; min-width: 0; height: 30px; margin: 0; padding: 4px 7px; border: 1px solid rgba(255,255,255,.19); border-radius: 8px; background: rgba(15,23,42,.52); color: #fff7ed; text-align: left; font-size: .78rem; }
   .cat-name-field input:focus { border-color: #f6c989; outline: 2px solid rgba(246,201,137,.2); }
   .cat-call-button { min-height: 40px; padding: 8px 14px; border: 1px solid rgba(255,235,190,.52); border-radius: 12px; background: linear-gradient(145deg, #f6cf91, #e9a86e); color: #553b32; font-size: .85rem; font-weight: 900; white-space: nowrap; cursor: pointer; box-shadow: inset 0 1px rgba(255,255,255,.6), 0 5px 14px rgba(0,0,0,.18); }
   .cat-growth {
@@ -464,7 +454,6 @@
   .cat-growth-track { height: 8px; margin: 5px 0 3px; overflow: hidden; border-radius: 999px; background: #475569; }
   .cat-growth-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #f59e0b, #fbbf24); transition: width .45s ease; }
   .cat-growth-note { display: flex; justify-content: space-between; gap: 8px; color: #e0d8e6; font-size: .7rem; }
-  .cat-calendar { margin-top: 5px; color: #fde68a; font-size: 1.44rem; line-height: 1.25; text-align: center; }
   .cat-stat {
     border: 1px solid rgba(255,231,194,.22);
     border-radius: 999px;
@@ -703,7 +692,7 @@
     width: min(760px, 100%);
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 7px;
   }
   .cat-home-action {
@@ -763,7 +752,8 @@
     .cat-room { min-height: 280px; }
     .cat-home-action { min-height: 42px; }
   }
-  @media (max-width: 380px) { .cat-callbar { gap: 6px; padding: 7px; } .cat-call-button { padding: 7px 10px; font-size: .78rem; } .cat-visit-actions { gap: 6px; } .cat-visit-actions .cat-home-action { padding: 6px 3px; font-size: .76rem; } }
+  @media (max-width: 480px) { .cat-home-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); } .cat-name-field input { width: 84px; } .cat-calendar-row { gap: 5px; } }
+  @media (max-width: 380px) { .cat-name-field input { width: 72px; } .cat-name-field { font-size: .62rem; } .cat-visit-actions { gap: 6px; } .cat-visit-actions .cat-home-action { padding: 6px 3px; font-size: .76rem; } }
   @media (prefers-reduced-motion: reduce) {
     .cat-home-cat { transition-duration: .01ms; animation: none !important; }
     .cat-visit-cat, .cat-visit-stage.playing .cat-visit-toy { animation: none !important; }
@@ -816,17 +806,14 @@
       <span class="cat-stat" id="cat-home-affection">💛 0</span>
     </div>
   </header>
-  <div class="cat-callbar">
-    <label class="cat-name-field" for="cat-name-input">小橘貓的名字
-      <input id="cat-name-input" type="text" maxlength="12" placeholder="取個喜歡的名字" onchange="saveCatName(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();summonCat();}" aria-label="小橘貓的名字">
-    </label>
-    <button class="cat-call-button" id="cat-call-button" type="button" onclick="summonCat()">✨ 呼喚小橘貓</button>
-  </div>
   <div class="cat-growth" aria-label="小橘貓成長進度">
     <div class="cat-growth-top"><span id="cat-growth-label">🐣 幼貓</span><span id="cat-growth-xp">0 / 8 經驗</span></div>
     <div class="cat-growth-track" role="progressbar" id="cat-growth-progress" aria-label="成長進度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="cat-growth-fill" id="cat-growth-fill"></div></div>
     <div class="cat-growth-note"><span id="cat-days-raised">🐾 陪伴第 1 天</span><span id="cat-growth-note">今天陪伴 0 / 4 種活動</span></div>
-    <div class="cat-calendar" id="cat-calendar" aria-label="今日國曆與農曆日期"></div>
+    <div class="cat-calendar-row">
+      <div class="cat-calendar" id="cat-calendar" aria-label="今日國曆與農曆日期"></div>
+      <label class="cat-name-field" for="cat-name-input">名字<input id="cat-name-input" type="text" maxlength="12" placeholder="取個名字" onchange="saveCatName(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();summonCat();}" aria-label="小橘貓的名字"></label>
+    </div>
   </div>
   <div class="cat-room" id="cat-room">
     <div class="shoji-window" aria-hidden="true"></div>
@@ -855,6 +842,7 @@
     <button class="cat-home-action" onclick="catHomeAction('pet')">🤲 摸摸</button>
     <button class="cat-home-action" onclick="catHomeAction('feed')">🐟 餵食</button>
     <button class="cat-home-action" onclick="catHomeAction('sleep')">🌙 睡覺</button>
+    <button class="cat-home-action cat-call-button" id="cat-call-button" type="button" onclick="summonCat()">✨ 呼喚</button>
   </nav>
 </section>
 
