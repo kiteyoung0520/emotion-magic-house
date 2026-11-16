@@ -1268,10 +1268,6 @@
 
   function openCatHome() {
     clearInterval(timerId);
-    const catActions = document.querySelector('.cat-home-actions');
-    if (catActions && !document.getElementById('cat-grooming-action')) {
-      catActions.insertAdjacentHTML('beforeend', "<button class='cat-home-action' id='cat-grooming-action' onclick=\"catHomeAction('grooming')\">🧼 理毛</button><button class='cat-home-action' onclick=\"catHomeAction('stretching')\">🙆 伸懶腰</button><button class='cat-home-action' onclick=\"catHomeAction('alert')\">👀 張望</button>");
-    }
     document.body.classList.remove('menu-open');
     document.body.classList.add('cat-home-open');
     document.getElementById('overlay').style.display = 'none';
