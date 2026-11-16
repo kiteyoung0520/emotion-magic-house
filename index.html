@@ -164,24 +164,27 @@
   @keyframes cat-page-nibble { to { transform: translateY(4px) rotate(1deg); } }
   @keyframes cat-page-happy { to { transform: translateY(-12px) rotate(3deg); } }
   .menu-open .cat-companion {
-    top: 46px;
-    right: 14px;
+    top: 28px;
+    right: 12px;
     left: auto;
     bottom: auto;
-    width: 128px;
-    height: 148px;
+    width: 164px;
+    height: 188px;
   }
   .menu-open .cat-sprite {
-    left: 7px;
-    width: 108px;
-    height: 124px;
+    left: 4px;
+    width: 152px;
+    height: 162px;
     bottom: 23px;
     background-image: url('assets/orange-cat-idle.png?v=3');
     animation: cat-page-breathe 1.8s ease-in-out infinite;
   }
   .menu-open .cat-sprite.eating { background-image: url('assets/orange-cat-eat.png?v=3'); animation: cat-page-nibble .34s ease-in-out infinite alternate; }
   .menu-open .cat-sprite.happy { background-image: url('assets/orange-cat-happy.png?v=3'); animation: cat-page-happy .42s ease-in-out 4 alternate; }
-  .menu-open .modal.main-menu-modal { padding-top: 116px; }
+  @media (max-width: 480px) {
+    .menu-open .modal.main-menu-modal { padding-top: 118px; }
+    .menu-open .cat-companion { top: 30px; right: 10px; }
+  }
 
   .grid {
     display: grid;
