@@ -114,22 +114,22 @@
     position: absolute;
     left: 0;
     bottom: 35px;
-    width: 118px;
-    height: 132px;
-    background-image: url('assets/orange-cat-walk.png?v=3');
+    width: 156px;
+    height: 148px;
+    background-image: url('assets/border-collie/border-collie-walk-1.webp?v=3');
     background-repeat: no-repeat;
-    background-size: auto 100%;
+    background-size: contain;
     background-position: center;
     filter: drop-shadow(0 7px 4px rgba(0,0,0,.28));
     animation: cat-wander 24s ease-in-out infinite alternate, cat-css-walk-frames 1s steps(1,end) infinite;
   }
-  .cat-sprite.sitting { background-image: url('assets/orange-cat-idle.png?v=3'); animation: cat-page-breathe 1.8s ease-in-out infinite; }
-  .cat-sprite.sleeping { background-image: url('assets/orange-cat-sleep.png?v=3'); animation: cat-page-breathe 2.4s ease-in-out infinite; }
-  .cat-sprite.eating { background-image: url('assets/orange-cat-eat.png?v=3'); animation: cat-page-nibble .34s ease-in-out infinite alternate; }
-  .cat-sprite.happy { background-image: url('assets/orange-cat-happy.png?v=3'); animation: cat-page-happy .42s ease-in-out 4 alternate; }
-  .cat-sprite.grooming { background-image: url('assets/orange-cat-groom.png?v=4'); animation: cat-page-groom .7s ease-in-out infinite alternate; }
-  .cat-sprite.stretching { background-image: url('assets/orange-cat-stretch.png?v=4'); animation: cat-page-stretch 1.4s ease-in-out; }
-  .cat-sprite.alert { background-image: url('assets/orange-cat-alert.png?v=4'); animation: cat-page-alert .8s ease-in-out infinite alternate; }
+  .cat-sprite.sitting { background-image: url('assets/border-collie/border-collie-sitting.webp?v=3'); animation: cat-page-breathe 1.8s ease-in-out infinite; }
+  .cat-sprite.sleeping { background-image: url('assets/border-collie/border-collie-sleeping.webp?v=3'); animation: cat-page-breathe 2.4s ease-in-out infinite; }
+  .cat-sprite.eating { background-image: url('assets/border-collie/border-collie-sitting.webp?v=3'); animation: cat-page-nibble .34s ease-in-out infinite alternate; }
+  .cat-sprite.happy { background-image: url('assets/border-collie/border-collie-happy.webp?v=3'); animation: cat-page-happy .42s ease-in-out 4 alternate; }
+  .cat-sprite.grooming { background-image: url('assets/border-collie/border-collie-lying.webp?v=4'); animation: cat-page-groom .7s ease-in-out infinite alternate; }
+  .cat-sprite.stretching { background-image: url('assets/border-collie/border-collie-standing.webp?v=4'); animation: cat-page-stretch 1.4s ease-in-out; }
+  .cat-sprite.alert { background-image: url('assets/border-collie/border-collie-greeting.webp?v=4'); animation: cat-page-alert .8s ease-in-out infinite alternate; }
   .cat-panel {
     position: absolute;
     right: 10px;
@@ -157,7 +157,7 @@
   }
   .cat-sprite.chasing { animation: none !important; transition: left var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1), top var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1); }
   .cat-sprite { pointer-events: auto; cursor: grab; touch-action: none; }
-  .cat-sprite.being-held { z-index: 10003; bottom: auto; background-image: url('assets/orange-cat-held.png?v=1'); background-size: contain; animation: cat-page-held .34s ease-in-out infinite alternate !important; cursor: grabbing; transform-origin: center top; }
+  .cat-sprite.being-held { z-index: 10003; bottom: auto; background-image: url('assets/border-collie/border-collie-lying.webp?v=1'); background-size: contain; animation: cat-page-held .34s ease-in-out infinite alternate !important; cursor: grabbing; transform-origin: center top; }
   @keyframes cat-page-held { from { transform: rotate(-3deg) scale(.98); } to { transform: translateY(-6px) rotate(3deg) scale(1.01); } }
   .interactive-toy {
     position: fixed;
@@ -194,11 +194,11 @@
     100% { transform: translate(0, -4px) scaleX(-1); }
   }
   @keyframes cat-css-walk-frames {
-    0%, 100% { background-image: url('assets/orange-cat-walk-1.png?v=6'); }
-    20% { background-image: url('assets/orange-cat-walk-2.png?v=6'); }
-    40% { background-image: url('assets/orange-cat-walk-3.png?v=6'); }
-    60% { background-image: url('assets/orange-cat-walk-4.png?v=6'); }
-    80% { background-image: url('assets/orange-cat-walk-5.png?v=6'); }
+    0%, 100% { background-image: url('assets/border-collie/border-collie-walk-1.webp?v=6'); }
+    20% { background-image: url('assets/border-collie/border-collie-walk-2.webp?v=6'); }
+    40% { background-image: url('assets/border-collie/border-collie-walk-1.webp?v=6'); }
+    60% { background-image: url('assets/border-collie/border-collie-walk-2.webp?v=6'); }
+    80% { background-image: url('assets/border-collie/border-collie-happy.webp?v=6'); }
   }
   @keyframes cat-page-breathe { 50% { transform: translateY(-3px) scale(1.025); } }
   @keyframes cat-page-nibble { to { transform: translateY(4px) rotate(1deg); } }
@@ -219,14 +219,14 @@
     width: 152px;
     height: 162px;
     bottom: 23px;
-    background-image: url('assets/orange-cat-idle.png?v=3');
+    background-image: url('assets/border-collie/border-collie-sitting.webp?v=3');
     animation: cat-page-breathe 1.8s ease-in-out infinite;
   }
-  .menu-open .cat-sprite.eating { background-image: url('assets/orange-cat-eat.png?v=3'); animation: cat-page-nibble .34s ease-in-out infinite alternate; }
-  .menu-open .cat-sprite.happy { background-image: url('assets/orange-cat-happy.png?v=3'); animation: cat-page-happy .42s ease-in-out 4 alternate; }
-  .menu-open .cat-sprite.grooming { background-image: url('assets/orange-cat-groom.png?v=4'); animation: cat-page-groom .7s ease-in-out infinite alternate; }
-  .menu-open .cat-sprite.stretching { background-image: url('assets/orange-cat-stretch.png?v=4'); animation: cat-page-stretch 1.4s ease-in-out; }
-  .menu-open .cat-sprite.alert { background-image: url('assets/orange-cat-alert.png?v=4'); animation: cat-page-alert .8s ease-in-out infinite alternate; }
+  .menu-open .cat-sprite.eating { background-image: url('assets/border-collie/border-collie-sitting.webp?v=3'); animation: cat-page-nibble .34s ease-in-out infinite alternate; }
+  .menu-open .cat-sprite.happy { background-image: url('assets/border-collie/border-collie-happy.webp?v=3'); animation: cat-page-happy .42s ease-in-out 4 alternate; }
+  .menu-open .cat-sprite.grooming { background-image: url('assets/border-collie/border-collie-lying.webp?v=4'); animation: cat-page-groom .7s ease-in-out infinite alternate; }
+  .menu-open .cat-sprite.stretching { background-image: url('assets/border-collie/border-collie-standing.webp?v=4'); animation: cat-page-stretch 1.4s ease-in-out; }
+  .menu-open .cat-sprite.alert { background-image: url('assets/border-collie/border-collie-greeting.webp?v=4'); animation: cat-page-alert .8s ease-in-out infinite alternate; }
   @media (max-width: 480px) {
     .menu-open .modal.main-menu-modal { padding-top: 118px; }
     .menu-open .cat-companion { top: 30px; right: 10px; }
@@ -281,7 +281,7 @@
   }
 
   .cell:active { transform: scale(0.92); }
-  
+
   .cell.correct {
     background: #065f46;
     border-color: #10b981;
@@ -400,7 +400,7 @@
     text-decoration: underline;
   }
 
-  /* 小橘貓之家：日式室內活動空間 */
+  /* 小邊之家：日式室內活動空間 */
   .cat-home {
     position: fixed;
     inset: 0;
@@ -667,16 +667,16 @@
     z-index: 10002;
     left: 50%;
     top: 69%;
-    width: clamp(92px, 24vw, 132px);
-    height: clamp(123px, 32vw, 176px);
+    width: clamp(146px, 38vw, 205px);
+    height: clamp(130px, 34vw, 185px);
     padding: 0;
     border: 0;
     appearance: none;
     -webkit-appearance: none;
     background-color: transparent;
-    background-image: url('assets/orange-cat-walk.png?v=3');
+    background-image: url('assets/border-collie/border-collie-walk-1.webp?v=3');
     background-repeat: no-repeat;
-    background-size: auto 100%;
+    background-size: contain;
     background-position: center;
     touch-action: none;
     filter: drop-shadow(0 8px 5px rgba(69,26,3,.28));
@@ -686,26 +686,26 @@
     cursor: pointer;
     animation: cat-home-step .55s ease-in-out infinite alternate;
   }
-  .cat-home-cat.growth-juvenile { width: clamp(99px, 26vw, 142px); height: clamp(132px, 35vw, 188px); }
-  .cat-home-cat.growth-adult { width: clamp(106px, 28vw, 150px); height: clamp(141px, 37vw, 198px); }
-  .cat-home-cat.walking { background-image: url('assets/orange-cat-walk.png?v=3'); animation: cat-home-step .55s ease-in-out infinite alternate; }
-  .cat-home-cat.sitting { background-image: url('assets/orange-cat-idle.png?v=3'); animation: cat-home-breathe 1.8s ease-in-out infinite; }
-  .cat-home-cat.sleeping { background-image: url('assets/orange-cat-sleep.png?v=3'); animation: cat-home-breathe 2.4s ease-in-out infinite; }
-  .cat-home-cat.eating { background-image: url('assets/orange-cat-eat.png?v=3'); animation: cat-home-nibble .32s ease-in-out infinite alternate; }
-  .cat-home-cat.happy { background-image: url('assets/orange-cat-happy.png?v=3'); animation: cat-home-happy .45s ease-in-out 4 alternate; }
-  .cat-home-cat.grooming { background-image: url('assets/orange-cat-groom.png?v=4'); animation: cat-home-groom .72s ease-in-out infinite alternate; }
-  .cat-home-cat.stretching { background-image: url('assets/orange-cat-stretch.png?v=4'); animation: cat-home-stretch 1.5s ease-in-out; }
-  .cat-home-cat.alert { background-image: url('assets/orange-cat-alert.png?v=4'); animation: cat-home-alert .75s ease-in-out infinite alternate; }
+  .cat-home-cat.growth-juvenile { width: clamp(152px, 40vw, 215px); height: clamp(136px, 36vw, 195px); }
+  .cat-home-cat.growth-adult { width: clamp(162px, 42vw, 228px); height: clamp(142px, 38vw, 205px); }
+  .cat-home-cat.walking { background-image: url('assets/border-collie/border-collie-walk-1.webp?v=3'); animation: cat-home-step .55s ease-in-out infinite alternate; }
+  .cat-home-cat.sitting { background-image: url('assets/border-collie/border-collie-sitting.webp?v=3'); animation: cat-home-breathe 1.8s ease-in-out infinite; }
+  .cat-home-cat.sleeping { background-image: url('assets/border-collie/border-collie-sleeping.webp?v=3'); animation: cat-home-breathe 2.4s ease-in-out infinite; }
+  .cat-home-cat.eating { background-image: url('assets/border-collie/border-collie-sitting.webp?v=3'); animation: cat-home-nibble .32s ease-in-out infinite alternate; }
+  .cat-home-cat.happy { background-image: url('assets/border-collie/border-collie-happy.webp?v=3'); animation: cat-home-happy .45s ease-in-out 4 alternate; }
+  .cat-home-cat.grooming { background-image: url('assets/border-collie/border-collie-lying.webp?v=4'); animation: cat-home-groom .72s ease-in-out infinite alternate; }
+  .cat-home-cat.stretching { background-image: url('assets/border-collie/border-collie-standing.webp?v=4'); animation: cat-home-stretch 1.5s ease-in-out; }
+  .cat-home-cat.alert { background-image: url('assets/border-collie/border-collie-greeting.webp?v=4'); animation: cat-home-alert .75s ease-in-out infinite alternate; }
   .cat-home-cat.sad, .cat-home-cat.bored, .cat-home-cat.scared, .cat-home-cat.angry, .cat-home-cat.tired, .cat-home-cat.unwell { background-size: contain; background-position: center; background-repeat: no-repeat; }
-  .cat-home-cat.sad { background-image: url('assets/orange-cat-mood-sad.webp?v=1'); animation: cat-home-sad 2.4s ease-in-out infinite; }
-  .cat-home-cat.bored { background-image: url('assets/orange-cat-mood-bored.webp?v=1'); animation: cat-home-bored 1.8s ease-in-out infinite; }
-  .cat-home-cat.scared { background-image: url('assets/orange-cat-mood-scared.webp?v=1'); animation: cat-home-scare .7s ease-in-out infinite alternate; }
-  .cat-home-cat.angry { background-image: url('assets/orange-cat-mood-angry.webp?v=1'); animation: cat-home-angry 1.1s ease-in-out infinite; }
-  .cat-home-cat.tired { background-image: url('assets/orange-cat-mood-tired.webp?v=1'); animation: cat-home-breathe 3.2s ease-in-out infinite; }
-  .cat-home-cat.unwell { background-image: url('assets/orange-cat-mood-unwell.webp?v=1'); animation: cat-home-sad 3s ease-in-out infinite; }
-  .cat-home-cat.loaf { background-image: url('assets/orange-cat-loaf.png?v=1'); animation: cat-home-breathe 2.8s ease-in-out infinite; }
-  .cat-home-cat.curious { background-image: url('assets/orange-cat-curious.png?v=1'); animation: cat-home-curious 1.25s ease-in-out infinite alternate; }
-  .cat-home-cat.being-held { z-index: 10003; background-image: url('assets/orange-cat-held.png?v=1'); background-size: contain; animation: cat-home-held .34s ease-in-out infinite alternate; cursor: grabbing; touch-action: none; }
+  .cat-home-cat.sad { background-image: url('assets/border-collie/border-collie-sad.webp?v=1'); animation: cat-home-sad 2.4s ease-in-out infinite; }
+  .cat-home-cat.bored { background-image: url('assets/border-collie/border-collie-sitting.webp?v=1'); animation: cat-home-bored 1.8s ease-in-out infinite; }
+  .cat-home-cat.scared { background-image: url('assets/border-collie/border-collie-sad.webp?v=1'); animation: cat-home-scare .7s ease-in-out infinite alternate; }
+  .cat-home-cat.angry { background-image: url('assets/border-collie/border-collie-standing.webp?v=1'); animation: cat-home-angry 1.1s ease-in-out infinite; }
+  .cat-home-cat.tired { background-image: url('assets/border-collie/border-collie-sleeping.webp?v=1'); animation: cat-home-breathe 3.2s ease-in-out infinite; }
+  .cat-home-cat.unwell { background-image: url('assets/border-collie/border-collie-sleeping.webp?v=1'); animation: cat-home-sad 3s ease-in-out infinite; }
+  .cat-home-cat.loaf { background-image: url('assets/border-collie/border-collie-lying.webp?v=1'); animation: cat-home-breathe 2.8s ease-in-out infinite; }
+  .cat-home-cat.curious { background-image: url('assets/border-collie/border-collie-sitting.webp?v=1'); animation: cat-home-curious 1.25s ease-in-out infinite alternate; }
+  .cat-home-cat.being-held { z-index: 10003; background-image: url('assets/border-collie/border-collie-lying.webp?v=1'); background-size: contain; animation: cat-home-held .34s ease-in-out infinite alternate; cursor: grabbing; touch-action: none; }
   @keyframes cat-home-step { to { transform: translate(-50%, calc(-50% - 5px)) scaleX(var(--face)) rotate(-1deg); } }
   @keyframes cat-home-breathe { 50% { transform: translate(-50%, -50%) scaleX(var(--face)) scale(1.025); } }
   @keyframes cat-home-nibble { to { transform: translate(-50%, -47%) scaleX(var(--face)) rotate(2deg); } }
@@ -817,19 +817,19 @@
   .cat-visit-stage { position: relative; flex: 1; width: min(760px,100%); min-height: 255px; margin: 0 auto; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid rgba(255,235,205,.25); border-radius: 30px; background: radial-gradient(ellipse at 50% 72%, rgba(255,218,157,.22), transparent 44%), linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.025)); box-shadow: inset 0 1px rgba(255,255,255,.12), 0 22px 50px rgba(0,0,0,.22); }
   .cat-visit-stage::before { content: "✦     ·       ✧       ·     ✦"; position: absolute; inset: 13% 0 auto; color: rgba(255,239,212,.48); font-size: 1rem; letter-spacing: .8rem; text-align: center; }
   .cat-visit-bubble { position: absolute; z-index: 2; top: 9%; left: 50%; max-width: min(82%,520px); transform: translateX(-50%); padding: 10px 16px; border: 1px solid rgba(255,234,197,.72); border-radius: 18px 18px 18px 5px; background: rgba(255,249,236,.96); color: #664636; font-size: .92rem; font-weight: 900; line-height: 1.45; text-align: center; box-shadow: 0 8px 26px rgba(30,20,30,.22); }
-  .cat-visit-cat { position: absolute; z-index: 1; top: 57%; left: 50%; width: clamp(170px,54vw,290px); height: clamp(220px,70vw,370px); padding: 0; transform: translate(-50%,-50%); border: 0; background-color: transparent; background-image: url('assets/orange-cat-idle.png?v=3'); background-repeat: no-repeat; background-size: auto 100%; background-position: center; filter: drop-shadow(0 14px 12px rgba(31,20,22,.28)); cursor: grab; touch-action: none; animation: cat-visit-breathe 2.1s ease-in-out infinite; }
-  .cat-visit-cat.sleeping { background-image: url('assets/orange-cat-sleep.png?v=3'); }
-  .cat-visit-cat.eating { background-image: url('assets/orange-cat-eat.png?v=3'); animation: cat-visit-nibble .38s ease-in-out infinite alternate; }
-  .cat-visit-cat.happy { background-image: url('assets/orange-cat-happy.png?v=3'); animation: cat-visit-happy .62s ease-in-out infinite alternate; }
-  .cat-visit-cat.alert { background-image: url('assets/orange-cat-alert.png?v=4'); animation: cat-visit-breathe 1.2s ease-in-out infinite; }
-  .cat-visit-cat.grooming { background-image: url('assets/orange-cat-groom.png?v=4'); animation: cat-visit-groom .72s ease-in-out infinite alternate; }
-  .cat-visit-cat.stretching { background-image: url('assets/orange-cat-stretch.png?v=4'); animation: cat-visit-stretch 1.4s ease-in-out; }
-  .cat-visit-cat.loaf { background-image: url('assets/orange-cat-loaf.png?v=1'); animation: cat-visit-breathe 2.8s ease-in-out infinite; }
-  .cat-visit-cat.curious { background-image: url('assets/orange-cat-curious.png?v=1'); animation: cat-visit-curious 1.25s ease-in-out infinite alternate; }
+  .cat-visit-cat { position: absolute; z-index: 1; top: 57%; left: 50%; width: clamp(250px,72vw,390px); height: clamp(230px,65vw,360px); padding: 0; transform: translate(-50%,-50%); border: 0; background-color: transparent; background-image: url('assets/border-collie/border-collie-sitting.webp?v=3'); background-repeat: no-repeat; background-size: contain; background-position: center; filter: drop-shadow(0 14px 12px rgba(31,20,22,.28)); cursor: grab; touch-action: none; animation: cat-visit-breathe 2.1s ease-in-out infinite; }
+  .cat-visit-cat.sleeping { background-image: url('assets/border-collie/border-collie-sleeping.webp?v=3'); }
+  .cat-visit-cat.eating { background-image: url('assets/border-collie/border-collie-sitting.webp?v=3'); animation: cat-visit-nibble .38s ease-in-out infinite alternate; }
+  .cat-visit-cat.happy { background-image: url('assets/border-collie/border-collie-happy.webp?v=3'); animation: cat-visit-happy .62s ease-in-out infinite alternate; }
+  .cat-visit-cat.alert { background-image: url('assets/border-collie/border-collie-greeting.webp?v=4'); animation: cat-visit-breathe 1.2s ease-in-out infinite; }
+  .cat-visit-cat.grooming { background-image: url('assets/border-collie/border-collie-lying.webp?v=4'); animation: cat-visit-groom .72s ease-in-out infinite alternate; }
+  .cat-visit-cat.stretching { background-image: url('assets/border-collie/border-collie-standing.webp?v=4'); animation: cat-visit-stretch 1.4s ease-in-out; }
+  .cat-visit-cat.loaf { background-image: url('assets/border-collie/border-collie-lying.webp?v=1'); animation: cat-visit-breathe 2.8s ease-in-out infinite; }
+  .cat-visit-cat.curious { background-image: url('assets/border-collie/border-collie-sitting.webp?v=1'); animation: cat-visit-curious 1.25s ease-in-out infinite alternate; }
   .cat-visit-cat.walking { animation: none; transition: left var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1), top var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1); }
-  .cat-visit-cat.being-held { z-index: 4; background-image: url('assets/orange-cat-held.png?v=1'); background-size: contain; animation: cat-visit-held .34s ease-in-out infinite alternate; cursor: grabbing; }
-  .cat-visit-cat.growth-juvenile { width: clamp(178px,57vw,302px); height: clamp(231px,74vw,386px); }
-  .cat-visit-cat.growth-adult { width: clamp(186px,60vw,315px); height: clamp(242px,77vw,400px); }
+  .cat-visit-cat.being-held { z-index: 4; background-image: url('assets/border-collie/border-collie-lying.webp?v=1'); background-size: contain; animation: cat-visit-held .34s ease-in-out infinite alternate; cursor: grabbing; }
+  .cat-visit-cat.growth-juvenile { width: clamp(266px,76vw,400px); height: clamp(242px,68vw,370px); }
+  .cat-visit-cat.growth-adult { width: clamp(280px,80vw,420px); height: clamp(254px,72vw,392px); }
   .cat-visit-cat.arriving { animation: cat-visit-arrive .8s cubic-bezier(.2,.8,.2,1) both; }
   .cat-visit-toy { position: absolute; z-index: 2; left: 20%; bottom: 18%; opacity: 0; font-size: clamp(2rem,9vw,3.4rem); filter: drop-shadow(0 6px 8px rgba(0,0,0,.22)); pointer-events: none; }
   .cat-visit-stage.playing .cat-visit-toy { animation: cat-yarn-play 1.8s ease-in-out both; }
@@ -886,60 +886,60 @@
   <div class="grid cols-3" id="grid"></div>
 </div>
 
-<div class="cat-companion" aria-label="小橘貓陪伴區">
-    <div class="cat-sprite" id="cat-sprite" role="img" aria-label="小橘貓，可以拖曳移動" title="拖曳小橘貓可以帶牠移動"></div>
+<div class="cat-companion" aria-label="小邊陪伴區">
+    <div class="cat-sprite" id="cat-sprite" role="img" aria-label="小邊，可以拖曳移動" title="拖曳小邊可以帶牠移動"></div>
   <div class="cat-panel">
-    <span id="cat-food">🐟 0</span>
+    <span id="cat-food">🦴 0</span>
     <button class="cat-feed" onclick="feedCat()">餵食</button>
   </div>
 </div>
-<button class="interactive-toy" id="interactive-toy" type="button" aria-label="拖曳毛線球，讓小橘貓追著玩" title="拖曳毛線球和小橘貓玩">🧶</button>
+<button class="interactive-toy" id="interactive-toy" type="button" aria-label="拖曳網球，讓小邊追著玩" title="拖曳網球和小邊玩">🎾</button>
 <div class="cat-play-bubble" id="cat-play-bubble" role="status"></div>
 
 
-<section class="cat-home" id="cat-home" aria-hidden="true" aria-label="小橘貓之家">
+<section class="cat-home" id="cat-home" aria-hidden="true" aria-label="小邊之家">
   <header class="cat-home-header">
     <button class="cat-home-back" onclick="closeCatHome()">← 返回</button>
-    <h2 class="cat-home-title">🐱 小橘貓之家</h2>
-    <div class="cat-home-stats" aria-label="小橘貓狀態">
-      <span class="cat-stat" id="cat-home-food">🐟 0</span>
+    <h2 class="cat-home-title">🐶 小邊之家</h2>
+    <div class="cat-home-stats" aria-label="小邊狀態">
+      <span class="cat-stat" id="cat-home-food">🦴 0</span>
       <span class="cat-stat" id="cat-home-affection">💛 0</span>
     </div>
   </header>
-  <div class="cat-growth" aria-label="小橘貓成長進度">
-    <div class="cat-growth-top"><span id="cat-growth-label">🐣 幼貓</span><span id="cat-growth-xp">0 / 8 經驗</span></div>
+  <div class="cat-growth" aria-label="小邊成長進度">
+    <div class="cat-growth-top"><span id="cat-growth-label">🐣 幼犬</span><span id="cat-growth-xp">0 / 8 經驗</span></div>
     <div class="cat-growth-track" role="progressbar" id="cat-growth-progress" aria-label="成長進度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="cat-growth-fill" id="cat-growth-fill"></div></div>
     <div class="cat-growth-note"><span id="cat-days-raised">🐾 陪伴第 1 天</span><span id="cat-growth-note">今天陪伴 0 / 4 種活動</span></div>
     <div class="cat-calendar-row">
       <div class="cat-calendar" id="cat-calendar" aria-label="今日國曆與農曆日期"></div>
-      <label class="cat-name-field" for="cat-name-input">名字<input id="cat-name-input" type="text" maxlength="12" placeholder="取個名字" onchange="saveCatName(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();summonCat();}" aria-label="小橘貓的名字"></label>
+      <label class="cat-name-field" for="cat-name-input">名字<input id="cat-name-input" type="text" maxlength="12" placeholder="取個名字" onchange="saveCatName(this.value)" onkeydown="if(event.key==='Enter'){event.preventDefault();summonCat();}" aria-label="小邊的名字"></label>
     </div>
   </div>
   <div class="cat-room" id="cat-room">
-    <button class="shoji-window" id="cat-weather-window" type="button" data-weather="cloudy" data-glyph="☁️  ☀️" onclick="inviteCatToWeatherWindow()" aria-label="邀請小橘貓到窗邊看風景" title="邀請小橘貓到窗邊看風景"></button>
+    <button class="shoji-window" id="cat-weather-window" type="button" data-weather="cloudy" data-glyph="☁️  ☀️" onclick="inviteCatToWeatherWindow()" aria-label="邀請小邊到窗邊看風景" title="邀請小邊到窗邊看風景"></button>
     <button class="weather-location-button" id="cat-weather-location" type="button" onclick="event.stopPropagation(); openCatWeatherDialog()" aria-label="設定窗外天氣地區">臺北・讀取天氣</button>
-    <div class="room-shelf" aria-hidden="true">🪴 📚 🧶</div>
+    <div class="room-shelf" aria-hidden="true">🪴 📚 🎾</div>
     <div class="room-lantern" aria-hidden="true"></div>
     <div class="room-beam" aria-hidden="true"></div>
     <div class="room-light-overlay" aria-hidden="true"></div>
     <button class="room-light-switch" id="cat-light-switch" type="button" onclick="toggleCatLighting()" aria-pressed="false">💡 開啟暖燈</button>
-    <button class="room-object spot-toy" onclick="moveCatHomeTo('toy')" aria-label="玩毛線球">
-      <span class="room-emoji">🧶</span><span>玩具</span>
+    <button class="room-object spot-toy" onclick="moveCatHomeTo('toy')" aria-label="玩網球">
+      <span class="room-emoji">🎾</span><span>玩具</span>
     </button>
     <button class="room-object spot-bowl" onclick="moveCatHomeTo('bowl')" aria-label="到食物碗">
       <span class="room-emoji">🥣</span><span>食物碗</span>
     </button>
-    <button class="room-object spot-bed" onclick="moveCatHomeTo('bed')" aria-label="到貓窩休息">
-      <span class="room-emoji">🧺</span><span>貓窩</span>
+    <button class="room-object spot-bed" onclick="moveCatHomeTo('bed')" aria-label="到狗窩休息">
+      <span class="room-emoji">🧺</span><span>狗窩</span>
     </button>
-    <button class="cat-home-cat sitting" id="cat-home-cat" onclick="catHomeRequest()" aria-label="拖曳移動小橘貓，點一下聽牠說話"></button>
+    <button class="cat-home-cat sitting" id="cat-home-cat" onclick="catHomeRequest()" aria-label="拖曳移動小邊，點一下聽牠說話"></button>
     <div class="cat-bubble" id="cat-bubble" role="status">歡迎回家，摸摸我吧！</div>
   </div>
-  <nav class="cat-home-actions" aria-label="小橘貓互動">
+  <nav class="cat-home-actions" aria-label="小邊互動">
     <button class="cat-home-action" onclick="catHomeAction('walk')">🐾 散步</button>
     <button class="cat-home-action" onclick="catHomeAction('pet')">🤲 摸摸</button>
     <button class="cat-home-action" onclick="openCatFeelingsDialog()">💛 心情陪伴</button>
-    <button class="cat-home-action" onclick="catHomeAction('feed')">🐟 餵食</button>
+    <button class="cat-home-action" onclick="catHomeAction('feed')">🦴 餵食</button>
     <button class="cat-home-action" onclick="catHomeAction('sleep')">🌙 睡覺</button>
     <button class="cat-home-action cat-call-button" id="cat-call-button" type="button" onclick="summonCat()">✨ 呼喚</button>
   </nav>
@@ -951,14 +951,14 @@
         <div class="cat-companion-choices">
           <button class="cat-companion-choice" onclick="chooseCatCompanion('quiet')">🌙 安靜待著</button>
           <button class="cat-companion-choice" onclick="chooseCatCompanion('breathe')">🌬️ 一起呼吸</button>
-          <button class="cat-companion-choice" onclick="chooseCatCompanion('play')">🧶 輕鬆玩一下</button>
+          <button class="cat-companion-choice" onclick="chooseCatCompanion('play')">🎾 輕鬆玩一下</button>
           <button class="cat-companion-choice" onclick="chooseCatCompanion('unsure')">☁️ 還說不清楚</button>
         </div>
       </div>
       <div id="cat-mood-panel" hidden>
-        <span class="cat-mood-tag" id="cat-mood-tag">🐾 小橘貓的心情</span>
-        <h3 id="cat-mood-title">今天的小橘貓</h3>
-        <img class="cat-mood-portrait" id="cat-mood-portrait" alt="小橘貓情緒姿態" />
+        <span class="cat-mood-tag" id="cat-mood-tag">🐾 小邊的心情</span>
+        <h3 id="cat-mood-title">今天的小邊</h3>
+        <img class="cat-mood-portrait" id="cat-mood-portrait" alt="小邊情緒姿態" />
         <p id="cat-mood-prompt" role="status" aria-live="polite"></p>
         <div class="cat-mood-replies" id="cat-mood-replies"></div>
         <div class="cat-mood-secondary">
@@ -967,13 +967,13 @@
         </div>
       </div>
       <div id="cat-breath-panel" hidden>
-        <h3>陪小橘貓慢下來</h3>
-        <p id="cat-breath-text" role="status" aria-live="polite">吸氣，跟著小橘貓慢慢鼓起……</p>
-        <div class="cat-breath-orb-wrap"><div class="cat-breath-orb" id="cat-breath-orb" aria-hidden="true">🐱</div></div>
+        <h3>陪小邊慢下來</h3>
+        <p id="cat-breath-text" role="status" aria-live="polite">吸氣，跟著小邊慢慢鼓起……</p>
+        <div class="cat-breath-orb-wrap"><div class="cat-breath-orb" id="cat-breath-orb" aria-hidden="true">🐶</div></div>
         <p>不用勉強深呼吸，想停的時候隨時可以。</p>
         <button class="cat-companion-close" id="cat-breath-close" onclick="closeCatCompanionDialog()">隨時結束</button>
       </div>
-      <button class="cat-companion-close" id="cat-companion-cancel" onclick="closeCatCompanionDialog()">先不用，回到貓屋</button>
+      <button class="cat-companion-close" id="cat-companion-cancel" onclick="closeCatCompanionDialog()">先不用，回到小邊之家</button>
     </section>
   </div>
   <div class="cat-weather-dialog" id="cat-weather-dialog" aria-hidden="true" onclick="if(event.target===this) closeCatWeatherDialog()">
@@ -992,21 +992,21 @@
   </div>
 </section>
 
-<section class="cat-visit" id="cat-visit" aria-hidden="true" aria-label="和小橘貓單獨互動">
+<section class="cat-visit" id="cat-visit" aria-hidden="true" aria-label="和小邊單獨互動">
   <header class="cat-visit-header">
-    <button class="cat-home-back" type="button" onclick="closeCatVisit()">← 回到貓屋</button>
-    <h2 class="cat-visit-title"><span id="cat-visit-name">小橘貓</span>來啦</h2>
-    <span class="cat-stat" id="cat-visit-food">🐟 0</span>
+    <button class="cat-home-back" type="button" onclick="closeCatVisit()">← 回到小邊之家</button>
+    <h2 class="cat-visit-title"><span id="cat-visit-name">小邊</span>來啦</h2>
+    <span class="cat-stat" id="cat-visit-food">🦴 0</span>
   </header>
   <div class="cat-visit-stage" id="cat-visit-stage">
     <div class="cat-visit-bubble" id="cat-visit-bubble" role="status">聽見你叫我了！</div>
-    <button class="cat-visit-cat sitting" id="cat-visit-cat" type="button" onclick="catVisitAction('pet')" aria-label="拖曳移動小橘貓，點一下摸摸牠"></button>
-    <div class="cat-visit-toy" aria-hidden="true">🧶</div>
+    <button class="cat-visit-cat sitting" id="cat-visit-cat" type="button" onclick="catVisitAction('pet')" aria-label="拖曳移動小邊，點一下摸摸牠"></button>
+    <div class="cat-visit-toy" aria-hidden="true">🎾</div>
   </div>
-  <nav class="cat-visit-actions" aria-label="和小橘貓互動">
-    <button class="cat-home-action" type="button" onclick="catVisitAction('feed')">🐟 餵牠吃飯</button>
+  <nav class="cat-visit-actions" aria-label="和小邊互動">
+    <button class="cat-home-action" type="button" onclick="catVisitAction('feed')">🦴 餵牠吃飯</button>
     <button class="cat-home-action" type="button" onclick="catVisitAction('pet')">🤲 摸摸牠</button>
-    <button class="cat-home-action" type="button" onclick="catVisitAction('play')">🧶 一起玩</button>
+    <button class="cat-home-action" type="button" onclick="catVisitAction('play')">🎾 一起玩</button>
   </nav>
 </section>
 
@@ -1020,7 +1020,7 @@
     <button class="menu-btn" onclick="startMemoryGame()">3️⃣ 🧠 記憶翻牌配對遊戲</button>
     <button class="menu-btn" onclick="openJournalModal()">4️⃣ 心情日記與每日一籤 📖</button>
     <button class="menu-btn" onclick="openStoryModal()" style="background:#0284c7;color:#fff;">5️⃣ 📚 心情故事集 (精華摘要與原文連結)</button>
-    <button class="menu-btn" onclick="openCatHome()" style="background:#f59e0b;color:#451a03;border-color:#fbbf24;">6️⃣ 🐱 小橘貓之家</button>
+    <button class="menu-btn" onclick="openCatHome()" style="background:#f59e0b;color:#451a03;border-color:#fbbf24;">6️⃣ 🐶 小邊之家</button>
   </div>
 </div>
 
@@ -1462,7 +1462,7 @@
   let startTime = 0;
   let penaltySeconds = 0;
   let wrongCount = 0;
-  
+
   let seqQueue = [];
   let seqIndex = 0;
   let diffRound = 1;
@@ -1478,7 +1478,8 @@
   catState.affection = Number(catState.affection) || 0;
   catState.mood = Number.isFinite(Number(catState.mood)) ? Number(catState.mood) : 60;
   catState.experience = Math.max(0, Number(catState.experience) || 0);
-  catState.name = String(catState.name || '小橘貓').trim().slice(0, 12) || '小橘貓';
+  catState.name = String(catState.name || '小邊').trim().slice(0, 12) || '小邊';
+  if (catState.name === '小橘貓') catState.name = '小邊';
   function localDateKey(date) {
     return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
   }
@@ -1488,9 +1489,9 @@
   }
 
   function getCatGrowthStage(experience) {
-    if (experience >= 24) return { key: 'adult', label: '🐈 成貓', start: 24, next: 24 };
-    if (experience >= 8) return { key: 'juvenile', label: '🐱 少年貓', start: 8, next: 24 };
-    return { key: 'kitten', label: '🐣 幼貓', start: 0, next: 8 };
+    if (experience >= 24) return { key: 'adult', label: '🐕 成犬', start: 24, next: 24 };
+    if (experience >= 8) return { key: 'juvenile', label: '🐶 少年犬', start: 8, next: 24 };
+    return { key: 'kitten', label: '🐣 幼犬', start: 0, next: 8 };
   }
 
   function getCatDailyActivities() {
@@ -1536,22 +1537,22 @@
   }
 
   function updateCatUI() {
-    document.getElementById('cat-food').textContent = '🐟 ' + catState.food;
+    document.getElementById('cat-food').textContent = '🦴 ' + catState.food;
     const homeFood = document.getElementById('cat-home-food');
     const homeAffection = document.getElementById('cat-home-affection');
-    if (homeFood) homeFood.textContent = '🐟 ' + catState.food;
+    if (homeFood) homeFood.textContent = '🦴 ' + catState.food;
     if (homeAffection) homeAffection.textContent = '💛 ' + catState.affection;
     const nameInput = document.getElementById('cat-name-input');
     if (nameInput && document.activeElement !== nameInput) nameInput.value = catState.name;
     const visitName = document.getElementById('cat-visit-name');
     const visitFood = document.getElementById('cat-visit-food');
     if (visitName) visitName.textContent = catState.name;
-    if (visitFood) visitFood.textContent = '🐟 ' + catState.food;
+    if (visitFood) visitFood.textContent = '🦴 ' + catState.food;
     updateCatGrowthUI();
   }
 
   function saveCatName(value) {
-    catState.name = String(value || '').trim().slice(0, 12) || '小橘貓';
+    catState.name = String(value || '').trim().slice(0, 12) || '小邊';
     saveCatState();
   }
 
@@ -1588,7 +1589,7 @@
     saveCatState();
     const newStage = getCatGrowthStage(catState.experience).key;
     if (oldStage !== newStage && document.body.classList.contains('cat-home-open')) {
-      const messages = { juvenile: '小橘貓長大一點了！現在是少年貓。', adult: '小橘貓長成成貓了！謝謝你一路陪伴。' };
+      const messages = { juvenile: '小邊長大一點了！現在是少年犬。', adult: '小邊長成成犬了！謝謝你一路陪伴。' };
       setCatBubble(messages[newStage]);
     }
   }
@@ -1638,12 +1639,12 @@
   let catVisitFrameTimer = null;
   let lastCatVisitNaturalPose = null;
   let lastCatMoodId = '';
-  const catWalkFrames = [1, 2, 3, 4, 5].map(function (n) { return 'assets/orange-cat-walk-' + n + '.png?v=6'; });
+  const catWalkFrames = ['assets/border-collie/border-collie-walk-1.webp?v=1', 'assets/border-collie/border-collie-walk-2.webp?v=1', 'assets/border-collie/border-collie-walk-1.webp?v=1', 'assets/border-collie/border-collie-walk-2.webp?v=1', 'assets/border-collie/border-collie-happy.webp?v=1'];
   catWalkFrames.forEach(function (src) { const image = new Image(); image.src = src; });
   const catHomeSpots = {
     center: { x: 50, y: 72, pose: 'sitting', message: '今天也一起慢慢來。' },
     window: { x: 28, y: 52, pose: 'sitting', message: '窗外的雲慢慢飄過去了。' },
-    toy: { x: 25, y: 78, pose: 'happy', message: '毛線球滾走啦！' },
+    toy: { x: 25, y: 78, pose: 'happy', message: '網球滾走啦！' },
     bowl: { x: 63, y: 80, pose: 'eating', message: '聞起來好香！' },
     bed: { x: 83, y: 76, pose: 'sleeping', message: '這裡暖暖的，想睡一下。' }
   };
@@ -1725,12 +1726,12 @@
     cat.style.top = targetTop + 'px';
     cat.style.setProperty('--chase-duration', duration + 's');
     startPageCatWalkFrames();
-    showCatPlayBubble('小橘貓追著毛線球跑過來了！');
+    showCatPlayBubble('小邊追著網球跑過來了！');
     catChaseTimer = setTimeout(function () {
       clearInterval(pageCatFrameTimer);
       cat.className = 'cat-sprite happy';
       cat.style.removeProperty('background-image');
-      showCatPlayBubble('抓到毛線球啦！');
+      showCatPlayBubble('抓到網球啦！');
       catChaseTimer = setTimeout(resetPageCatChase, 1400);
     }, duration * 1000);
   }
@@ -1739,12 +1740,12 @@
     if (document.body.classList.contains('cat-home-open')) {
       const room = document.getElementById('cat-room').getBoundingClientRect();
       if (x < room.left || x > room.right || y < room.top || y > room.bottom) {
-        setCatBubble('把毛線球拖進房間裡，我們再一起玩吧！');
+        setCatBubble('把網球拖進房間裡，我們再一起玩吧！');
         return;
       }
       const roomX = Math.max(12, Math.min(88, (x - room.left) / room.width * 100));
       const roomY = Math.max(24, Math.min(88, (y - room.top) / room.height * 100));
-      moveCatHomeToPosition(roomX, roomY, '追到毛線球了！小橘貓開心地拍了拍。', 'happy');
+      moveCatHomeToPosition(roomX, roomY, '追到網球了！小邊開心地拍了拍。', 'happy');
       return;
     }
     chasePageCatTo(x, y);
@@ -1816,7 +1817,7 @@
         cat.style.bottom = 'auto';
         cat.style.left = (centerX - parentRect.left - catRect.width / 2) + 'px';
         cat.style.top = (centerY - parentRect.top - catRect.height / 2) + 'px';
-        cat.style.backgroundImage = "url('assets/orange-cat-held.png?v=1')";
+        cat.style.backgroundImage = "url('assets/border-collie/border-collie-lying.webp?v=1')";
       } else {
         if (mode === 'home') {
           clearTimeout(catHomeTimer);
@@ -1830,8 +1831,8 @@
         cat.style.transition = 'none';
         cat.style.left = ((centerX - parentRect.left - parent.clientLeft) / parent.clientWidth * 100) + '%';
         cat.style.top = ((centerY - parentRect.top - parent.clientTop) / parent.clientHeight * 100) + '%';
-        if (mode === 'home') setCatBubble('抓起小橘貓，帶牠到喜歡的位置吧！');
-        else setCatVisitBubble('抓起小橘貓，帶牠到喜歡的位置吧！');
+        if (mode === 'home') setCatBubble('抓起小邊，帶牠到喜歡的位置吧！');
+        else setCatVisitBubble('抓起小邊，帶牠到喜歡的位置吧！');
       }
       cat.setPointerCapture(event.pointerId);
     });
@@ -1875,17 +1876,17 @@
           cat.className = 'cat-sprite';
           if (!document.body.classList.contains('menu-open')) startPageCatWalkFrames();
         }
-        if (wasMoved && !cancelled) showCatPlayBubble('小橘貓被你帶到新地方了！');
+        if (wasMoved && !cancelled) showCatPlayBubble('小邊被你帶到新地方了！');
       } else {
         cat.classList.remove('being-held');
         cat.style.removeProperty('transition');
         if (scene === 'home') {
           setCatHomePose('sitting');
-          setCatBubble(wasMoved && !cancelled ? '放下來啦，這裡看起來很舒服。' : '小橘貓呼嚕呼嚕～');
+          setCatBubble(wasMoved && !cancelled ? '放下來啦，這裡看起來很舒服。' : '小邊呼嚕呼嚕～');
           scheduleCatHomeRoaming();
         } else {
           setCatVisitPose('sitting');
-          setCatVisitBubble(wasMoved && !cancelled ? '放下來啦，謝謝你抱我過來。' : '小橘貓呼嚕呼嚕～');
+          setCatVisitBubble(wasMoved && !cancelled ? '放下來啦，謝謝你抱我過來。' : '小邊呼嚕呼嚕～');
           scheduleCatVisitNaturalMotion(wasMoved && !cancelled ? 1300 : 2200);
         }
       }
@@ -1925,13 +1926,13 @@
     cat.style.setProperty('--face', x < currentX ? -1 : 1);
     cat.style.setProperty('--move-duration', duration + 's');
     setCatHomePose('alert');
-    setCatBubble(approachMessage || '小橘貓發現毛線球了……');
+    setCatBubble(approachMessage || '小邊發現網球了……');
     catHomeApproachTimer = setTimeout(function () { setCatHomePose('walking'); }, 360);
     cat.style.left = x + '%';
     cat.style.top = y + '%';
     catHomeMoveTimer = setTimeout(function () {
       setCatHomePose(pose || 'happy');
-      setCatBubble(message || '抓到毛線球啦！');
+      setCatBubble(message || '抓到網球啦！');
     }, duration * 1000 + 380);
   }
 
@@ -1984,30 +1985,30 @@
         const names = ['center', 'window', 'toy', 'bed'];
         moveCatHomeTo(names[Math.floor(Math.random() * names.length)]);
       } else if (roll < .58) {
-        setCatHomePose('grooming'); setCatBubble('小橘貓正在慢慢整理毛毛。');
+        setCatHomePose('grooming'); setCatBubble('小邊正在慢慢整理毛毛。');
       } else if (roll < .72) {
         setCatHomePose('stretching'); setCatBubble('先伸個大大的懶腰！');
       } else if (roll < .78) {
-        setCatHomePose('alert'); setCatBubble('咦？小橘貓好像聽見了什麼。');
+        setCatHomePose('alert'); setCatBubble('咦？小邊好像聽見了什麼。');
       } else if (roll < .84) {
-        setCatHomePose('curious'); setCatBubble('小橘貓歪著頭，好奇地看著你。');
+        setCatHomePose('curious'); setCatBubble('小邊歪著頭，好奇地看著你。');
       } else if (roll < .90) {
         setCatHomePose('loaf'); setCatBubble('收好小手手，變成一顆暖呼呼的麻糬。');
       } else if (roll < .96) {
         setCatHomePose('sleeping'); setCatBubble('這裡很安心，休息一下。');
       } else {
-        setCatHomePose('sitting'); setCatBubble('小橘貓安靜地陪著你。');
+        setCatHomePose('sitting'); setCatBubble('小邊安靜地陪著你。');
       }
       scheduleCatHomeRoaming();
     }, 6000 + Math.random() * 6500);
   }
 
   function catHomeRequest() {
-    const name = catState.name || '小橘貓';
+    const name = catState.name || '小邊';
     const requests = [
       { pose: 'eating', message: name + '肚子咕嚕咕嚕，想吃魚魚～可以陪我去食碗嗎？' },
       { pose: 'alert', message: name + '想被摸摸頭，摸摸我好嗎？' },
-      { pose: 'happy', message: name + '想玩毛線球！陪我一起玩嘛。' }
+      { pose: 'happy', message: name + '想玩網球！陪我一起玩嘛。' }
     ];
     const request = requests[Math.floor(Math.random() * requests.length)];
     setCatHomePose(request.pose);
@@ -2029,11 +2030,11 @@
   }
 
   function showCatVisitDesire() {
-    const name = catState.name || '小橘貓';
+    const name = catState.name || '小邊';
     const wishes = [
       { pose: 'eating', message: name + '肚子餓了，想和你一起吃點魚魚。' },
       { pose: 'alert', message: name + '想要摸摸頭，陪我一下好嗎？' },
-      { pose: 'happy', message: name + '帶來毛線球了！想和你玩一會兒。' }
+      { pose: 'happy', message: name + '帶來網球了！想和你玩一會兒。' }
     ];
     const wish = wishes[Math.floor(Math.random() * wishes.length)];
     setCatVisitPose(wish.pose);
@@ -2099,7 +2100,7 @@
 
   function summonCat() {
     const nameInput = document.getElementById('cat-name-input');
-    if (nameInput) catState.name = String(nameInput.value || '').trim().slice(0, 12) || '小橘貓';
+    if (nameInput) catState.name = String(nameInput.value || '').trim().slice(0, 12) || '小邊';
     saveCatState();
     clearTimeout(catHomeTimer);
     clearTimeout(catHomeMoveTimer);
@@ -2137,19 +2138,19 @@
     visit.classList.remove('is-open');
     visit.setAttribute('aria-hidden', 'true');
     setCatHomePose('sitting');
-    setCatBubble((catState.name || '小橘貓') + '回到房間陪你了。');
+    setCatBubble((catState.name || '小邊') + '回到房間陪你了。');
     scheduleCatHomeRoaming();
   }
 
   function catVisitAction(action) {
     stopCatVisitNaturalMotion();
     clearTimeout(catVisitTimer);
-    const name = catState.name || '小橘貓';
+    const name = catState.name || '小邊';
     const stage = document.getElementById('cat-visit-stage');
     if (action === 'feed') {
       if (catState.food < 3) {
         setCatVisitPose('alert');
-        setCatVisitBubble('貓糧還不夠 3 份，可以玩遊戲或讀故事收集喔。');
+        setCatVisitBubble('狗狗點心還不夠 3 份，可以玩遊戲或讀故事收集喔。');
         scheduleCatVisitNaturalMotion(1800);
         return;
       }
@@ -2175,7 +2176,7 @@
       awardCatExperience('care');
       saveCatState();
       setCatVisitPose('alert');
-      setCatVisitBubble(name + '啪嗒啪嗒追著毛線球跑，好開心！');
+      setCatVisitBubble(name + '啪嗒啪嗒追著網球跑，好開心！');
       stage.classList.remove('playing');
       void stage.offsetWidth;
       stage.classList.add('playing');
@@ -2197,7 +2198,7 @@
     applyCatLighting();
     updateCatUI();
     moveCatHomeTo('center', '歡迎回家，摸摸我吧！');
-    setCatBubble('點一下房間空白處，讓小橘貓跑來陪你。');
+    setCatBubble('點一下房間空白處，讓小邊跑來陪你。');
     scheduleCatHomeRoaming();
   }
 
@@ -2210,13 +2211,13 @@
       const x = (event.clientX - bounds.left - room.clientLeft) / room.clientWidth * 100;
       const y = (event.clientY - bounds.top - room.clientTop) / room.clientHeight * 100;
       const replies = [
-        '小橘貓跑來你身邊，安靜陪你一下。',
+        '小邊跑來你身邊，安靜陪你一下。',
         '收到你的邀請了，蹭蹭你的手。',
-        '小橘貓過來看看你，呼嚕呼嚕～',
+        '小邊過來看看你，呼嚕呼嚕～',
         '牠在你身旁坐下，陪你慢慢休息。'
       ];
       clearTimeout(catHomeTimer);
-      moveCatHomeToPosition(x, y, replies[Math.floor(Math.random() * replies.length)], 'curious', '小橘貓注意到你了，正跑過來……');
+      moveCatHomeToPosition(x, y, replies[Math.floor(Math.random() * replies.length)], 'curious', '小邊注意到你了，正跑過來……');
       scheduleCatHomeRoaming();
     });
   }
@@ -2380,9 +2381,9 @@
     catWeatherLastReaction = now;
     const key = weatherDescription(Number(catWeatherState.current.weather_code), Number(catWeatherState.current.is_day) === 1).key;
     const reactions = {
-      rain: ['curious', '聽著窗外的雨聲，小橘貓安靜地陪你。'], storm: ['alert', '外面雷聲轟隆，小橘貓靠近了一些，陪你一起安心待著。'],
-      snow: ['sitting', '小橘貓坐在窗邊，看雪花慢慢飄落。'], clear: ['stretching', '陽光照進來了，小橘貓舒服地伸了個懶腰。'],
-      cloudy: ['loaf', '小橘貓在柔柔的天光下收好手手，暖呼呼地休息。'], fog: ['curious', '霧氣讓窗外變得朦朧，小橘貓好奇地望了一會兒。'], night: ['sleeping', '夜色安靜下來，小橘貓也安心地打了個盹。']
+      rain: ['curious', '聽著窗外的雨聲，小邊安靜地陪你。'], storm: ['alert', '外面雷聲轟隆，小邊靠近了一些，陪你一起安心待著。'],
+      snow: ['sitting', '小邊坐在窗邊，看雪花慢慢飄落。'], clear: ['stretching', '陽光照進來了，小邊舒服地伸了個懶腰。'],
+      cloudy: ['loaf', '小邊在柔柔的天光下收好手手，暖呼呼地休息。'], fog: ['curious', '霧氣讓窗外變得朦朧，小邊好奇地望了一會兒。'], night: ['sleeping', '夜色安靜下來，小邊也安心地打了個盹。']
     };
     const reaction = reactions[key] || reactions.cloudy;
     moveCatHomeToPosition(catHomeSpots.window.x, catHomeSpots.window.y, reaction[1], reaction[0]);
@@ -2409,14 +2410,14 @@
       replies: [
         ['🌙 靜靜陪在身邊', '你沒有催我開心，只是陪著我。心裡好像鬆了一點。', 6],
         ['💬 說句溫柔的話', '謝謝你提醒我：慢慢來也沒關係。', 5],
-        ['🧶 邀請我玩一下', '我先看著毛線球，心情漸漸亮了一點點。', 4]
+        ['🎾 邀請我玩一下', '我先看著網球，心情漸漸亮了一點點。', 4]
       ]
     },
     {
-      id: 'bored', label: '有點無聊', icon: '🧶', pose: 'bored',
+      id: 'bored', label: '有點無聊', icon: '🎾', pose: 'bored',
       prompt: '房間好安靜呀……有沒有一件小事可以一起做？',
       replies: [
-        ['🧶 玩毛線球', '毛線球滾來滾去真有趣！我玩得很滿足。', 7],
+        ['🎾 玩網球', '網球滾來滾去真有趣！我玩得很滿足。', 7],
         ['🪟 一起看看窗外', '看著窗外發一會兒呆，也變成了很棒的小冒險。', 5],
         ['✨ 找找房間裡的小驚喜', '找到啦！原來平凡的角落也藏著好玩的事。', 6]
       ]
@@ -2436,14 +2437,14 @@
       replies: [
         ['☁️ 給我一點自己的空間', '謝謝你尊重我。我安靜待了一下，心裡慢慢沒那麼緊了。', 5],
         ['💬 溫柔地說你在這裡', '我聽見了。等我準備好時，再靠近你一點點。', 5],
-        ['🧶 把毛線球滾過來', '我追著毛線球跑了幾步，把悶悶的力氣釋放出來了。', 6]
+        ['🎾 把網球滾過來', '我追著網球跑了幾步，把悶悶的力氣釋放出來了。', 6]
       ]
     },
     {
       id: 'tired', label: '有點疲倦', icon: '🌙', pose: 'tired',
       prompt: '今天玩了好多，眼皮有點重了……',
       replies: [
-        ['🧺 陪我回貓窩休息', '窩進軟軟的貓窩，好舒服。謝謝你陪我休息。', 6],
+        ['🧺 陪我回狗窩休息', '窩進軟軟的狗窩，好舒服。謝謝你陪我休息。', 6],
         ['🌬️ 一起慢慢呼吸', '呼……吸……身體放鬆下來，現在可以安心睡了。', 5],
         ['☁️ 讓我安靜睡一會兒', '晚安呀。你不用守著我，我會好好休息。', 5]
       ]
@@ -2464,7 +2465,7 @@
     document.getElementById('cat-companion-choices').hidden = false;
     document.getElementById('cat-breath-panel').hidden = true;
     document.getElementById('cat-companion-cancel').hidden = false;
-    document.getElementById('cat-companion-cancel').textContent = '先不用，回到貓屋';
+    document.getElementById('cat-companion-cancel').textContent = '先不用，回到小邊之家';
     document.querySelector('.cat-companion-card').setAttribute('aria-labelledby', 'cat-companion-title');
     document.querySelector('#cat-companion-choices .cat-companion-choice').focus();
   }
@@ -2492,12 +2493,12 @@
     setCatHomePose(scenario.pose);
     const portrait = document.getElementById('cat-mood-portrait');
     portrait.className = 'cat-mood-portrait';
-    portrait.src = 'assets/orange-cat-mood-' + scenario.id + '.webp?v=1';
-    portrait.alt = (catState.name || '小橘貓') + '呈現' + scenario.label + '的姿態';
+    portrait.src = 'assets/border-collie/border-collie-' + ({ sad:'sad', bored:'sitting', scared:'sad', angry:'standing', tired:'sleeping', unwell:'sleeping' }[scenario.id] || 'sitting') + '.webp?v=1';
+    portrait.alt = (catState.name || '小邊') + '呈現' + scenario.label + '的姿態';
     portrait.classList.remove('settled');
     void portrait.offsetWidth;
     document.getElementById('cat-mood-tag').textContent = scenario.icon + ' ' + scenario.label;
-    document.getElementById('cat-mood-title').textContent = (catState.name || '小橘貓') + '今天的心情';
+    document.getElementById('cat-mood-title').textContent = (catState.name || '小邊') + '今天的心情';
     document.getElementById('cat-mood-prompt').textContent = scenario.prompt;
     const replies = document.getElementById('cat-mood-replies');
     replies.replaceChildren();
@@ -2509,7 +2510,7 @@
       button.addEventListener('click', function () { respondToCatMood(scenario.id, index); });
       replies.appendChild(button);
     });
-    document.getElementById('cat-companion-cancel').textContent = '先不用，讓小橘貓休息';
+    document.getElementById('cat-companion-cancel').textContent = '先不用，讓小邊休息';
     replies.querySelector('button')?.focus();
   }
 
@@ -2517,7 +2518,7 @@
     const scenario = catMoodScenarios.find(function (item) { return item.id === moodId; });
     const reply = scenario && scenario.replies[replyIndex];
     if (!reply) return;
-    const name = catState.name || '小橘貓';
+    const name = catState.name || '小邊';
     if (reply[3] === 'light') {
       localStorage.setItem('emotion_magic_cat_lighting', 'night');
       applyCatLighting();
@@ -2533,9 +2534,9 @@
     cat.style.animation = 'cat-home-comforted .9s ease-out';
     setTimeout(function () { cat.style.removeProperty('animation'); }, 950);
     const portrait = document.getElementById('cat-mood-portrait');
-    const recoveryImage = moodId === 'bored' ? 'orange-cat-happy.png?v=3' : (moodId === 'tired' || moodId === 'unwell' ? 'orange-cat-sleep.png?v=3' : 'orange-cat-idle.png?v=3');
+    const recoveryImage = moodId === 'bored' ? 'border-collie-happy.webp?v=1' : (moodId === 'tired' || moodId === 'unwell' ? 'border-collie-sleeping.webp?v=1' : 'border-collie-sitting.webp?v=1');
     portrait.className = 'cat-mood-portrait';
-    portrait.src = 'assets/' + recoveryImage;
+    portrait.src = 'assets/border-collie/' + recoveryImage;
     portrait.alt = name + (moodId === 'bored' ? '開心地陪你玩' : (moodId === 'tired' || moodId === 'unwell' ? '安心休息' : '慢慢放鬆下來'));
     portrait.classList.remove('settled');
     void portrait.offsetWidth;
@@ -2545,7 +2546,7 @@
     document.getElementById('cat-mood-title').textContent = '小小的陪伴，也很重要';
     document.getElementById('cat-mood-prompt').textContent = reply[1];
     document.getElementById('cat-mood-replies').replaceChildren();
-    document.getElementById('cat-companion-cancel').textContent = '回到貓屋';
+    document.getElementById('cat-companion-cancel').textContent = '回到小邊之家';
     document.querySelector('#cat-mood-panel .cat-companion-close')?.focus();
   }
 
@@ -2563,7 +2564,7 @@
     document.getElementById('cat-mood-panel').hidden = true;
     document.getElementById('cat-breath-panel').hidden = true;
     document.getElementById('cat-companion-cancel').hidden = false;
-    document.getElementById('cat-companion-cancel').textContent = '先不用，回到貓屋';
+    document.getElementById('cat-companion-cancel').textContent = '先不用，回到小邊之家';
     document.querySelector('.cat-companion-card').setAttribute('aria-labelledby', 'cat-companion-title');
     if (document.body.classList.contains('cat-home-open')) scheduleCatHomeRoaming();
     const trigger = document.querySelector('.cat-home-actions button[onclick="openCatFeelingsDialog()"]');
@@ -2576,11 +2577,11 @@
     updateInteractiveToyVisibility();
     clearTimeout(catHomeTimer);
     if (mode === 'quiet') {
-      moveCatHomeToPosition(50, 72, '我在這裡陪你，不用說話也可以。', 'loaf', '小橘貓慢慢走到你身邊……');
+      moveCatHomeToPosition(50, 72, '我在這裡陪你，不用說話也可以。', 'loaf', '小邊慢慢走到你身邊……');
     } else if (mode === 'play') {
       moveCatHomeTo('toy', '來陪你玩一小會兒吧！');
     } else if (mode === 'unsure') {
-      moveCatHomeToPosition(50, 70, '還不知道也沒關係，我先安靜陪著你。', 'curious', '小橘貓靠近一點，陪你一起想……');
+      moveCatHomeToPosition(50, 70, '還不知道也沒關係，我先安靜陪著你。', 'curious', '小邊靠近一點，陪你一起想……');
     } else if (mode === 'breathe') {
       document.getElementById('cat-companion-choices').hidden = true;
       document.getElementById('cat-breath-panel').hidden = false;
@@ -2597,8 +2598,8 @@
       orb.style.animation = '';
       closeButton.textContent = '隨時結束';
       closeButton.focus();
-      moveCatHomeToPosition(50, 69, '跟著小橘貓慢慢呼吸，不用勉強。', 'loaf', '小橘貓在你身邊坐下來了。');
-      breathText.textContent = '吸氣，跟著小橘貓慢慢鼓起……';
+      moveCatHomeToPosition(50, 69, '跟著小邊慢慢呼吸，不用勉強。', 'loaf', '小邊在你身邊坐下來了。');
+      breathText.textContent = '吸氣，跟著小邊慢慢鼓起……';
       let step = 0;
       catBreathInterval = setInterval(function () {
         step++;
@@ -2606,11 +2607,11 @@
           clearInterval(catBreathInterval);
           catBreathInterval = null;
           orb.style.animation = 'none';
-          breathText.textContent = '三回合完成。這樣就很好，謝謝你和小橘貓一起慢下來。';
-          closeButton.textContent = '回到貓屋';
+          breathText.textContent = '三回合完成。這樣就很好，謝謝你和小邊一起慢下來。';
+          closeButton.textContent = '回到小邊之家';
           return;
         }
-        breathText.textContent = step % 2 ? '吐氣，讓肩膀鬆一點……' : '吸氣，跟著小橘貓慢慢鼓起……';
+        breathText.textContent = step % 2 ? '吐氣，讓肩膀鬆一點……' : '吸氣，跟著小邊慢慢鼓起……';
       }, 3500);
     }
     if (mode !== 'breathe') {
@@ -2645,7 +2646,7 @@
     } else if (action === 'feed') {
       if (catState.food < 3) {
         setCatHomePose('sitting');
-        setCatBubble('還需要 3 份貓糧，可以玩遊戲或讀故事獲得。');
+        setCatBubble('還需要 3 份狗狗點心，可以玩遊戲或讀故事獲得。');
       } else {
         catState.food -= 3;
         catState.affection += 2;
@@ -2705,7 +2706,7 @@
     document.getElementById('timer').textContent = "00:00.0";
     document.getElementById('target-display').textContent = "請選擇";
     document.getElementById('grid').innerHTML = '';
-    
+
     document.getElementById('overlay').style.display = 'flex';
     document.getElementById('modal-content').innerHTML = `
       <h2>✨ 心情遊樂園 ✨</h2>
@@ -2715,7 +2716,7 @@
       <button class="menu-btn" onclick="startMemoryGame()">3️⃣ 🧠 記憶翻牌配對遊戲</button>
       <button class="menu-btn" onclick="openJournalModal()">4️⃣ 心情日記與每日一籤 📖</button>
       <button class="menu-btn" onclick="openStoryModal()" style="background: #0284c7; color: #fff;">5️⃣ 📚 心情故事集 (精華摘要與原文連結)</button>
-      <button class="menu-btn" onclick="openCatHome()" style="background: #f59e0b; color: #451a03; border-color: #fbbf24;">6️⃣ 🐱 小橘貓之家</button>
+      <button class="menu-btn" onclick="openCatHome()" style="background: #f59e0b; color: #451a03; border-color: #fbbf24;">6️⃣ 🐶 小邊之家</button>
     `;
   }
 
