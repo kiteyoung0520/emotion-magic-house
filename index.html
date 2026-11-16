@@ -2726,4 +2726,16 @@
     const totalTime = (Date.now() - startTime) / 1000 + penaltySeconds;
     const mins = String(Math.floor(totalTime / 60)).padStart(2, '0');
     const secs = (totalTime % 60).toFixed(1).padStart(4, '0');
-    document.getElementById('modal-content').classList.remove('main-me
+    document.getElementById('modal-content').classList.remove('main-menu-modal');
+    document.getElementById('overlay').style.display = 'flex';
+    document.getElementById('modal-content').innerHTML = `
+      <h2>${titleMsg}</h2>
+      <p>總失誤次數：<strong style="color: #ef4444;">${wrongCount} 次</strong>（含加罰）<br>
+         最終通關時間：<br><strong style="color: #38bdf8; font-size: 1.3rem;">${mins}:${secs}</strong></p>
+      <button class="menu-btn primary" onclick="showMainMenu()">返回主選單</button>
+    `;
+  }
+</script>
+</body>
+</html>
+
