@@ -734,6 +734,9 @@
   .cat-visit-cat.eating { background-image: url('assets/orange-cat-eat.png?v=3'); animation: cat-visit-nibble .38s ease-in-out infinite alternate; }
   .cat-visit-cat.happy { background-image: url('assets/orange-cat-happy.png?v=3'); animation: cat-visit-happy .62s ease-in-out infinite alternate; }
   .cat-visit-cat.alert { background-image: url('assets/orange-cat-alert.png?v=4'); animation: cat-visit-breathe 1.2s ease-in-out infinite; }
+  .cat-visit-cat.grooming { background-image: url('assets/orange-cat-groom.png?v=4'); animation: cat-visit-groom .72s ease-in-out infinite alternate; }
+  .cat-visit-cat.stretching { background-image: url('assets/orange-cat-stretch.png?v=4'); animation: cat-visit-stretch 1.4s ease-in-out; }
+  .cat-visit-cat.walking { animation: none; transition: left var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1), top var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1); }
   .cat-visit-cat.growth-juvenile { width: clamp(178px,57vw,302px); height: clamp(231px,74vw,386px); }
   .cat-visit-cat.growth-adult { width: clamp(186px,60vw,315px); height: clamp(242px,77vw,400px); }
   .cat-visit-cat.arriving { animation: cat-visit-arrive .8s cubic-bezier(.2,.8,.2,1) both; }
@@ -742,6 +745,8 @@
   @keyframes cat-visit-breathe { 50% { transform: translate(-50%,-52%) scale(1.025); } }
   @keyframes cat-visit-nibble { to { transform: translate(-50%,-48%) rotate(1.5deg); } }
   @keyframes cat-visit-happy { to { transform: translate(-50%,-55%) rotate(1.4deg); } }
+  @keyframes cat-visit-groom { to { transform: translate(-50%,-49%) rotate(-1deg); } }
+  @keyframes cat-visit-stretch { 50% { transform: translate(-50%,-49%) scaleX(1.035); } }
   @keyframes cat-visit-arrive { from { opacity: 0; transform: translate(-50%,-36%) scale(.76); } to { opacity: 1; transform: translate(-50%,-50%) scale(1); } }
   @keyframes cat-yarn-play { 0% { opacity: 0; transform: translate(0,0) rotate(0); } 15%,75% { opacity: 1; } 50% { transform: translate(42vw,-34px) rotate(240deg); } 100% { opacity: 0; transform: translate(70vw,0) rotate(420deg); } }
   .cat-visit-actions { width: min(760px,100%); margin: 0 auto; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
@@ -757,6 +762,7 @@
   @media (prefers-reduced-motion: reduce) {
     .cat-home-cat { transition-duration: .01ms; animation: none !important; }
     .cat-visit-cat, .cat-visit-stage.playing .cat-visit-toy { animation: none !important; }
+    .cat-visit-cat.walking { transition-duration: .01ms !important; }
     .cat-sprite.chasing { transition-duration: .01ms !important; }
     .interactive-toy { transition: none; }
     .cat-play-bubble.is-visible { animation: none; }
@@ -1477,6 +1483,8 @@
   let catHomeFrameTimer = null;
   let pageCatFrameTimer = null;
   let catVisitTimer = null;
+  let catVisitIdleTimer = null;
+  let catVisitFrameTimer = null;
   const catWalkFrames = [1, 2, 3, 4, 5].map(function (n) { return 'assets/orange-cat-walk-' + n + '.png?v=6'; });
   catWalkFrames.forEach(function (src) { const image = new Image(); image.src = src; });
   const catHomeSpots = {
@@ -1756,6 +1764,58 @@
     const wish = wishes[Math.floor(Math.random() * wishes.length)];
     setCatVisitPose(wish.pose);
     setCatVisitBubble(wish.message);
+    scheduleCatVisitNaturalMotion(2600);
+  }
+
+  function stopCatVisitNaturalMotion() {
+    clearTimeout(catVisitIdleTimer);
+    clearInterval(catVisitFrameTimer);
+    catVisitIdleTimer = null;
+    catVisitFrameTimer = null;
+  }
+
+  function scheduleCatVisitNaturalMotion(delay) {
+    stopCatVisitNaturalMotion();
+    if (!document.body.classList.contains('cat-visit-open')) return;
+    catVisitIdleTimer = setTimeout(doCatVisitNaturalMotion, delay);
+  }
+
+  function doCatVisitNaturalMotion() {
+    if (!document.body.classList.contains('cat-visit-open')) return;
+    const cat = document.getElementById('cat-visit-cat');
+    const stage = document.getElementById('cat-visit-stage');
+    if (!cat || !stage || stage.classList.contains('playing')) {
+      scheduleCatVisitNaturalMotion(700);
+      return;
+    }
+    if (Math.random() < .64) {
+      const currentX = parseFloat(cat.style.left) || 50;
+      const nextX = 22 + Math.random() * 56;
+      const nextY = 46 + Math.random() * 23;
+      const duration = Math.max(1.5, Math.min(3.4, 1.1 + Math.abs(nextX - currentX) / 24));
+      setCatVisitPose('walking');
+      cat.style.setProperty('--visit-walk-duration', duration + 's');
+      cat.style.left = nextX + '%';
+      cat.style.top = nextY + '%';
+      let frame = 0;
+      cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
+      catVisitFrameTimer = setInterval(function () {
+        frame = (frame + 1) % catWalkFrames.length;
+        cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
+      }, 175);
+      catVisitIdleTimer = setTimeout(function () {
+        clearInterval(catVisitFrameTimer);
+        catVisitFrameTimer = null;
+        cat.style.removeProperty('--visit-walk-duration');
+        const poses = ['sitting', 'grooming', 'stretching', 'sleeping', 'alert'];
+        setCatVisitPose(poses[Math.floor(Math.random() * poses.length)]);
+        scheduleCatVisitNaturalMotion(2200 + Math.random() * 2600);
+      }, duration * 1000);
+    } else {
+      const poses = ['sitting', 'grooming', 'stretching', 'sleeping', 'alert'];
+      setCatVisitPose(poses[Math.floor(Math.random() * poses.length)]);
+      scheduleCatVisitNaturalMotion(2400 + Math.random() * 2800);
+    }
   }
 
   function summonCat() {
@@ -1766,13 +1826,18 @@
     clearTimeout(catHomeMoveTimer);
     clearInterval(catHomeFrameTimer);
     clearTimeout(catVisitTimer);
+    stopCatVisitNaturalMotion();
     const visit = document.getElementById('cat-visit');
     document.body.classList.add('cat-visit-open');
     visit.classList.add('is-open');
     visit.setAttribute('aria-hidden', 'false');
     updateCatUI();
+    const visitCat = document.getElementById('cat-visit-cat');
+    visitCat.style.removeProperty('left');
+    visitCat.style.removeProperty('top');
+    visitCat.style.removeProperty('--visit-walk-duration');
     setCatVisitPose('sitting');
-    const cat = document.getElementById('cat-visit-cat');
+    const cat = visitCat;
     cat.classList.add('arriving');
     setCatVisitBubble(catState.name + '聽見你叫牠了，噠噠噠跑來陪你！');
     catVisitTimer = setTimeout(function () {
@@ -1784,6 +1849,7 @@
 
   function closeCatVisit() {
     clearTimeout(catVisitTimer);
+    stopCatVisitNaturalMotion();
     document.getElementById('cat-visit-stage').classList.remove('playing');
     document.body.classList.remove('cat-visit-open');
     const visit = document.getElementById('cat-visit');
@@ -1795,6 +1861,7 @@
   }
 
   function catVisitAction(action) {
+    stopCatVisitNaturalMotion();
     clearTimeout(catVisitTimer);
     const name = catState.name || '小橘貓';
     const stage = document.getElementById('cat-visit-stage');
@@ -1802,6 +1869,7 @@
       if (catState.food < 3) {
         setCatVisitPose('alert');
         setCatVisitBubble('貓糧還不夠 3 份，可以玩遊戲或讀故事收集喔。');
+        scheduleCatVisitNaturalMotion(1800);
         return;
       }
       catState.food -= 3;
@@ -1811,6 +1879,7 @@
       saveCatState();
       setCatVisitPose('eating');
       setCatVisitBubble('謝謝你！' + name + '開動囉，喵～');
+      scheduleCatVisitNaturalMotion(2600);
     } else if (action === 'pet') {
       catState.affection += 1;
       catState.mood = Math.min(100, catState.mood + 5);
@@ -1818,6 +1887,7 @@
       saveCatState();
       setCatVisitPose('happy');
       setCatVisitBubble('呼嚕呼嚕～' + name + '好喜歡你的摸摸！');
+      scheduleCatVisitNaturalMotion(1800);
     } else if (action === 'play') {
       catState.affection += 1;
       catState.mood = Math.min(100, catState.mood + 7);
@@ -1828,7 +1898,10 @@
       stage.classList.remove('playing');
       void stage.offsetWidth;
       stage.classList.add('playing');
-      catVisitTimer = setTimeout(function () { stage.classList.remove('playing'); }, 1900);
+      catVisitTimer = setTimeout(function () {
+        stage.classList.remove('playing');
+        scheduleCatVisitNaturalMotion(450);
+      }, 1900);
     }
   }
 
