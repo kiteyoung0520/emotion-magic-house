@@ -1509,6 +1509,8 @@
       <p>寫下今天的感受，或是前往心閱網抽籤：</p>
       <textarea id="diary-input" placeholder="今天心情怎麼樣？寫下來沉澱一下吧...">${savedDiary}</textarea>
       <button class="menu-btn primary" onclick="saveDiary()">儲存日記</button>
+      <button class="menu-btn" onclick="openDiaryRecords()">🗂️ 查看心情紀錄</button>
+      <div id="diary-save-status" role="status" style="min-height: 1.4em; color: #86efac; font-size: .9rem;"></div>
       <div style="margin-top: 10px;">
         <a href="https://www.bwpublish.com/random-quote" target="_blank" class="menu-btn" style="background: #0284c7; color: #fff;">🥠 前往抽取今日心靈籤詩 (原文連結)</a>
       </div>
@@ -1517,8 +1519,40 @@
   }
 
   function saveDiary() {
-    localStorage.setItem('my_emotion_diary', document.getElementById('diary-input').value);
-    alert('心情日記已成功儲存！');
+    const entry = document.getElementById('diary-input').value.trim();
+    if (!entry) {
+      document.getElementById('diary-save-status').textContent = '先寫下一些今天的感受，再儲存喔。';
+      return;
+    }
+    const records = JSON.parse(localStorage.getItem('emotion_diary_records') || '[]');
+    const now = new Date();
+    records.unshift({ id: String(now.getTime()), createdAt: now.toISOString(), text: entry });
+    localStorage.setItem('emotion_diary_records', JSON.stringify(records));
+    localStorage.setItem('my_emotion_diary', entry);
+    document.getElementById('diary-save-status').textContent = '已儲存這次心情紀錄。';
+  }
+
+  function openDiaryRecords() {
+    let records = JSON.parse(localStorage.getItem('emotion_diary_records') || '[]');
+    const oldEntry = localStorage.getItem('my_emotion_diary') || '';
+    if (!records.length && oldEntry.trim()) {
+      const migrated = { id: 'legacy-diary', createdAt: new Date().toISOString(), text: oldEntry.trim() };
+      records = [migrated];
+      localStorage.setItem('emotion_diary_records', JSON.stringify(records));
+    }
+    const escapeHtml = value => String(value).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch]);
+    const cards = records.map(record => {
+      const date = new Date(record.createdAt);
+      const stamp = Number.isNaN(date.getTime()) ? '日期未記錄' : date.toLocaleString('zh-TW', { dateStyle: 'medium', timeStyle: 'short' });
+      return `<article class="quote-box"><strong>${escapeHtml(stamp)}</strong><p style="white-space:pre-wrap; margin-bottom:0;">${escapeHtml(record.text)}</p></article>`;
+    }).join('');
+    document.getElementById('modal-content').innerHTML = `
+      <h2>🗂️ 心情紀錄</h2>
+      <p>每次儲存的內容都會保留在這台裝置，隨時可以回看。</p>
+      <div style="max-height:48vh; overflow-y:auto; text-align:left;">${cards || '<p>還沒有心情紀錄。寫下今天的感受並儲存後，就會出現在這裡。</p>'}</div>
+      <button class="menu-btn primary" onclick="openJournalModal()">回到心情日記</button>
+      <button class="back-menu" onclick="showMainMenu()">返回主選單</button>
+    `;
   }
 
   // ================= 模式六：心情故事集 (直接對應專屬原文連結) =================
