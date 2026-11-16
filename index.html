@@ -802,14 +802,6 @@
     { base: "😊", diff: "😌", name: "害羞 vs 輕鬆" }
   ];
 
-  const scenarioPool = [
-    { text: "遇到奧客無理取鬧時", targetId: 2 },
-    { text: "突然收到大筆獎金時", targetId: 1 },
-    { text: "肚子餓扁卻踩到地雷餐廳", targetId: 6 },
-    { text: "半夜看恐怖片突然跳出鬼影", targetId: 5 },
-    { text: "努力很久的考試竟然不及格", targetId: 3 }
-  ];
-
   // 心情故事集：每篇皆配置專屬原文連結
   const mindStories = [
     {
@@ -1122,8 +1114,6 @@
   let seqQueue = [];
   let seqIndex = 0;
   let diffRound = 1;
-  let scenarioCurrent = 0;
-
   let memoryCards = [];
   let firstCard = null;
   let secondCard = null;
@@ -1360,11 +1350,10 @@
       <p>請選擇你想體驗的趣味遊戲或心靈專區：</p>
       <button class="menu-btn primary" onclick="startSequentialGame()">1️⃣ 依序尋找情緒 (4x4)</button>
       <button class="menu-btn" onclick="startDiffGame()">2️⃣ 趣味情緒找碴 (3x3/4x4)</button>
-      <button class="menu-btn" onclick="startScenarioGame()">3️⃣ 情境對號入座 (心電感應)</button>
-      <button class="menu-btn" onclick="startMemoryGame()">4️⃣ 🧠 記憶翻牌配對遊戲</button>
-      <button class="menu-btn" onclick="openJournalModal()">5️⃣ 心情日記與每日一籤 📖</button>
-      <button class="menu-btn" onclick="openStoryModal()" style="background: #0284c7; color: #fff;">6️⃣ 📚 心情故事集 (精華摘要與原文連結)</button>
-      <button class="menu-btn" onclick="openCatHome()" style="background: #f59e0b; color: #451a03; border-color: #fbbf24;">7️⃣ 🐱 小橘貓之家</button>
+      <button class="menu-btn" onclick="startMemoryGame()">3️⃣ 🧠 記憶翻牌配對遊戲</button>
+      <button class="menu-btn" onclick="openJournalModal()">4️⃣ 心情日記與每日一籤 📖</button>
+      <button class="menu-btn" onclick="openStoryModal()" style="background: #0284c7; color: #fff;">5️⃣ 📚 心情故事集 (精華摘要與原文連結)</button>
+      <button class="menu-btn" onclick="openCatHome()" style="background: #f59e0b; color: #451a03; border-color: #fbbf24;">6️⃣ 🐱 小橘貓之家</button>
     `;
   }
 
@@ -1444,45 +1433,6 @@
 
   function handleDiffClick(item, cell) {
     if (item.isOdd) { playCorrectSound(); diffRound++; loadDiffRound(); }
-    else {
-      playWrongSound(); penaltySeconds += 2; wrongCount++;
-      cell.classList.remove('wrong'); void cell.offsetWidth; cell.classList.add('wrong');
-    }
-  }
-
-  // ================= 模式三：情境對號入座 =================
-  function startScenarioGame() {
-    document.body.classList.remove('menu-open');
-    clearTimeout(pageCatLifeTimer);
-    document.getElementById('cat-sprite').className = 'cat-sprite';
-    startPageCatWalkFrames();
-    initAudio(); startBGM();
-    scenarioCurrent = 0; penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
-    document.getElementById('overlay').style.display = 'none';
-    document.getElementById('target-label').textContent = "情境測驗";
-    loadScenarioRound();
-    clearInterval(timerId); timerId = setInterval(updateTimer, 100);
-  }
-
-  function loadScenarioRound() {
-    if (scenarioCurrent >= 5) { endGame("🎉 情境挑戰通關成功！"); return; }
-    const sc = scenarioPool[Math.floor(Math.random() * scenarioPool.length)];
-    document.getElementById('target-display').textContent = sc.text;
-    const correctObj = emotionPool.find(e => e.id === sc.targetId);
-    const distractors = shuffle(emotionPool.filter(e => e.id !== sc.targetId)).slice(0, 8);
-    const gridItems = shuffle([correctObj, ...distractors]);
-    const grid = document.getElementById('grid');
-    grid.className = `grid cols-3`; grid.innerHTML = '';
-    gridItems.forEach(item => {
-      const cell = document.createElement('div');
-      cell.className = 'cell'; cell.textContent = item.icon;
-      cell.onclick = () => handleScenarioClick(item, cell, correctObj);
-      grid.appendChild(cell);
-    });
-  }
-
-  function handleScenarioClick(item, cell, correctObj) {
-    if (item.id === correctObj.id) { playCorrectSound(); scenarioCurrent++; loadScenarioRound(); }
     else {
       playWrongSound(); penaltySeconds += 2; wrongCount++;
       cell.classList.remove('wrong'); void cell.offsetWidth; cell.classList.add('wrong');
