@@ -129,6 +129,9 @@
   .cat-sprite.sleeping { background-image: url('assets/orange-cat-sleep.png?v=3'); animation: cat-page-breathe 2.4s ease-in-out infinite; }
   .cat-sprite.eating { background-image: url('assets/orange-cat-eat.png?v=3'); animation: cat-page-nibble .34s ease-in-out infinite alternate; }
   .cat-sprite.happy { background-image: url('assets/orange-cat-happy.png?v=3'); animation: cat-page-happy .42s ease-in-out 4 alternate; }
+  .cat-sprite.grooming { background-image: url('assets/orange-cat-groom.png?v=4'); animation: cat-page-groom .7s ease-in-out infinite alternate; }
+  .cat-sprite.stretching { background-image: url('assets/orange-cat-stretch.png?v=4'); animation: cat-page-stretch 1.4s ease-in-out; }
+  .cat-sprite.alert { background-image: url('assets/orange-cat-alert.png?v=4'); animation: cat-page-alert .8s ease-in-out infinite alternate; }
   .cat-panel {
     position: absolute;
     right: 0;
@@ -163,6 +166,9 @@
   @keyframes cat-page-breathe { 50% { transform: translateY(-3px) scale(1.025); } }
   @keyframes cat-page-nibble { to { transform: translateY(4px) rotate(1deg); } }
   @keyframes cat-page-happy { to { transform: translateY(-12px) rotate(3deg); } }
+  @keyframes cat-page-groom { to { transform: rotate(-2deg) translateY(2px); } }
+  @keyframes cat-page-stretch { 50% { transform: scaleX(1.06) translateY(3px); } }
+  @keyframes cat-page-alert { to { transform: translateY(-2px) rotate(1deg); } }
   .menu-open .cat-companion {
     top: 28px;
     right: 12px;
@@ -507,6 +513,7 @@
   .spot-bed { right: 7%; bottom: 6%; }
   .spot-bowl { right: 28%; bottom: 3%; }
   .cat-home-cat {
+    --face: 1;
     position: absolute;
     z-index: 10002;
     left: 50%;
@@ -523,8 +530,8 @@
     background-size: auto 100%;
     background-position: center;
     filter: drop-shadow(0 8px 5px rgba(69,26,3,.28));
-    transform: translate(-50%, -50%);
-    transition: left 1.15s ease-in-out, top 1.15s ease-in-out;
+    transform: translate(-50%, -50%) scaleX(var(--face));
+    transition: left var(--move-duration, 1.15s) cubic-bezier(.35,.05,.25,1), top var(--move-duration, 1.15s) cubic-bezier(.35,.05,.25,1);
     pointer-events: auto;
     cursor: pointer;
     animation: cat-home-step .55s ease-in-out infinite alternate;
@@ -534,10 +541,16 @@
   .cat-home-cat.sleeping { background-image: url('assets/orange-cat-sleep.png?v=3'); animation: cat-home-breathe 2.4s ease-in-out infinite; }
   .cat-home-cat.eating { background-image: url('assets/orange-cat-eat.png?v=3'); animation: cat-home-nibble .32s ease-in-out infinite alternate; }
   .cat-home-cat.happy { background-image: url('assets/orange-cat-happy.png?v=3'); animation: cat-home-happy .45s ease-in-out 4 alternate; }
-  @keyframes cat-home-step { to { transform: translate(-50%, calc(-50% - 5px)) rotate(-1deg); } }
-  @keyframes cat-home-breathe { 50% { transform: translate(-50%, -50%) scale(1.025); } }
-  @keyframes cat-home-nibble { to { transform: translate(-50%, -47%) rotate(2deg); } }
-  @keyframes cat-home-happy { to { transform: translate(-50%, calc(-50% - 13px)) rotate(3deg); } }
+  .cat-home-cat.grooming { background-image: url('assets/orange-cat-groom.png?v=4'); animation: cat-home-groom .72s ease-in-out infinite alternate; }
+  .cat-home-cat.stretching { background-image: url('assets/orange-cat-stretch.png?v=4'); animation: cat-home-stretch 1.5s ease-in-out; }
+  .cat-home-cat.alert { background-image: url('assets/orange-cat-alert.png?v=4'); animation: cat-home-alert .75s ease-in-out infinite alternate; }
+  @keyframes cat-home-step { to { transform: translate(-50%, calc(-50% - 5px)) scaleX(var(--face)) rotate(-1deg); } }
+  @keyframes cat-home-breathe { 50% { transform: translate(-50%, -50%) scaleX(var(--face)) scale(1.025); } }
+  @keyframes cat-home-nibble { to { transform: translate(-50%, -47%) scaleX(var(--face)) rotate(2deg); } }
+  @keyframes cat-home-happy { to { transform: translate(-50%, calc(-50% - 13px)) scaleX(var(--face)) rotate(3deg); } }
+  @keyframes cat-home-groom { to { transform: translate(-50%, -48%) scaleX(var(--face)) rotate(-2deg); } }
+  @keyframes cat-home-stretch { 50% { transform: translate(-50%, -47%) scaleX(var(--face)) scaleX(1.08); } }
+  @keyframes cat-home-alert { to { transform: translate(-50%, -52%) scaleX(var(--face)); } }
   .cat-bubble {
     position: absolute;
     z-index: 10003;
@@ -1115,6 +1128,7 @@
   let matchedPairsCount = 0;
 
   let catState = JSON.parse(localStorage.getItem('emotion_magic_cat') || '{"food":0,"affection":0,"mood":60}');
+  let pageCatLifeTimer = null;
   catState.food = Number(catState.food) || 0;
   catState.affection = Number(catState.affection) || 0;
   catState.mood = Number.isFinite(Number(catState.mood)) ? Number(catState.mood) : 60;
@@ -1130,6 +1144,17 @@
   function saveCatState() {
     localStorage.setItem('emotion_magic_cat', JSON.stringify(catState));
     updateCatUI();
+  }
+
+  function schedulePageCatLife() {
+    clearTimeout(pageCatLifeTimer);
+    pageCatLifeTimer = setTimeout(function () {
+      if (!document.body.classList.contains('menu-open')) return;
+      const sprite = document.getElementById('cat-sprite');
+      const poses = ['sitting', 'grooming', 'stretching', 'alert'];
+      sprite.className = 'cat-sprite ' + poses[Math.floor(Math.random() * poses.length)];
+      schedulePageCatLife();
+    }, 2800 + Math.random() * 4200);
   }
 
   function awardCatFood(amount) {
@@ -1180,23 +1205,42 @@
     const cat = document.getElementById('cat-home-cat');
     if (!cat) return;
     clearTimeout(catHomeMoveTimer);
-    setCatHomePose('walking');
+    const currentX = parseFloat(cat.style.left) || 50;
+    const distance = Math.abs(spot.x - currentX);
+    const duration = Math.max(0.85, Math.min(2.15, 0.75 + distance * 0.025));
+    cat.style.setProperty('--face', spot.x < currentX ? -1 : 1);
+    cat.style.setProperty('--move-duration', duration + 's');
+    setCatHomePose('alert');
+    setCatBubble('小橘貓先看看四周……');
+    setTimeout(function () { setCatHomePose('walking'); }, 360);
     cat.style.left = spot.x + '%';
     cat.style.top = spot.y + '%';
-    setCatBubble(customMessage || '小橘貓正走過去……');
     catHomeMoveTimer = setTimeout(function () {
       setCatHomePose(spot.pose);
       setCatBubble(customMessage || spot.message);
-    }, 1180);
+    }, duration * 1000 + 380);
   }
 
   function scheduleCatHomeRoaming() {
-    clearInterval(catHomeTimer);
-    const names = ['center', 'window', 'toy', 'bed'];
-    catHomeTimer = setInterval(function () {
-      const next = names[Math.floor(Math.random() * names.length)];
-      moveCatHomeTo(next);
-    }, 4800);
+    clearTimeout(catHomeTimer);
+    catHomeTimer = setTimeout(function () {
+      const roll = Math.random();
+      if (roll < .38) {
+        const names = ['center', 'window', 'toy', 'bed'];
+        moveCatHomeTo(names[Math.floor(Math.random() * names.length)]);
+      } else if (roll < .58) {
+        setCatHomePose('grooming'); setCatBubble('小橘貓正在慢慢整理毛毛。');
+      } else if (roll < .72) {
+        setCatHomePose('stretching'); setCatBubble('先伸個大大的懶腰！');
+      } else if (roll < .84) {
+        setCatHomePose('alert'); setCatBubble('咦？小橘貓好像聽見了什麼。');
+      } else if (roll < .93) {
+        setCatHomePose('sleeping'); setCatBubble('這裡很安心，休息一下。');
+      } else {
+        setCatHomePose('sitting'); setCatBubble('小橘貓安靜地陪著你。');
+      }
+      scheduleCatHomeRoaming();
+    }, 3200 + Math.random() * 4200);
   }
 
   function openCatHome() {
@@ -1213,7 +1257,7 @@
   }
 
   function closeCatHome() {
-    clearInterval(catHomeTimer);
+    clearTimeout(catHomeTimer);
     clearTimeout(catHomeMoveTimer);
     document.body.classList.remove('cat-home-open');
     const home = document.getElementById('cat-home');
@@ -1223,7 +1267,7 @@
   }
 
   function catHomeAction(action) {
-    clearInterval(catHomeTimer);
+    clearTimeout(catHomeTimer);
     if (action === 'walk') {
       moveCatHomeTo(['window', 'toy', 'center'][Math.floor(Math.random() * 3)], '一起在房間散步吧！');
     } else if (action === 'pet') {
@@ -1270,6 +1314,7 @@
   function showMainMenu() {
     document.body.classList.add('menu-open');
     document.getElementById('cat-sprite').className = 'cat-sprite sitting';
+    schedulePageCatLife();
     document.getElementById('modal-content').classList.add('main-menu-modal');
     document.getElementById('timer').textContent = "00:00.0";
     document.getElementById('target-display').textContent = "請選擇";
@@ -1292,6 +1337,7 @@
   // ================= 模式一：依序尋找 =================
   function startSequentialGame() {
     document.body.classList.remove('menu-open');
+    clearTimeout(pageCatLifeTimer);
     document.getElementById('cat-sprite').className = 'cat-sprite';
     initAudio(); startBGM();
     seqQueue = shuffle(emotionPool);
@@ -1326,6 +1372,7 @@
   // ================= 模式二：情緒找碴 =================
   function startDiffGame() {
     document.body.classList.remove('menu-open');
+    clearTimeout(pageCatLifeTimer);
     document.getElementById('cat-sprite').className = 'cat-sprite';
     initAudio(); startBGM();
     diffRound = 1; penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
@@ -1370,6 +1417,7 @@
   // ================= 模式三：情境對號入座 =================
   function startScenarioGame() {
     document.body.classList.remove('menu-open');
+    clearTimeout(pageCatLifeTimer);
     document.getElementById('cat-sprite').className = 'cat-sprite';
     initAudio(); startBGM();
     scenarioCurrent = 0; penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
@@ -1407,6 +1455,7 @@
   // ================= 模式四：記憶翻牌配對 =================
   function startMemoryGame() {
     document.body.classList.remove('menu-open');
+    clearTimeout(pageCatLifeTimer);
     document.getElementById('cat-sprite').className = 'cat-sprite';
     initAudio(); startBGM();
     firstCard = null; secondCard = null; lockBoard = false; matchedPairsCount = 0;
