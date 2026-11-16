@@ -1184,6 +1184,10 @@
 
   let catHomeTimer = null;
   let catHomeMoveTimer = null;
+  let catHomeFrameTimer = null;
+  let pageCatFrameTimer = null;
+  const catWalkFrames = [1, 2, 3, 4, 5].map(function (n) { return 'assets/orange-cat-walk-' + n + '.png?v=6'; });
+  catWalkFrames.forEach(function (src) { const image = new Image(); image.src = src; });
   const catHomeSpots = {
     center: { x: 50, y: 72, pose: 'sitting', message: '今天也一起慢慢來。' },
     window: { x: 28, y: 52, pose: 'sitting', message: '窗外的雲慢慢飄過去了。' },
@@ -1200,7 +1204,33 @@
   function setCatHomePose(pose) {
     const cat = document.getElementById('cat-home-cat');
     if (!cat) return;
+    clearInterval(catHomeFrameTimer);
+    cat.style.removeProperty('background-image');
     cat.className = 'cat-home-cat ' + (pose || '');
+    if (pose === 'walking') {
+      let frame = 0;
+      cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
+      catHomeFrameTimer = setInterval(function () {
+        frame = (frame + 1) % catWalkFrames.length;
+        cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
+      }, 95);
+    }
+  }
+
+  function startPageCatWalkFrames() {
+    clearInterval(pageCatFrameTimer);
+    const cat = document.getElementById('cat-sprite');
+    let frame = 0;
+    cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
+    pageCatFrameTimer = setInterval(function () {
+      frame = (frame + 1) % catWalkFrames.length;
+      cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
+    }, 95);
+  }
+
+  function stopPageCatWalkFrames() {
+    clearInterval(pageCatFrameTimer);
+    document.getElementById('cat-sprite').style.removeProperty('background-image');
   }
 
   function moveCatHomeTo(name, customMessage) {
@@ -1316,6 +1346,7 @@
 
   function showMainMenu() {
     document.body.classList.add('menu-open');
+    stopPageCatWalkFrames();
     document.getElementById('cat-sprite').className = 'cat-sprite sitting';
     schedulePageCatLife();
     document.getElementById('modal-content').classList.add('main-menu-modal');
@@ -1342,6 +1373,7 @@
     document.body.classList.remove('menu-open');
     clearTimeout(pageCatLifeTimer);
     document.getElementById('cat-sprite').className = 'cat-sprite';
+    startPageCatWalkFrames();
     initAudio(); startBGM();
     seqQueue = shuffle(emotionPool);
     seqIndex = 0; penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
@@ -1377,6 +1409,7 @@
     document.body.classList.remove('menu-open');
     clearTimeout(pageCatLifeTimer);
     document.getElementById('cat-sprite').className = 'cat-sprite';
+    startPageCatWalkFrames();
     initAudio(); startBGM();
     diffRound = 1; penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
     document.getElementById('overlay').style.display = 'none';
@@ -1422,6 +1455,7 @@
     document.body.classList.remove('menu-open');
     clearTimeout(pageCatLifeTimer);
     document.getElementById('cat-sprite').className = 'cat-sprite';
+    startPageCatWalkFrames();
     initAudio(); startBGM();
     scenarioCurrent = 0; penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
     document.getElementById('overlay').style.display = 'none';
@@ -1460,6 +1494,7 @@
     document.body.classList.remove('menu-open');
     clearTimeout(pageCatLifeTimer);
     document.getElementById('cat-sprite').className = 'cat-sprite';
+    startPageCatWalkFrames();
     initAudio(); startBGM();
     firstCard = null; secondCard = null; lockBoard = false; matchedPairsCount = 0;
     penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
