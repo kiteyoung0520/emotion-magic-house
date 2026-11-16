@@ -95,6 +95,13 @@
     word-break: break-all;
   }
 
+  .target-name .target-icon {
+    display: inline-block;
+    font-size: 1.9rem;
+    line-height: 1;
+    vertical-align: middle;
+  }
+
   .grid {
     display: grid;
     gap: 10px;
@@ -796,7 +803,7 @@
   function updateSeqTarget() {
     if (seqIndex < seqQueue.length) {
       const t = seqQueue[seqIndex];
-      document.getElementById('target-display').textContent = `${t.name} ${t.icon}`;
+      document.getElementById('target-display').innerHTML = `<span>${t.name}</span> <span class="target-icon">${t.icon}</span>`;
     } else {
       endGame("🎉 依序尋找通關成功！");
     }
