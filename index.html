@@ -123,7 +123,7 @@
     background-size: auto 100%;
     background-position: center;
     filter: drop-shadow(0 7px 4px rgba(0,0,0,.28));
-    animation: cat-wander 9s linear infinite alternate;
+    animation: cat-wander 24s ease-in-out infinite alternate;
   }
   .cat-sprite.sitting { background-image: url('assets/orange-cat-idle.png?v=3'); animation: cat-page-breathe 1.8s ease-in-out infinite; }
   .cat-sprite.sleeping { background-image: url('assets/orange-cat-sleep.png?v=3'); animation: cat-page-breathe 2.4s ease-in-out infinite; }
@@ -534,7 +534,7 @@
     background-position: center;
     filter: drop-shadow(0 8px 5px rgba(69,26,3,.28));
     transform: translate(-50%, -50%) scaleX(var(--face));
-    transition: left var(--move-duration, 1.15s) cubic-bezier(.35,.05,.25,1), top var(--move-duration, 1.15s) cubic-bezier(.35,.05,.25,1);
+    transition: left var(--move-duration, 2.5s) cubic-bezier(.35,.05,.25,1), top var(--move-duration, 2.5s) cubic-bezier(.35,.05,.25,1);
     pointer-events: auto;
     cursor: pointer;
     animation: cat-home-step .55s ease-in-out infinite alternate;
@@ -1203,7 +1203,7 @@
       catHomeFrameTimer = setInterval(function () {
         frame = (frame + 1) % catWalkFrames.length;
         cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-      }, 95);
+      }, 190);
     }
   }
 
@@ -1215,7 +1215,7 @@
     pageCatFrameTimer = setInterval(function () {
       frame = (frame + 1) % catWalkFrames.length;
       cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-    }, 95);
+    }, 190);
   }
 
   function stopPageCatWalkFrames() {
@@ -1230,7 +1230,7 @@
     clearTimeout(catHomeMoveTimer);
     const currentX = parseFloat(cat.style.left) || 50;
     const distance = Math.abs(spot.x - currentX);
-    const duration = Math.max(0.85, Math.min(2.15, 0.75 + distance * 0.025));
+    const duration = Math.max(1.8, Math.min(4.6, 1.6 + distance * 0.045));
     cat.style.setProperty('--face', spot.x < currentX ? -1 : 1);
     cat.style.setProperty('--move-duration', duration + 's');
     setCatHomePose('alert');
@@ -1263,11 +1263,15 @@
         setCatHomePose('sitting'); setCatBubble('小橘貓安靜地陪著你。');
       }
       scheduleCatHomeRoaming();
-    }, 3200 + Math.random() * 4200);
+    }, 6000 + Math.random() * 6500);
   }
 
   function openCatHome() {
     clearInterval(timerId);
+    const catActions = document.querySelector('.cat-home-actions');
+    if (catActions && !document.getElementById('cat-grooming-action')) {
+      catActions.insertAdjacentHTML('beforeend', "<button class='cat-home-action' id='cat-grooming-action' onclick=\"catHomeAction('grooming')\">🧼 理毛</button><button class='cat-home-action' onclick=\"catHomeAction('stretching')\">🙆 伸懶腰</button><button class='cat-home-action' onclick=\"catHomeAction('alert')\">👀 張望</button>");
+    }
     document.body.classList.remove('menu-open');
     document.body.classList.add('cat-home-open');
     document.getElementById('overlay').style.display = 'none';
@@ -1312,6 +1316,12 @@
       }
     } else if (action === 'sleep') {
       moveCatHomeTo('bed', '晚安，陪我休息一下。');
+    } else if (action === 'grooming') {
+      setCatHomePose('grooming'); setCatBubble('小橘貓仔細地舔舔毛，整理得漂漂亮亮。');
+    } else if (action === 'stretching') {
+      setCatHomePose('stretching'); setCatBubble('前腳伸長，舒服地伸個懶腰！');
+    } else if (action === 'alert') {
+      setCatHomePose('alert'); setCatBubble('耳朵豎起來，小橘貓正在聽聲音。');
     }
     setTimeout(scheduleCatHomeRoaming, 5600);
   }
@@ -1617,4 +1627,5 @@
 </script>
 </body>
 </html>
+
 
