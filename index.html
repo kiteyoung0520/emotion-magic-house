@@ -565,21 +565,39 @@
     background:
       linear-gradient(90deg, transparent 47.8%, #84664f 48.6% 51.4%, transparent 52.2%),
       linear-gradient(transparent 47.8%, #84664f 48.6% 51.4%, transparent 52.2%),
-      radial-gradient(ellipse at 72% 25%, #fff8e7 0%, #f9e4c7 25%, transparent 26%),
-      linear-gradient(145deg, #c9d9e3, #fff7ed 70%);
+      radial-gradient(ellipse at 72% 25%, var(--window-glow, #fff8e7) 0%, var(--window-glow-edge, #f9e4c7) 25%, transparent 26%),
+      linear-gradient(145deg, var(--window-sky, #c9d9e3), var(--window-light, #fff7ed) 70%);
     box-shadow: inset 0 0 0 3px rgba(255,255,255,.52), 0 9px 22px rgba(99,69,61,.2);
     cursor: pointer;
   }
   .shoji-window:focus-visible { outline: 4px solid #0ea5e9; outline-offset: 4px; }
   .shoji-window::after {
-    content: "☁️  ☀️";
+    content: attr(data-glyph);
     position: absolute;
     inset: 14% 8%;
     color: #fff;
     font-size: clamp(1.2rem, 6vw, 2.4rem);
     letter-spacing: 12px;
     opacity: .9;
+    z-index: 2;
+    pointer-events: none;
   }
+  .shoji-window::before { content: ""; position: absolute; inset: 8px; z-index: 1; border-radius: 2px; opacity: 0; pointer-events: none; }
+  .shoji-window[data-weather="rain"]::before, .shoji-window[data-weather="storm"]::before { opacity: .55; background: repeating-linear-gradient(108deg, transparent 0 14px, rgba(91,148,184,.58) 15px 16px, transparent 17px 27px); animation: window-rain .75s linear infinite; }
+  .shoji-window[data-weather="storm"]::before { opacity: .78; background: repeating-linear-gradient(108deg, transparent 0 11px, rgba(117,174,207,.74) 12px 14px, transparent 15px 23px); }
+  .shoji-window[data-weather="snow"]::before { opacity: .72; background: radial-gradient(circle, rgba(255,255,255,.95) 0 1.5px, transparent 2px) 0 0/29px 31px, radial-gradient(circle, rgba(255,255,255,.8) 0 1px, transparent 1.7px) 14px 12px/37px 35px; animation: window-snow 5s linear infinite; }
+  @keyframes window-rain { to { background-position: -14px 26px; } }
+  @keyframes window-snow { to { background-position: 12px 30px, 25px 42px; } }
+  .shoji-window[data-weather="clear"] { --window-sky: #9fc5dc; --window-light: #fff8e9; --window-glow: #fff4bd; --window-glow-edge: #ffe5ac; }
+  .shoji-window[data-weather="cloudy"] { --window-sky: #9fadb8; --window-light: #e6e8e4; --window-glow: #f5e8cb; --window-glow-edge: #e6ded1; }
+  .shoji-window[data-weather="rain"], .shoji-window[data-weather="storm"] { --window-sky: #748b9c; --window-light: #c4d0d5; --window-glow: #d1dbe0; --window-glow-edge: #c3d0d4; }
+  .shoji-window[data-weather="storm"] { --window-sky: #4b596b; --window-light: #9baab5; --window-glow: #bbc4c8; --window-glow-edge: #aeb8be; }
+  .shoji-window[data-weather="snow"] { --window-sky: #bdd1de; --window-light: #f2f8fa; --window-glow: #fff8e9; --window-glow-edge: #f1ede4; }
+  .shoji-window[data-weather="fog"] { --window-sky: #aebbc2; --window-light: #e1e3df; --window-glow: #efeee6; --window-glow-edge: #e0e0d9; }
+  .cat-room.weather-night .shoji-window { --window-sky: #263653; --window-light: #56637a; --window-glow: #fff0bf; --window-glow-edge: #c9bea2; }
+  .weather-location-button { position: absolute; top: 45.5%; left: 7%; z-index: 8; max-width: 42%; overflow: hidden; padding: 5px 9px; border: 1px solid rgba(255,247,224,.82); border-radius: 999px; background: rgba(44,55,72,.74); color: #fff8e8; font: inherit; font-size: .68rem; font-weight: 900; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; box-shadow: 0 3px 11px rgba(40,32,28,.18); backdrop-filter: blur(5px); }
+  .weather-location-button:focus-visible { outline: 3px solid #0ea5e9; outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) { .shoji-window[data-weather="rain"]::before, .shoji-window[data-weather="storm"]::before, .shoji-window[data-weather="snow"]::before { animation: none !important; } }
   .room-shelf {
     position: absolute;
     z-index: 3;
@@ -759,6 +777,20 @@
   .cat-mood-replies .cat-companion-choice { min-height: 48px; }
   .cat-mood-secondary { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px; }
   .cat-mood-secondary .cat-companion-close { margin-top: 10px; }
+  .cat-weather-dialog { position: fixed; inset: 0; z-index: 11001; display: none; align-items: center; justify-content: center; padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); overflow-y: auto; background: rgba(18,20,38,.62); backdrop-filter: blur(8px); }
+  .cat-weather-dialog.is-open { display: flex; }
+  .cat-weather-card { width: min(430px,100%); max-height: min(720px, calc(100dvh - 32px)); overflow-y: auto; padding: 22px 18px 18px; border: 1px solid rgba(255,232,201,.48); border-radius: 24px; background: radial-gradient(ellipse at 50% 0, rgba(255,221,166,.16), transparent 48%), linear-gradient(155deg,#292641,#1b2035 72%); color: #fff7ed; text-align: center; box-shadow: 0 24px 65px rgba(0,0,0,.4), inset 0 1px rgba(255,255,255,.1); }
+  .cat-weather-card h3 { margin: 0 0 7px; font-size: 1.22rem; }
+  .cat-weather-card p { margin: 0 0 12px; color: #e6d9dc; font-size: .88rem; line-height: 1.5; }
+  .cat-weather-search { display: flex; gap: 7px; align-items: center; }
+  .cat-weather-search input { flex: 1; min-width: 0; margin: 5px 0 10px !important; text-align: left !important; }
+  .cat-weather-search .cat-call-button { min-height: 42px; padding: 8px 12px; margin-bottom: 5px; }
+  .cat-weather-results { display: grid; gap: 7px; margin-top: 4px; }
+  .cat-weather-result { width: 100%; min-height: 44px; padding: 8px 12px; border: 1px solid rgba(255,226,188,.4); border-radius: 12px; background: rgba(255,250,239,.95); color: #684633; font: inherit; font-weight: 800; text-align: left; cursor: pointer; }
+  .cat-weather-result:hover, .cat-weather-result:focus-visible { background: #ffe8bd; outline: 2px solid #fbbf24; }
+  .cat-weather-source { margin: 14px 0 0 !important; color: #cbd5e1 !important; font-size: .72rem !important; }
+  .cat-weather-source a { color: #fde68a; }
+  @media (max-width: 540px) { .weather-location-button { top: 44.5%; max-width: 48%; font-size: .62rem; padding: 4px 7px; } }
   .cat-companion-dialog { overflow-y: auto; }
   .cat-companion-card { max-height: 100%; overflow-y: auto; }
   .cat-breath-orb-wrap { display: grid; place-items: center; min-height: 188px; }
@@ -884,7 +916,8 @@
     </div>
   </div>
   <div class="cat-room" id="cat-room">
-    <button class="shoji-window" type="button" onclick="moveCatHomeTo('window', '小橘貓陪你一起看看窗外。')" aria-label="邀請小橘貓到原本的障子窗邊看風景" title="點這扇窗，邀請小橘貓來看風景"></button>
+    <button class="shoji-window" id="cat-weather-window" type="button" data-weather="cloudy" data-glyph="☁️  ☀️" onclick="inviteCatToWeatherWindow()" aria-label="邀請小橘貓到窗邊看風景" title="邀請小橘貓到窗邊看風景"></button>
+    <button class="weather-location-button" id="cat-weather-location" type="button" onclick="event.stopPropagation(); openCatWeatherDialog()" aria-label="設定窗外天氣地區">臺北・讀取天氣</button>
     <div class="room-shelf" aria-hidden="true">🪴 📚 🧶</div>
     <div class="room-lantern" aria-hidden="true"></div>
     <div class="room-beam" aria-hidden="true"></div>
@@ -941,6 +974,20 @@
         <button class="cat-companion-close" id="cat-breath-close" onclick="closeCatCompanionDialog()">隨時結束</button>
       </div>
       <button class="cat-companion-close" id="cat-companion-cancel" onclick="closeCatCompanionDialog()">先不用，回到貓屋</button>
+    </section>
+  </div>
+  <div class="cat-weather-dialog" id="cat-weather-dialog" aria-hidden="true" onclick="if(event.target===this) closeCatWeatherDialog()">
+    <section class="cat-weather-card" role="dialog" aria-modal="true" aria-labelledby="cat-weather-title">
+      <h3 id="cat-weather-title">窗外的天氣</h3>
+      <p id="cat-weather-summary">選擇地區，讓窗景跟著當地天氣變化。</p>
+      <form class="cat-weather-search" onsubmit="searchCatWeatherLocation(event)">
+        <input id="cat-weather-search-input" type="text" maxlength="80" placeholder="輸入城市，例如：臺中" aria-label="搜尋城市或地區" autocomplete="off" />
+        <button class="cat-call-button" type="submit">搜尋</button>
+      </form>
+      <div class="cat-weather-results" id="cat-weather-results" aria-live="polite"></div>
+      <p id="cat-weather-search-status" role="status" aria-live="polite"></p>
+      <button class="cat-companion-close" type="button" onclick="closeCatWeatherDialog()">關閉</button>
+      <p class="cat-weather-source">天氣資料：<a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a>・CC BY 4.0</p>
     </section>
   </div>
 </section>
@@ -1931,6 +1978,7 @@
   function scheduleCatHomeRoaming() {
     clearTimeout(catHomeTimer);
     catHomeTimer = setTimeout(function () {
+      if (maybeReactToCatWeather()) { scheduleCatHomeRoaming(); return; }
       const roll = Math.random();
       if (roll < .38) {
         const names = ['center', 'window', 'toy', 'bed'];
@@ -2171,6 +2219,163 @@
       moveCatHomeToPosition(x, y, replies[Math.floor(Math.random() * replies.length)], 'curious', '小橘貓注意到你了，正跑過來……');
       scheduleCatHomeRoaming();
     });
+  }
+
+  const CAT_WEATHER_STORAGE = 'emotion_magic_cat_weather_v1';
+  const DEFAULT_CAT_WEATHER_LOCATION = { name: '臺北', latitude: 25.033, longitude: 121.5654, timezone: 'Asia/Taipei', country: '臺灣' };
+  let catWeatherState = { location: DEFAULT_CAT_WEATHER_LOCATION, current: null, updatedAt: 0 };
+  let catWeatherLastReaction = 0;
+
+  function loadCatWeatherState() {
+    try {
+      const saved = JSON.parse(localStorage.getItem(CAT_WEATHER_STORAGE) || 'null');
+      if (saved && saved.location && Number.isFinite(Number(saved.location.latitude)) && Number.isFinite(Number(saved.location.longitude))) {
+        catWeatherState.location = saved.location;
+        catWeatherState.current = saved.current || null;
+        catWeatherState.updatedAt = Number(saved.updatedAt) || 0;
+      }
+    } catch (_) {}
+  }
+
+  function weatherDescription(code, isDay) {
+    if (code === 0) return { key: isDay ? 'clear' : 'night', icon: isDay ? '☀️' : '🌙', label: isDay ? '晴朗' : '晴夜' };
+    if (code === 1) return { key: 'clear', icon: '🌤️', label: '大致晴朗' };
+    if (code <= 3) return { key: 'cloudy', icon: '☁️', label: '多雲' };
+    if (code === 45 || code === 48) return { key: 'fog', icon: '🌫️', label: '有霧' };
+    if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return { key: 'rain', icon: '🌧️', label: '下雨' };
+    if ((code >= 71 && code <= 77) || code === 85 || code === 86) return { key: 'snow', icon: '❄️', label: '下雪' };
+    if (code >= 95 && code <= 99) return { key: 'storm', icon: '⛈️', label: '雷雨' };
+    return { key: 'cloudy', icon: '☁️', label: '多雲' };
+  }
+
+  function renderCatWeather() {
+    const windowEl = document.getElementById('cat-weather-window');
+    const locationButton = document.getElementById('cat-weather-location');
+    const room = document.getElementById('cat-room');
+    if (!windowEl || !locationButton || !room) return;
+    const current = catWeatherState.current;
+    const details = current ? weatherDescription(Number(current.weather_code), Number(current.is_day) === 1) : { key: 'cloudy', icon: '☁️', label: '天氣待更新' };
+    windowEl.dataset.weather = details.key;
+    windowEl.dataset.glyph = details.icon;
+    room.classList.toggle('weather-night', Boolean(current && Number(current.is_day) === 0));
+    const temperature = current && Number.isFinite(Number(current.temperature_2m)) ? ' ' + Math.round(Number(current.temperature_2m)) + '°' : '';
+    const place = catWeatherState.location.name || '臺北';
+    locationButton.textContent = place + '・' + details.icon + temperature;
+    locationButton.title = place + '・' + details.label + temperature + (catWeatherState.updatedAt ? '・更新於 ' + new Date(catWeatherState.updatedAt).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' }) : '');
+    locationButton.setAttribute('aria-label', '目前地區：' + place + '，' + details.label + temperature + '。點按可更改地區');
+    const summary = document.getElementById('cat-weather-summary');
+    if (summary) summary.textContent = place + '目前' + details.label + (temperature ? '，氣溫約 ' + temperature.trim() : '') + '。窗景每 30 分鐘更新。';
+  }
+
+  async function refreshCatWeather() {
+    const place = catWeatherState.location;
+    const url = new URL('https://api.open-meteo.com/v1/forecast');
+    url.search = new URLSearchParams({ latitude: place.latitude, longitude: place.longitude, current: 'temperature_2m,apparent_temperature,is_day,weather_code,precipitation,snowfall,cloud_cover', timezone: place.timezone || 'auto', forecast_days: '1' });
+    try {
+      const response = await fetch(url.toString());
+      if (!response.ok) throw new Error('weather request failed');
+      const data = await response.json();
+      if (!data.current) throw new Error('weather data unavailable');
+      catWeatherState.current = data.current;
+      catWeatherState.updatedAt = Date.now();
+      localStorage.setItem(CAT_WEATHER_STORAGE, JSON.stringify(catWeatherState));
+      renderCatWeather();
+      return true;
+    } catch (_) {
+      renderCatWeather();
+      const status = document.getElementById('cat-weather-search-status');
+      if (status && document.getElementById('cat-weather-dialog').classList.contains('is-open')) status.textContent = catWeatherState.current ? '暫時無法連線，先顯示上次更新的天氣。' : '暫時無法取得天氣，請稍後再試。';
+      return false;
+    }
+  }
+
+  function initCatWeather() {
+    loadCatWeatherState();
+    renderCatWeather();
+    refreshCatWeather();
+    setInterval(refreshCatWeather, 30 * 60 * 1000);
+  }
+
+  function openCatWeatherDialog() {
+    clearTimeout(catHomeTimer);
+    const dialog = document.getElementById('cat-weather-dialog');
+    dialog.classList.add('is-open');
+    dialog.setAttribute('aria-hidden', 'false');
+    document.getElementById('cat-weather-results').replaceChildren();
+    document.getElementById('cat-weather-search-status').textContent = '';
+    document.getElementById('cat-weather-search-input').focus();
+  }
+
+  function closeCatWeatherDialog() {
+    const dialog = document.getElementById('cat-weather-dialog');
+    dialog.classList.remove('is-open');
+    dialog.setAttribute('aria-hidden', 'true');
+    if (document.body.classList.contains('cat-home-open')) scheduleCatHomeRoaming();
+  }
+
+  async function searchCatWeatherLocation(event) {
+    event.preventDefault();
+    const input = document.getElementById('cat-weather-search-input');
+    const status = document.getElementById('cat-weather-search-status');
+    const results = document.getElementById('cat-weather-results');
+    const query = input.value.trim();
+    results.replaceChildren();
+    if (query.length < 2) { status.textContent = '請輸入至少兩個字。'; return; }
+    status.textContent = '正在搜尋地區……';
+    try {
+      const url = new URL('https://geocoding-api.open-meteo.com/v1/search');
+      url.search = new URLSearchParams({ name: query, count: '6', language: 'zh', format: 'json' });
+      const response = await fetch(url.toString());
+      if (!response.ok) throw new Error('location search failed');
+      const data = await response.json();
+      const places = (data.results || []).filter(place => Number.isFinite(place.latitude) && Number.isFinite(place.longitude));
+      if (!places.length) { status.textContent = '找不到這個地區，試試附近的城市名稱。'; return; }
+      status.textContent = '選擇地區後，窗景就會顯示當地天氣。';
+      places.forEach(place => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'cat-weather-result';
+        button.textContent = [place.name, place.admin1, place.country].filter(Boolean).filter((part, index, all) => all.indexOf(part) === index).join('・');
+        button.addEventListener('click', () => selectCatWeatherLocation(place, button.textContent));
+        results.append(button);
+      });
+    } catch (_) { status.textContent = '目前無法搜尋地區，請檢查網路後再試。'; }
+  }
+
+  async function selectCatWeatherLocation(place, displayName) {
+    const parts = displayName.split('・');
+    catWeatherState.location = { name: parts[0], latitude: Number(place.latitude), longitude: Number(place.longitude), timezone: place.timezone || 'auto', country: place.country || '' };
+    catWeatherState.current = null;
+    catWeatherState.updatedAt = 0;
+    localStorage.setItem(CAT_WEATHER_STORAGE, JSON.stringify(catWeatherState));
+    renderCatWeather();
+    document.getElementById('cat-weather-search-status').textContent = '已選擇 ' + displayName + '，正在更新窗景……';
+    const ok = await refreshCatWeather();
+    document.getElementById('cat-weather-search-status').textContent = ok ? '窗景已更新為 ' + displayName + ' 的天氣。' : '地區已儲存，天氣資料稍後會自動重試。';
+    setTimeout(closeCatWeatherDialog, 900);
+  }
+
+  function inviteCatToWeatherWindow() {
+    const details = catWeatherState.current ? weatherDescription(Number(catWeatherState.current.weather_code), Number(catWeatherState.current.is_day) === 1) : null;
+    const replies = { rain: '我們一起看看雨滴吧，待在窗邊很安心。', storm: '外面有雷雨，我陪你在窗邊靜靜待一會兒。', snow: '雪花飄下來了，好想伸手接一片。', clear: '陽光暖暖的，我們一起曬一下太陽吧。', cloudy: '今天雲朵好多，我們一起看看窗外。', fog: '窗外霧濛濛的，靠在一起慢慢看。', night: '夜色好安靜，我陪你看一會兒星空。' };
+    moveCatHomeTo('window', replies[details ? details.key : 'cloudy']);
+  }
+
+  function maybeReactToCatWeather() {
+    if (!catWeatherState.current || !document.body.classList.contains('cat-home-open')) return false;
+    if (document.getElementById('cat-weather-dialog').classList.contains('is-open')) return false;
+    const now = Date.now();
+    if (now - catWeatherLastReaction < 4 * 60 * 1000 || Math.random() > .09) return false;
+    catWeatherLastReaction = now;
+    const key = weatherDescription(Number(catWeatherState.current.weather_code), Number(catWeatherState.current.is_day) === 1).key;
+    const reactions = {
+      rain: ['curious', '聽著窗外的雨聲，小橘貓安靜地陪你。'], storm: ['alert', '外面雷聲轟隆，小橘貓靠近了一些，陪你一起安心待著。'],
+      snow: ['sitting', '小橘貓坐在窗邊，看雪花慢慢飄落。'], clear: ['stretching', '陽光照進來了，小橘貓舒服地伸了個懶腰。'],
+      cloudy: ['loaf', '小橘貓在柔柔的天光下收好手手，暖呼呼地休息。'], fog: ['curious', '霧氣讓窗外變得朦朧，小橘貓好奇地望了一會兒。'], night: ['sleeping', '夜色安靜下來，小橘貓也安心地打了個盹。']
+    };
+    const reaction = reactions[key] || reactions.cloudy;
+    moveCatHomeToPosition(catHomeSpots.window.x, catHomeSpots.window.y, reaction[1], reaction[0]);
+    return true;
   }
 
   function openCatCompanionDialog() {
@@ -2446,6 +2651,7 @@
 
   showMainMenu();
   updateCatUI();
+  initCatWeather();
   bindInteractiveToy();
   bindCatDragging(document.getElementById('cat-home-cat'), 'home');
   bindCatDragging(document.getElementById('cat-visit-cat'), 'visit');
