@@ -1494,11 +1494,13 @@
 
   let catHomeTimer = null;
   let catHomeMoveTimer = null;
+  let catHomeApproachTimer = null;
   let catHomeFrameTimer = null;
   let pageCatFrameTimer = null;
   let catVisitTimer = null;
   let catVisitIdleTimer = null;
   let catVisitFrameTimer = null;
+  let lastCatVisitNaturalPose = null;
   const catWalkFrames = [1, 2, 3, 4, 5].map(function (n) { return 'assets/orange-cat-walk-' + n + '.png?v=6'; });
   catWalkFrames.forEach(function (src) { const image = new Image(); image.src = src; });
   const catHomeSpots = {
@@ -1681,6 +1683,7 @@
         if (mode === 'home') {
           clearTimeout(catHomeTimer);
           clearTimeout(catHomeMoveTimer);
+          clearTimeout(catHomeApproachTimer);
           clearInterval(catHomeFrameTimer);
         } else {
           stopCatVisitNaturalMotion();
@@ -1767,10 +1770,11 @@
     }, true);
   }
 
-  function moveCatHomeToPosition(x, y, message, pose) {
+  function moveCatHomeToPosition(x, y, message, pose, approachMessage) {
     const cat = document.getElementById('cat-home-cat');
     if (!cat) return;
     clearTimeout(catHomeMoveTimer);
+    clearTimeout(catHomeApproachTimer);
     const room = document.getElementById('cat-room');
     const halfWidthPercent = (cat.offsetWidth / 2 + 8) / room.clientWidth * 100;
     const halfHeightPercent = (cat.offsetHeight / 2 + 10) / room.clientHeight * 100;
@@ -1783,8 +1787,8 @@
     cat.style.setProperty('--face', x < currentX ? -1 : 1);
     cat.style.setProperty('--move-duration', duration + 's');
     setCatHomePose('alert');
-    setCatBubble('小橘貓發現毛線球了……');
-    setTimeout(function () { setCatHomePose('walking'); }, 360);
+    setCatBubble(approachMessage || '小橘貓發現毛線球了……');
+    catHomeApproachTimer = setTimeout(function () { setCatHomePose('walking'); }, 360);
     cat.style.left = x + '%';
     cat.style.top = y + '%';
     catHomeMoveTimer = setTimeout(function () {
@@ -1895,7 +1899,14 @@
     const wish = wishes[Math.floor(Math.random() * wishes.length)];
     setCatVisitPose(wish.pose);
     setCatVisitBubble(wish.message);
-    scheduleCatVisitNaturalMotion(2600);
+    scheduleCatVisitNaturalMotion(3600);
+  }
+
+  function nextCatVisitNaturalPose() {
+    const poses = ['sitting', 'grooming', 'stretching', 'sleeping', 'alert', 'loaf', 'curious'];
+    const available = poses.filter(function (pose) { return pose !== lastCatVisitNaturalPose; });
+    lastCatVisitNaturalPose = available[Math.floor(Math.random() * available.length)];
+    return lastCatVisitNaturalPose;
   }
 
   function stopCatVisitNaturalMotion() {
@@ -1919,7 +1930,7 @@
       scheduleCatVisitNaturalMotion(700);
       return;
     }
-    if (Math.random() < .64) {
+    if (Math.random() < .56) {
       const currentX = parseFloat(cat.style.left) || 50;
       const nextX = 22 + Math.random() * 56;
       const nextY = 46 + Math.random() * 23;
@@ -1938,14 +1949,12 @@
         clearInterval(catVisitFrameTimer);
         catVisitFrameTimer = null;
         cat.style.removeProperty('--visit-walk-duration');
-        const poses = ['sitting', 'grooming', 'stretching', 'sleeping', 'alert', 'loaf', 'curious'];
-        setCatVisitPose(poses[Math.floor(Math.random() * poses.length)]);
-        scheduleCatVisitNaturalMotion(2200 + Math.random() * 2600);
+        setCatVisitPose(nextCatVisitNaturalPose());
+        scheduleCatVisitNaturalMotion(4000 + Math.random() * 3200);
       }, duration * 1000);
     } else {
-      const poses = ['sitting', 'grooming', 'stretching', 'sleeping', 'alert', 'loaf', 'curious'];
-      setCatVisitPose(poses[Math.floor(Math.random() * poses.length)]);
-      scheduleCatVisitNaturalMotion(2400 + Math.random() * 2800);
+      setCatVisitPose(nextCatVisitNaturalPose());
+      scheduleCatVisitNaturalMotion(3600 + Math.random() * 3300);
     }
   }
 
@@ -1955,6 +1964,7 @@
     saveCatState();
     clearTimeout(catHomeTimer);
     clearTimeout(catHomeMoveTimer);
+    clearTimeout(catHomeApproachTimer);
     clearInterval(catHomeFrameTimer);
     clearTimeout(catVisitTimer);
     stopCatVisitNaturalMotion();
@@ -1967,6 +1977,7 @@
     visitCat.style.removeProperty('left');
     visitCat.style.removeProperty('top');
     visitCat.style.removeProperty('--visit-walk-duration');
+    lastCatVisitNaturalPose = null;
     setCatVisitPose('sitting');
     const cat = visitCat;
     cat.classList.add('arriving');
@@ -2047,12 +2058,32 @@
     applyCatLighting();
     updateCatUI();
     moveCatHomeTo('center', '歡迎回家，摸摸我吧！');
+    setCatBubble('點一下房間空白處，讓小橘貓跑來陪你。');
     scheduleCatHomeRoaming();
+  }
+
+  function bindCatRoomTapInteraction() {
+    const room = document.getElementById('cat-room');
+    if (!room) return;
+    room.addEventListener('click', function (event) {
+      if (event.target.closest('.room-object, .room-light-switch, .cat-home-cat')) return;
+      const bounds = room.getBoundingClientRect();
+      const x = (event.clientX - bounds.left - room.clientLeft) / room.clientWidth * 100;
+      const y = (event.clientY - bounds.top - room.clientTop) / room.clientHeight * 100;
+      const replies = [
+        '小橘貓跑來你身邊，安靜陪你一下。',
+        '收到你的邀請了，蹭蹭你的手。',
+        '小橘貓過來看看你，呼嚕呼嚕～',
+        '牠在你身旁坐下，陪你慢慢休息。'
+      ];
+      moveCatHomeToPosition(x, y, replies[Math.floor(Math.random() * replies.length)], 'curious', '小橘貓注意到你了，正跑過來……');
+    });
   }
 
   function closeCatHome() {
     clearTimeout(catHomeTimer);
     clearTimeout(catHomeMoveTimer);
+    clearTimeout(catHomeApproachTimer);
     document.body.classList.remove('cat-home-open');
     const home = document.getElementById('cat-home');
     home.classList.remove('is-open');
@@ -2095,6 +2126,7 @@
   bindCatDragging(document.getElementById('cat-home-cat'), 'home');
   bindCatDragging(document.getElementById('cat-visit-cat'), 'visit');
   bindCatDragging(document.getElementById('cat-sprite'), 'game');
+  bindCatRoomTapInteraction();
   const catToyBodyObserver = new MutationObserver(updateInteractiveToyVisibility);
   catToyBodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
   const catToyOverlayObserver = new MutationObserver(updateInteractiveToyVisibility);
