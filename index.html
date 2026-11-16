@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>情緒魔法屋 - 心理與專注力遊樂園</title>
+<style>
+  * {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+  }
+  body {
+    background-color: #0f172a;
+    color: #f8fafc;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 10px;
+    overflow-x: hidden;
+  }
+
+  .audio-control {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #f8fafc;
+    padding: 6px 12px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    z-index: 10;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .info-panel {
+    width: 100%;
+    background: #1e293b;
+    padding: 14px 16px;
+    border-radius: 14px;
+    border: 1px solid #334155;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+  }
+
+  .level-badge {
+    background: #0284c7;
+    color: #f8fafc;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 4px;
+    cursor: pointer;
+  }
+
+  .timer {
+    font-size: 1.8rem;
+    font-weight: bold;
+    font-variant-numeric: tabular-nums;
+    color: #38bdf8;
+    line-height: 1.1;
+  }
+
+  .target-box {
+    text-align: right;
+    max-width: 180px;
+  }
+
+  .target-name {
+    font-size: 0.95rem;
+    color: #f8fafc;
+    font-weight: bold;
+    word-break: break-all;
+  }
+
+  .grid {
+    display: grid;
+    gap: 10px;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .grid.cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .grid.cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+  .cell {
+    aspect-ratio: 1 / 1;
+    background: #1e293b;
+    border: 2px solid #334155;
+    border-radius: 14px;
+    font-size: 2.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s, background-color 0.2s, border-color 0.2s;
+  }
+
+  .memory-card {
+    aspect-ratio: 1 / 1;
+    background: #1e293b;
+    border: 2px solid #334155;
+    border-radius: 14px;
+    font-size: 2.3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.3s, background-color 0.2s;
+  }
+  .memory-card.flipped {
+    background: #334155;
+    border-color: #38bdf8;
+  }
+  .memory-card.matched {
+    background: #065f46;
+    border-color: #10b981;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .cell:active { transform: scale(0.92); }
+  
+  .cell.correct {
+    background: #065f46;
+    border-color: #10b981;
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  .cell.wrong {
+    background: #7f1d1d;
+    border-color: #ef4444;
+    animation: shake 0.3s;
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  /* 遮罩彈窗 */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.92);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+    z-index: 20;
+    overflow-y: auto;
+  }
+  .modal {
+    background: #1e293b;
+    padding: 25px 20px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    border: 1px solid #334155;
+    width: 100%;
+    max-width: 350px;
+    margin: auto;
+  }
+  .modal h2 { margin-top: 0; color: #f8fafc; font-size: 1.4rem; }
+  .modal p { color: #94a3b8; font-size: 0.9rem; line-height: 1.5; }
+
+  .menu-btn {
+    background: #334155;
+    color: #f8fafc;
+    border: 1px solid #475569;
+    padding: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 12px;
+    cursor: pointer;
+    margin: 4px 0;
+    width: 100%;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+  .menu-btn:hover { background: #475569; }
+  .menu-btn.primary { background: #06b6d4; color: #0f172a; border: none; }
+  .menu-btn.primary:hover { background: #22d3ee; }
+
+  .quote-box {
+    background: #0f172a;
+    border-left: 4px solid #10b981;
+    padding: 14px;
+    border-radius: 8px;
+    margin: 12px 0;
+    text-align: left;
+    font-size: 0.9rem;
+    color: #e2e8f0;
+    line-height: 1.6;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+
+  textarea {
+    background: #0f172a;
+    border: 1px solid #475569;
+    color: #f8fafc;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    width: 100%;
+    height: 80px;
+    resize: none;
+    margin: 8px 0;
+  }
+  textarea:focus { outline: none; border-color: #06b6d4; }
+
+  input[type="text"] {
+    background: #0f172a;
+    border: 1px solid #475569;
+    color: #f8fafc;
+    padding: 10px 14px;
+    border-radius: 8px;
+    font-size: 1rem;
+    width: 100%;
+    margin: 10px 0;
+    text-align: center;
+  }
+  input[type="text"]:focus { outline: none; border-color: #06b6d4; }
+
+  .back-menu {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    font-size: 0.85rem;
+    cursor: pointer;
+    margin-top: 8px;
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<button class="audio-control" id="audio-toggle-btn" onclick="toggleMute()">
+  🔊 <span>音樂：開</span>
+</button>
+
+<div class="container">
+  <div class="info-panel">
+    <div>
+      <div class="level-badge" onclick="returnToMenu()">🏠 返回主選單</div>
+      <div class="timer" id="timer">00:00.0</div>
+    </div>
+    <div class="target-box">
+      <div style="font-size: 0.75rem; color: #94a3b8;" id="target-label">目前狀態</div>
+      <div class="target-name" id="target-display">-</div>
+    </div>
+  </div>
+  <div class="grid cols-3" id="grid"></div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<script>
+  let audioCtx = null;
+  let isMuted = false;
+  let bgmInterval = null;
+
+  function initAudio() {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  }
+
+  function toggleMute() {
+    isMuted = !isMuted;
+    const btn = document.getElementById('audio-toggle-btn');
+    if (isMuted) {
+      btn.innerHTML = '🔇 <span>音樂：關</span>';
+      stopBGM();
+    } else {
+      btn.innerHTML = '🔊 <span>音樂：開</span>';
+      startBGM();
+    }
+  }
+
+  function playCorrectSound() {
+    if (isMuted) return;
+    try {
+      initAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.15);
+      gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.2);
+    } catch (e) {}
+  }
+
+  function playWrongSound() {
+    if (isMuted) return;
+    try {
+      initAudio();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+      osc.frequency.linearRampToValueAtTime(80, audioCtx.currentTime + 0.2);
+      gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.2);
+    } catch (e) {}
+  }
+
+  function startBGM() {
+    if (isMuted || bgmInterval) return;
+    initAudio();
+    const chords = [
+      [261.63, 329.63, 392.00],
+      [220.00, 261.63, 329.63],
+      [174.61, 220.00, 261.63],
+      [196.00, 246.94, 293.66]
+    ];
+    let chordIndex = 0;
+
+    bgmInterval = setInterval(() => {
+      if (isMuted || !audioCtx) return;
+      const notes = chords[chordIndex];
+      chordIndex = (chordIndex + 1) % chords.length;
+
+      notes.forEach((freq, i) => {
+        try {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+          gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.2);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(audioCtx.currentTime + i * 0.1);
+          osc.stop(audioCtx.currentTime + 1.4);
+        } catch(e) {}
+      });
+    }, 1500);
+  }
+
+  function stopBGM() {
+    if (bgmInterval) {
+      clearInterval(bgmInterval);
+      bgmInterval = null;
+    }
+  }
+
+  const emotionPool = [
+    { id: 1, name: "開心大笑", icon: "😄" },
+    { id: 2, name: "生氣憤怒", icon: "😠" },
+    { id: 3, name: "難過哭泣", icon: "😢" },
+    { id: 4, name: "驚訝震驚", icon: "😲" },
+    { id: 5, name: "恐懼害怕", icon: "😨" },
+    { id: 6, name: "厭惡嫌棄", icon: "🤢" },
+    { id: 7, name: "困惑不解", icon: "😕" },
+    { id: 8, name: "得意驕傲", icon: "😎" },
+    { id: 9, name: "尷尬苦笑", icon: "😅" },
+    { id: 10, name: "疲憊無奈", icon: "😩" },
+    { id: 11, name: "害羞臉紅", icon: "😊" },
+    { id: 12, name: "懷疑審視", icon: "🤨" },
+    { id: 13, name: "冷漠無感", icon: "😐" },
+    { id: 14, name: "緊張焦慮", icon: "😰" },
+    { id: 15, name: "委屈可憐", icon: "🥺" },
+    { id: 16, name: "崩潰抓狂", icon: "🤯" }
+  ];
+
+  const emotionPairs = [
+    { base: "😄", diff: "😅", name: "開心 vs 苦笑" },
+    { base: "😠", diff: "🤨", name: "生氣 vs 懷疑" },
+    { base: "😢", diff: "🥺", name: "難過 vs 委屈" },
+    { base: "😲", diff: "😕", name: "驚訝 vs 困惑" },
+    { base: "😎", diff: "😏", name: "得意 vs 奸詐" },
+    { base: "😊", diff: "😌", name: "害羞 vs 輕鬆" }
+  ];
+
+  const scenarioPool = [
+    { text: "遇到奧客無理取鬧時", targetId: 2 },
+    { text: "突然收到大筆獎金時", targetId: 1 },
+    { text: "肚子餓扁卻踩到地雷餐廳", targetId: 6 },
+    { text: "半夜看恐怖片突然跳出鬼影", targetId: 5 },
+    { text: "努力很久的考試竟然不及格", targetId: 3 }
+  ];
+
+  // 心情故事集：每篇皆配置專屬原文連結
+  const mindStories = [
+    {
+      title: "【生命故事】孩子，謝謝你！為我來到這世界─盧紹萱的故事",
+      summary: "一段面對憂鬱、親情與生命低谷的故事，描述如何在家人的陪伴與自我整理中，逐步找回生活的希望。",
+      url: "https://www.bwpublish.com/article/nsdd7r3Wxk",
+      sourceType: "親子家庭／心靈成長／生命故事"
+    },
+    {
+      title: "【生命故事】擁抱真實的我，再一次長大（二）",
+      summary: "從童年偷錢、過動與親子關係的陰影出發，透過理解過去與向父母道歉，重新找回自我與家人的連結。",
+      url: "https://www.bwpublish.com/article/ZCvu20RG9T",
+      sourceType: "親子家庭／心靈成長／生命故事"
+    },
+    {
+      title: "【生命故事】親情，是人生一輩子的功課：和父母的相處，聽孩子怎麼說",
+      summary: "從生命教育講座中的親子對談，整理父母與孩子如何傾聽、理解彼此，面對家庭衝突與親情距離。",
+      url: "https://www.bwpublish.com/article/ZEDpONdrz7",
+      sourceType: "親子家庭／生命故事"
+    },
+    {
+      title: "【生命故事】孝著傳遞感動世界的力量：孝行楷模獎評審團專訪",
+      summary: "透過孝行楷模評審的觀察，分享家庭身教、照顧與孝行如何在日常生活中傳承。",
+      url: "https://www.bwpublish.com/article/X2N1VeXGId",
+      sourceType: "親子家庭／生命故事"
+    },
+    {
+      title: "【生命故事】修復歷史的記憶｜紙醫生吳哲叡",
+      summary: "紙質文物修復師吳哲叡投入古籍與文物修復，從長年專業累積中實踐傳承與不藏私的信念。",
+      url: "https://www.bwpublish.com/article/O178tXvchW",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "【生命故事】用生命淬鍊醫術：超人醫生徐超斌",
+      summary: "徐超斌醫師從醫療服務、病痛與復健經驗中，更深刻理解病人的需要與生命的韌性。",
+      url: "https://www.bwpublish.com/article/PFuLnO5jq1",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "【生命故事】將生活寫進文字：無可救藥的散文愛好者簡媜",
+      summary: "從簡媜的創作與人生觀察，看見她如何將家庭、城市、生死與日常感受寫成細膩文字。",
+      url: "https://www.bwpublish.com/article/lo4uOgWUya",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "【生命故事】李豐達：一心向善，一心向佛",
+      summary: "從母親的影響與投入素食事業的歷程，分享如何把善念轉化為日常工作與助人的行動。",
+      url: "https://www.bwpublish.com/article/HGFHFF2S76",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "【生命故事】義無反顧做傻事，專訪做鐵工的人曾文昌",
+      summary: "曾文昌從年少入行到成為鐵工，談專業、堅持與在工作中找到喜歡與使命的過程。",
+      url: "https://www.bwpublish.com/article/F1jz80je4U",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "【生命故事】真誠的走進一顆心：關愛教育的推動與實踐",
+      summary: "透過關愛教育的實際案例，分享父母如何理解孩子、看見優點，讓家庭關係重新產生轉機。",
+      url: "https://www.bwpublish.com/article/1eVRDCeF4V",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "【生命故事】與漂流木成為家人，專訪漂流木藝術家王偉權",
+      summary: "王偉權在人生挫折後與木頭結緣，從創作、生活與重新出發的過程找到自己的方向。",
+      url: "https://www.bwpublish.com/article/qfDm0g1YUg",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "【生命故事】時代在走，小丑精神要有：專訪紅鼻子醫生馬照琪",
+      summary: "紅鼻子醫生以幽默與陪伴走進醫療現場，讓孩子與家屬在困境中重新感受生命的溫度。",
+      url: "https://www.bwpublish.com/article/LQwo8fmmqt",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "【生命故事】離開時，以我喜歡的樣子：日本演員樹木希林的人生哲學",
+      summary: "從樹木希林的演藝人生與面對疾病的態度，看見她如何以自己的方式理解年齡、角色與生命。",
+      url: "https://www.bwpublish.com/article/M0FxI94GFG",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "【生命故事】張加又：生命是一首從未停歇的進行曲",
+      summary: "從醫療志工、生死觀與人生旅程出發，分享張加又如何重新理解生命的階段與意義。",
+      url: "https://www.bwpublish.com/article/kKCEQDzJWE",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "【生命故事】余志明：隨日曆撕去的年少輕狂",
+      summary: "回望青春、師生關係與成長歷程，在時間推移中重新理解過去的自己與他人。",
+      url: "https://www.bwpublish.com/article/ZF39lec62o",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "【生命故事】王朝興在教職志業中傳遞溫暖心光",
+      summary: "從教師與學生的互動故事，看見教育、關懷與長期陪伴如何影響一個人的生命。",
+      url: "https://www.bwpublish.com/article/cHkZCLSzUC",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "【生命故事】孵化未來的搖籃｜臺灣當代文化實驗場 C-LAB",
+      summary: "從臺灣當代文化實驗場的歷史與文化實踐，看見空間如何承接記憶、創意與不同世代的生命經驗。",
+      url: "https://www.bwpublish.com/article/HR61aI1c2p",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士李姿瑢：走出陰霾勇敢面對最痛苦的時光",
+      summary: "從職場創傷與長期痛苦中重新整理自己，學習以感恩與理解走出陰影。",
+      url: "https://classic.bwpublish.com/all/C7bQs3iL3O",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士鄭竟芳：抬起頭才發現愛一直都在",
+      summary: "面對親情、婚姻與失親的痛苦，重新看見父母一直存在的愛與關懷。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-04/",
+      sourceType: "家庭關係／心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士張開明：隱身嘮叨背後的愛與關懷",
+      summary: "從母親的日常嘮叨與家庭互動中，重新理解孝親與縮短親子心距離的意義。",
+      url: "https://classic.bwpublish.com/all/ClxR06cPca",
+      sourceType: "家庭關係／心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士林淑玲：戰勝自己是最大的成功",
+      summary: "記錄在人生困境中面對自己、持續調整心念並重新站起來的歷程。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-06/",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士黃天地：心繫他人是改變的開始",
+      summary: "從關心他人與承擔責任的生命經驗，看見改變自己也能帶動周遭關係。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-07/",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士林盈州：在困境中，堅持做個善良的人",
+      summary: "在生活與工作挑戰中守住善意，分享持續做正確事情的生命選擇。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-08/",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士陳美麗：我願作你人生的鷹架",
+      summary: "從陪伴與支持他人的經驗，談如何成為身邊的人面對生命困境時的力量。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-09/",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士潘春葉：虔心祈求帶來的勇悍力量",
+      summary: "記錄在困難中保持信念、祈求與行動並進，逐步累積勇氣的故事。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-10/",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士王旭朗：最深的愛是無盡的陪伴",
+      summary: "透過長期陪伴與家庭關係，體會愛不只是語言，也是日常不間斷的行動。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-12/",
+      sourceType: "家庭關係／心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士胡文玟：幸福源於世代延續的溫暖",
+      summary: "從家庭與世代互動中，看見關懷、感恩與幸福如何被一代代傳遞。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-202001/",
+      sourceType: "家庭關係／心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士陳秋安：當你老了，我依然陪著你",
+      summary: "以陪伴長輩與面對老化的經驗，分享家庭責任與不離不棄的情感。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-202002/",
+      sourceType: "家庭關係／心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士張齊顯：世代傳承的孝心讓全家團結一心",
+      summary: "從孝親與家庭合作的故事，看見共同承擔如何凝聚家人。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-202003/",
+      sourceType: "家庭關係／心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士吳金英：翻轉殺業搭築無限生命的希望",
+      summary: "在人生選擇與行善實踐中轉念，尋找對生命更友善的生活方式。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-202004/",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士劉信鴻：對妳的思念是我生命裡永遠的力量",
+      summary: "從思念與家庭記憶出發，整理失去、感恩與繼續前行的力量。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-202005/",
+      sourceType: "家庭關係／心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士陳怡君：淚水浸潤的記憶是學法的前行",
+      summary: "以生命中的淚水與記憶為起點，逐步轉化為理解自己與他人的力量。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-202006/",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士鄒碧珠：我想為你實現優遊天際的夢",
+      summary: "透過對家人的牽掛與願望，分享如何把愛化為支持與陪伴。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-202007/",
+      sourceType: "家庭關係／心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士李燿琳：矗立起爸爸未完的夢",
+      summary: "承接父親未完成的心願，在生命轉折中重新找到自己的方向。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-202008/",
+      sourceType: "家庭關係／心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士賴秋燕：實踐自我譜出家庭和諧的樂章",
+      summary: "從自我調整與家庭互動中，練習讓理解和合作取代衝突。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-202009/",
+      sourceType: "家庭關係／心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士龍贊良：善友同行，走出中途失明的困境",
+      summary: "面對身體與生活變化，在善友支持下重新建立希望與生活步調。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-202010/",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士姚慈惠：將心意化作星光，為自他生命努力",
+      summary: "把對生命的關懷轉化為持續行動，為自己與他人創造溫暖。",
+      url: "https://classic.bwpublish.com/all/D5jQuc3KF2",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士許清閔：愛讓缺憾成為幸福",
+      summary: "從生命缺憾與家庭關係中，看見愛如何改變看待自己與他人的方式。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-202101/",
+      sourceType: "家庭關係／心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士廖雪敏：翻轉偏見，用誠摯迎接彼此相遇",
+      summary: "在人與人的相遇中練習放下成見，以真誠建立理解與信任。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-202102/",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士林芳如：遍尋一生才發現快樂源於自心",
+      summary: "在人生經驗與內在探索中，重新發現快樂與安定並不只來自外在條件。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-202103/",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "心之勇士曾淑惠：溫暖樂聲，燦爛彼此的心",
+      summary: "透過音樂、陪伴與生命服務，分享如何把溫暖帶進彼此的生活。",
+      url: "https://www.bwpublish.com/buddha-teachings/practice/heart-of-the-hero-story-202104/",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "一趟覺醒之旅：2019 P島請法記敘",
+      summary: "記錄一趟學習與服務旅程中的所見所感，從不同生命經驗中重新理解自己。",
+      url: "https://classic.bwpublish.com/all/GbjQWGAafq",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "跳脫自心監獄，苦也可回甘─蔡豐儩的故事",
+      summary: "從生命低谷與自我限制中重新出發，練習轉念並找回面對人生的力量。",
+      url: "https://www.bwpublish.com/mindfulness/think/light-up-03/",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "親仁盡孝，念恩繞境父母心｜石景程生命故事漫畫版",
+      summary: "以漫畫形式呈現親子、孝親與感恩的生命故事，帶出家庭關係中的理解與回饋。",
+      url: "https://www.bwpublish.com/mindfulness/think/walk-with-you-through-the-darkness-comic-01/",
+      sourceType: "親子家庭／生命故事"
+    },
+    {
+      title: "念念母恩，擔起苦樂的重量｜陳靜宜生命故事漫畫版",
+      summary: "以生命故事漫畫描寫母女情感、家庭責任與面對苦樂時的陪伴。",
+      url: "https://www.bwpublish.com/mindfulness/think/walk-with-you-through-the-darkness-comic-02/",
+      sourceType: "親子家庭／生命故事"
+    },
+    {
+      title: "黃一馨：平息情緒浪潮化作一汪清泉",
+      summary: "從情緒起伏與生命經驗中學習安定自己，讓理解與陪伴成為改變的起點。",
+      url: "https://www.bwpublish.com/mindfulness/think/bloom-in-your-heart-sp-mr-huang/",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "林羿汝：關愛是學生最溫柔的陪伴",
+      summary: "一位老師從學生的反抗與不信任中學習堅定陪伴，最後重新建立師生信任。",
+      url: "https://www.bwpublish.com/mindfulness/think/bloom-in-your-heart-sp-mrs-lin/",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "曾春花：從小開始的英才教育",
+      summary: "從教育與家庭陪伴的角度，分享如何在成長過程中培養孩子的能力與品格。",
+      url: "https://www.bwpublish.com/mindfulness/think/bloom-in-your-heart-sp-mrs-zeng/",
+      sourceType: "親子家庭／生命故事"
+    },
+    {
+      title: "張加又：生命是一首從未停歇的進行曲｜漫畫版",
+      summary: "以漫畫形式整理生命、志工服務與面對生死的體會，呈現持續前行的人生視角。",
+      url: "https://www.bwpublish.com/mindfulness/think/bloom-in-your-heart-sp-mrs-zhang/",
+      sourceType: "心靈成長／生命故事"
+    },
+    {
+      title: "余志明：隨日曆撕去的年少輕狂｜漫畫版",
+      summary: "以漫畫呈現青春、師生關係與成長後重新理解過去的生命故事。",
+      url: "https://www.bwpublish.com/mindfulness/think/bloom-in-your-heart-sp-mr-yu/",
+      sourceType: "心靈成長／生命故事"
+    }
+  ];
+
+  let timerId = null;
+  let startTime = 0;
+  let penaltySeconds = 0;
+  let wrongCount = 0;
+  
+  let seqQueue = [];
+  let seqIndex = 0;
+  let diffRound = 1;
+  let scenarioCurrent = 0;
+
+  let memoryCards = [];
+  let firstCard = null;
+  let secondCard = null;
+  let lockBoard = false;
+  let matchedPairsCount = 0;
+
+  showMainMenu();
+
+  function shuffle(array) {
+    const arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  function returnToMenu() {
+    clearInterval(timerId);
+    stopBGM();
+    showMainMenu();
+  }
+
+  function showMainMenu() {
+    document.getElementById('timer').textContent = "00:00.0";
+    document.getElementById('target-display').textContent = "請選擇";
+    document.getElementById('grid').innerHTML = '';
+    
+    document.getElementById('overlay').style.display = 'flex';
+    document.getElementById('modal-content').innerHTML = `
+      <h2>✨ 情緒魔法屋 ✨</h2>
+      <p>請選擇你想體驗的趣味遊戲或心靈專區：</p>
+      <button class="menu-btn primary" onclick="startSequentialGame()">1️⃣ 依序尋找情緒 (4x4)</button>
+      <button class="menu-btn" onclick="startDiffGame()">2️⃣ 趣味情緒找碴 (3x3/4x4)</button>
+      <button class="menu-btn" onclick="startScenarioGame()">3️⃣ 情境對號入座 (心電感應)</button>
+      <button class="menu-btn" onclick="startMemoryGame()">4️⃣ 🧠 記憶翻牌配對遊戲</button>
+      <button class="menu-btn" onclick="openJournalModal()">5️⃣ 心情日記與每日一籤 📖</button>
+      <button class="menu-btn" onclick="openStoryModal()" style="background: #0284c7; color: #fff;">6️⃣ 📚 心情故事集 (精華摘要與原文連結)</button>
+    `;
+  }
+
+  // ================= 模式一：依序尋找 =================
+  function startSequentialGame() {
+    initAudio(); startBGM();
+    seqQueue = shuffle(emotionPool);
+    seqIndex = 0; penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('target-label').textContent = "目前目標";
+    renderGrid(shuffle(emotionPool), handleSeqClick);
+    updateSeqTarget();
+    clearInterval(timerId); timerId = setInterval(updateTimer, 100);
+  }
+
+  function updateSeqTarget() {
+    if (seqIndex < seqQueue.length) {
+      const t = seqQueue[seqIndex];
+      document.getElementById('target-display').textContent = `${t.name} ${t.icon}`;
+    } else {
+      endGame("🎉 依序尋找通關成功！");
+    }
+  }
+
+  function handleSeqClick(item, cell) {
+    const target = seqQueue[seqIndex];
+    if (item.id === target.id) {
+      playCorrectSound(); cell.classList.add('correct');
+      seqIndex++; updateSeqTarget();
+    } else {
+      playWrongSound(); penaltySeconds += 2; wrongCount++;
+      cell.classList.remove('wrong'); void cell.offsetWidth; cell.classList.add('wrong');
+    }
+  }
+
+  // ================= 模式二：情緒找碴 =================
+  function startDiffGame() {
+    initAudio(); startBGM();
+    diffRound = 1; penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('target-label').textContent = "找碴進度";
+    loadDiffRound();
+    clearInterval(timerId); timerId = setInterval(updateTimer, 100);
+  }
+
+  function loadDiffRound() {
+    if (diffRound > 5) { endGame("🎉 找碴大挑戰通關成功！"); return; }
+    document.getElementById('target-display').textContent = `第 ${diffRound} / 5 關`;
+    const size = diffRound <= 2 ? 3 : 4;
+    const total = size * size;
+    const pair = emotionPairs[Math.floor(Math.random() * emotionPairs.length)];
+    const isBaseOdd = Math.random() < 0.5;
+    const common = isBaseOdd ? pair.diff : pair.base;
+    const odd = isBaseOdd ? pair.base : pair.diff;
+    const oddIdx = Math.floor(Math.random() * total);
+    let items = [];
+    for (let i = 0; i < total; i++) {
+      items.push({ icon: (i === oddIdx) ? odd : common, isOdd: (i === oddIdx) });
+    }
+    const grid = document.getElementById('grid');
+    grid.className = `grid cols-${size}`; grid.innerHTML = '';
+    items.forEach(item => {
+      const cell = document.createElement('div');
+      cell.className = 'cell'; cell.textContent = item.icon;
+      cell.onclick = () => handleDiffClick(item, cell);
+      grid.appendChild(cell);
+    });
+  }
+
+  function handleDiffClick(item, cell) {
+    if (item.isOdd) { playCorrectSound(); diffRound++; loadDiffRound(); }
+    else {
+      playWrongSound(); penaltySeconds += 2; wrongCount++;
+      cell.classList.remove('wrong'); void cell.offsetWidth; cell.classList.add('wrong');
+    }
+  }
+
+  // ================= 模式三：情境對號入座 =================
+  function startScenarioGame() {
+    initAudio(); startBGM();
+    scenarioCurrent = 0; penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('target-label').textContent = "情境測驗";
+    loadScenarioRound();
+    clearInterval(timerId); timerId = setInterval(updateTimer, 100);
+  }
+
+  function loadScenarioRound() {
+    if (scenarioCurrent >= 5) { endGame("🎉 情境挑戰通關成功！"); return; }
+    const sc = scenarioPool[Math.floor(Math.random() * scenarioPool.length)];
+    document.getElementById('target-display').textContent = sc.text;
+    const correctObj = emotionPool.find(e => e.id === sc.targetId);
+    const distractors = shuffle(emotionPool.filter(e => e.id !== sc.targetId)).slice(0, 8);
+    const gridItems = shuffle([correctObj, ...distractors]);
+    const grid = document.getElementById('grid');
+    grid.className = `grid cols-3`; grid.innerHTML = '';
+    gridItems.forEach(item => {
+      const cell = document.createElement('div');
+      cell.className = 'cell'; cell.textContent = item.icon;
+      cell.onclick = () => handleScenarioClick(item, cell, correctObj);
+      grid.appendChild(cell);
+    });
+  }
+
+  function handleScenarioClick(item, cell, correctObj) {
+    if (item.id === correctObj.id) { playCorrectSound(); scenarioCurrent++; loadScenarioRound(); }
+    else {
+      playWrongSound(); penaltySeconds += 2; wrongCount++;
+      cell.classList.remove('wrong'); void cell.offsetWidth; cell.classList.add('wrong');
+    }
+  }
+
+  // ================= 模式四：記憶翻牌配對 =================
+  function startMemoryGame() {
+    initAudio(); startBGM();
+    firstCard = null; secondCard = null; lockBoard = false; matchedPairsCount = 0;
+    penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
+    document.getElementById('overlay').style.display = 'none';
+    document.getElementById('target-label').textContent = "配對進度";
+    const selectedEmotions = shuffle(emotionPool).slice(0, 8);
+    let cardDeck = [];
+    selectedEmotions.forEach(emo => {
+      cardDeck.push({ id: emo.id, icon: emo.icon });
+      cardDeck.push({ id: emo.id, icon: emo.icon });
+    });
+    memoryCards = shuffle(cardDeck);
+    updateMemoryProgress();
+    renderMemoryGrid();
+    clearInterval(timerId); timerId = setInterval(updateTimer, 100);
+  }
+
+  function updateMemoryProgress() {
+    document.getElementById('target-display').textContent = `已配對 ${matchedPairsCount} / 8 對`;
+  }
+
+  function renderMemoryGrid() {
+    const grid = document.getElementById('grid');
+    grid.className = `grid cols-4`; grid.innerHTML = '';
+    memoryCards.forEach((card, index) => {
+      const cardEl = document.createElement('div');
+      cardEl.className = 'memory-card'; cardEl.dataset.index = index; cardEl.dataset.id = card.id;
+      cardEl.textContent = '❓'; cardEl.onclick = () => flipCard(cardEl, card);
+      grid.appendChild(cardEl);
+    });
+  }
+
+  function flipCard(cardEl, card) {
+    if (lockBoard || cardEl === firstCard || cardEl.classList.contains('matched')) return;
+    cardEl.classList.add('flipped'); cardEl.textContent = card.icon;
+    if (!firstCard) { firstCard = cardEl; return; }
+    secondCard = cardEl;
+    const isMatch = firstCard.dataset.id === secondCard.dataset.id;
+    if (isMatch) {
+      playCorrectSound(); firstCard.classList.add('matched'); secondCard.classList.add('matched');
+      matchedPairsCount++; updateMemoryProgress();
+      firstCard = null; secondCard = null;
+      if (matchedPairsCount === 8) endGame("🧠 記憶翻牌配對全數成功！");
+    } else {
+      playWrongSound(); lockBoard = true; penaltySeconds += 2; wrongCount++;
+      setTimeout(() => {
+        firstCard.classList.remove('flipped'); firstCard.textContent = '❓';
+        secondCard.classList.remove('flipped'); secondCard.textContent = '❓';
+        firstCard = null; secondCard = null; lockBoard = false;
+      }, 900);
+    }
+  }
+
+  // ================= 模式五：心情日記與每日一籤 =================
+  function openJournalModal() {
+    stopBGM();
+    const savedDiary = localStorage.getItem('my_emotion_diary') || '';
+    document.getElementById('overlay').style.display = 'flex';
+    document.getElementById('modal-content').innerHTML = `
+      <h2>📖 心情日記與每日一籤</h2>
+      <p>寫下今天的感受，或是前往心閱網抽籤：</p>
+      <textarea id="diary-input" placeholder="今天心情怎麼樣？寫下來沉澱一下吧...">${savedDiary}</textarea>
+      <button class="menu-btn primary" onclick="saveDiary()">儲存日記</button>
+      <div style="margin-top: 10px;">
+        <a href="https://www.bwpublish.com/random-quote" target="_blank" class="menu-btn" style="background: #0284c7; color: #fff;">🥠 前往抽取今日心靈籤詩 (原文連結)</a>
+      </div>
+      <button class="back-menu" onclick="showMainMenu()">返回主選單</button>
+    `;
+  }
+
+  function saveDiary() {
+    localStorage.setItem('my_emotion_diary', document.getElementById('diary-input').value);
+    alert('心情日記已成功儲存！');
+  }
+
+  // ================= 模式六：心情故事集 (直接對應專屬原文連結) =================
+  function openStoryModal() {
+    stopBGM();
+    renderRandomStory();
+  }
+
+  function renderRandomStory() {
+    const randomStory = mindStories[Math.floor(Math.random() * mindStories.length)];
+    document.getElementById('overlay').style.display = 'flex';
+    document.getElementById('modal-content').innerHTML = `
+      <h2>📚 心情故事集</h2>
+      <div class="quote-box" style="border-left-color: #0284c7;">
+        <strong style="color: #38bdf8; display: block; margin-bottom: 6px;">${randomStory.title}</strong>
+        <p style="margin: 0 0 10px 0; font-size: 0.88rem; color: #cbd5e1; line-height: 1.5;">${randomStory.summary}</p>
+        <div style="text-align: right; border-top: 1px solid #1e293b; padding-top: 6px;">
+          <a href="${randomStory.url}" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; font-size: 0.85rem; text-decoration: underline;">🔗 點擊閱讀${randomStory.sourceType}原文</a>
+        </div>
+      </div>
+      <button class="menu-btn primary" onclick="renderRandomStory()">🔄 隨機閱讀下一篇摘要</button>
+      <button class="back-menu" onclick="showMainMenu()">返回主選單</button>
+    `;
+  }
+
+  // ================= 通用結算與計時 =================
+  function updateTimer() {
+    const elapsed = (Date.now() - startTime) / 1000 + penaltySeconds;
+    const mins = String(Math.floor(elapsed / 60)).padStart(2, '0');
+    const secs = (elapsed % 60).toFixed(1).padStart(4, '0');
+    document.getElementById('timer').textContent = `${mins}:${secs}`;
+  }
+
+  function renderGrid(items, clickHandler) {
+    const grid = document.getElementById('grid');
+    grid.className = `grid cols-4`; grid.innerHTML = '';
+    items.forEach(item => {
+      const cell = document.createElement('div');
+      cell.className = 'cell'; cell.textContent = item.icon;
+      cell.onclick = () => clickHandler(item, cell);
+      grid.appendChild(cell);
+    });
+  }
+
+  function endGame(titleMsg) {
+    clearInterval(timerId); stopBGM();
+    const totalTime = (Date.now() - startTime) / 1000 + penaltySeconds;
+    const mins = String(Math.floor(totalTime / 60)).padStart(2, '0');
+    const secs = (totalTime % 60).toFixed(1).padStart(4, '0');
+    document.getElementById('overlay').style.display = 'flex';
+    document.getElementById('modal-content').innerHTML = `
+      <h2>${titleMsg}</h2>
+      <p>總失誤次數：<strong style="color: #ef4444;">${wrongCount} 次</strong>（含加罰）<br>
+         最終通關時間：<br><strong style="color: #38bdf8; font-size: 1.3rem;">${mins}:${secs}</strong></p>
+      <button class="menu-btn primary" onclick="showMainMenu()">返回主選單</button>
+    `;
+  }
+</script>
+</body>
+</html>
+
