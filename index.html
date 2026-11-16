@@ -678,10 +678,13 @@
   .cat-home-cat.grooming { background-image: url('assets/orange-cat-groom.png?v=4'); animation: cat-home-groom .72s ease-in-out infinite alternate; }
   .cat-home-cat.stretching { background-image: url('assets/orange-cat-stretch.png?v=4'); animation: cat-home-stretch 1.5s ease-in-out; }
   .cat-home-cat.alert { background-image: url('assets/orange-cat-alert.png?v=4'); animation: cat-home-alert .75s ease-in-out infinite alternate; }
-  .cat-home-cat.sad, .cat-home-cat.unwell { background-image: url('assets/orange-cat-loaf.png?v=1'); animation: cat-home-sad 2.4s ease-in-out infinite; }
-  .cat-home-cat.bored { background-image: url('assets/orange-cat-curious.png?v=1'); animation: cat-home-curious 1.8s ease-in-out infinite alternate; }
-  .cat-home-cat.scared { background-image: url('assets/orange-cat-alert.png?v=4'); animation: cat-home-scare .7s ease-in-out infinite alternate; }
-  .cat-home-cat.tired { background-image: url('assets/orange-cat-sleep.png?v=3'); animation: cat-home-breathe 3.2s ease-in-out infinite; }
+  .cat-home-cat.sad, .cat-home-cat.bored, .cat-home-cat.scared, .cat-home-cat.angry, .cat-home-cat.tired, .cat-home-cat.unwell { background-image: url('assets/orange-cat-moods.webp?v=1'); background-size: 300% 200%; background-repeat: no-repeat; }
+  .cat-home-cat.sad { background-position: 0% 0%; animation: cat-home-sad 2.4s ease-in-out infinite; }
+  .cat-home-cat.bored { background-position: 50% 0%; animation: cat-home-bored 1.8s ease-in-out infinite; }
+  .cat-home-cat.scared { background-position: 100% 0%; animation: cat-home-scare .7s ease-in-out infinite alternate; }
+  .cat-home-cat.angry { background-position: 0% 100%; animation: cat-home-angry 1.1s ease-in-out infinite; }
+  .cat-home-cat.tired { background-position: 50% 100%; animation: cat-home-breathe 3.2s ease-in-out infinite; }
+  .cat-home-cat.unwell { background-position: 100% 100%; animation: cat-home-sad 3s ease-in-out infinite; }
   .cat-home-cat.loaf { background-image: url('assets/orange-cat-loaf.png?v=1'); animation: cat-home-breathe 2.8s ease-in-out infinite; }
   .cat-home-cat.curious { background-image: url('assets/orange-cat-curious.png?v=1'); animation: cat-home-curious 1.25s ease-in-out infinite alternate; }
   .cat-home-cat.being-held { z-index: 10003; background-image: url('assets/orange-cat-held.png?v=1'); background-size: contain; animation: cat-home-held .34s ease-in-out infinite alternate; cursor: grabbing; touch-action: none; }
@@ -693,7 +696,10 @@
   @keyframes cat-home-stretch { 50% { transform: translate(-50%, -47%) scaleX(var(--face)) scaleX(1.08); } }
   @keyframes cat-home-alert { to { transform: translate(-50%, -52%) scaleX(var(--face)); } }
   @keyframes cat-home-sad { 50% { transform: translate(-50%, -48%) scaleX(var(--face)) scale(.99); } }
+  @keyframes cat-home-bored { 50% { transform: translate(-50%, -50%) scaleX(var(--face)) rotate(-1deg) translateY(2px); } }
   @keyframes cat-home-scare { to { transform: translate(-50%, -52%) scaleX(var(--face)) rotate(1deg); } }
+  @keyframes cat-home-angry { 25% { transform: translate(-50%, -50%) scaleX(var(--face)) rotate(-1.5deg); } 75% { transform: translate(-50%, -50%) scaleX(var(--face)) rotate(1.5deg); } }
+  @keyframes cat-home-comforted { 0% { opacity: .5; transform: translate(-50%, -50%) scaleX(var(--face)) scale(.94); } 55% { opacity: 1; transform: translate(-50%, -52%) scaleX(var(--face)) scale(1.045); } 100% { opacity: 1; transform: translate(-50%, -50%) scaleX(var(--face)) scale(1); } }
   @keyframes cat-home-curious { to { transform: translate(-50%, -52%) scaleX(var(--face)) rotate(1deg); } }
   @keyframes cat-home-held { from { transform: translate(-50%,-50%) rotate(-3deg) scale(.98); } to { transform: translate(-50%,-53%) rotate(3deg) scale(1.01); } }
   .cat-bubble {
@@ -745,10 +751,22 @@
   .cat-companion-choice:focus-visible, .cat-companion-close:focus-visible { outline: 3px solid #38bdf8; outline-offset: 3px; }
   .cat-companion-close { margin-top: 13px; border: 0; background: transparent; color: #e4d6db; font: inherit; font-size: .84rem; text-decoration: underline; cursor: pointer; }
   .cat-mood-tag { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 10px; padding: 5px 10px; border: 1px solid rgba(255,226,188,.34); border-radius: 999px; background: rgba(255,247,237,.08); color: #ffdfaa; font-size: .78rem; font-weight: 800; }
+  .cat-mood-portrait { display: block; width: clamp(120px, 22vw, 166px); height: clamp(180px, 33vw, 249px); margin: -2px auto 8px; background-repeat: no-repeat; background-position: center; background-size: contain; filter: drop-shadow(0 8px 9px rgba(9,12,24,.3)); animation: cat-mood-arrive .42s cubic-bezier(.2,.75,.25,1) both; }
+  .cat-mood-portrait.mood-sad, .cat-mood-portrait.mood-bored, .cat-mood-portrait.mood-scared, .cat-mood-portrait.mood-angry, .cat-mood-portrait.mood-tired, .cat-mood-portrait.mood-unwell { background-image: url('assets/orange-cat-moods.webp?v=1'); background-size: 300% 200%; }
+  .cat-mood-portrait.mood-sad { background-position: 0% 0%; }
+  .cat-mood-portrait.mood-bored { background-position: 50% 0%; }
+  .cat-mood-portrait.mood-scared { background-position: 100% 0%; }
+  .cat-mood-portrait.mood-angry { background-position: 0% 100%; }
+  .cat-mood-portrait.mood-tired { background-position: 50% 100%; }
+  .cat-mood-portrait.mood-unwell { background-position: 100% 100%; }
+  .cat-mood-portrait.settled { animation: cat-home-comforted .8s ease-out both; }
+  @keyframes cat-mood-arrive { from { opacity: 0; transform: translateY(8px) scale(.94); } to { opacity: 1; transform: translateY(0) scale(1); } }
   .cat-mood-replies { display: grid; gap: 8px; }
   .cat-mood-replies .cat-companion-choice { min-height: 48px; }
   .cat-mood-secondary { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 14px; }
   .cat-mood-secondary .cat-companion-close { margin-top: 10px; }
+  .cat-companion-dialog { overflow-y: auto; }
+  .cat-companion-card { max-height: 100%; overflow-y: auto; }
   .cat-breath-orb-wrap { display: grid; place-items: center; min-height: 188px; }
   .cat-breath-orb { display: grid; place-items: center; width: 132px; aspect-ratio: 1; border: 1px solid rgba(255,236,197,.78); border-radius: 50%; background: radial-gradient(circle at 35% 30%,#fff3cd,#f6c881 56%,#dc987b); color: #593c3d; font-size: 2.6rem; box-shadow: 0 0 35px rgba(255,202,135,.26), inset 0 3px 9px rgba(255,255,255,.58); animation: cat-breath-cycle 7s ease-in-out infinite; }
   @keyframes cat-breath-cycle { 0%,100% { transform: scale(.86); opacity: .82; } 50% { transform: scale(1.12); opacity: 1; } }
@@ -913,6 +931,7 @@
       <div id="cat-mood-panel" hidden>
         <span class="cat-mood-tag" id="cat-mood-tag">🐾 小橘貓的心情</span>
         <h3 id="cat-mood-title">今天的小橘貓</h3>
+        <div class="cat-mood-portrait" id="cat-mood-portrait" role="img" aria-label="小橘貓情緒姿態"></div>
         <p id="cat-mood-prompt" role="status" aria-live="polite"></p>
         <div class="cat-mood-replies" id="cat-mood-replies"></div>
         <div class="cat-mood-secondary">
@@ -2202,7 +2221,7 @@
       ]
     },
     {
-      id: 'angry', label: '有點煩躁', icon: '🌧️', pose: 'alert',
+      id: 'angry', label: '有點煩躁', icon: '🌧️', pose: 'angry',
       prompt: '我現在有點煩，不太想被碰。可以先讓我緩一緩嗎？',
       replies: [
         ['☁️ 給我一點自己的空間', '謝謝你尊重我。我安靜待了一下，心裡慢慢沒那麼緊了。', 5],
@@ -2261,6 +2280,11 @@
     clearTimeout(catHomeMoveTimer);
     clearTimeout(catHomeApproachTimer);
     setCatHomePose(scenario.pose);
+    const portrait = document.getElementById('cat-mood-portrait');
+    portrait.className = 'cat-mood-portrait mood-' + scenario.id;
+    portrait.setAttribute('aria-label', (catState.name || '小橘貓') + '呈現' + scenario.label + '的姿態');
+    portrait.classList.remove('settled');
+    void portrait.offsetWidth;
     document.getElementById('cat-mood-tag').textContent = scenario.icon + ' ' + scenario.label;
     document.getElementById('cat-mood-title').textContent = (catState.name || '小橘貓') + '今天的心情';
     document.getElementById('cat-mood-prompt').textContent = scenario.prompt;
@@ -2293,7 +2317,20 @@
     saveCatState();
     clearTimeout(catHomeTimer);
     const recoveryPose = moodId === 'bored' ? 'happy' : (moodId === 'tired' || moodId === 'unwell' ? 'sleeping' : 'loaf');
+    const cat = document.getElementById('cat-home-cat');
     setCatHomePose(recoveryPose);
+    cat.style.animation = 'cat-home-comforted .9s ease-out';
+    setTimeout(function () { cat.style.removeProperty('animation'); }, 950);
+    const portrait = document.getElementById('cat-mood-portrait');
+    const recoveryImage = moodId === 'bored' ? 'orange-cat-happy.png?v=3' : (moodId === 'tired' || moodId === 'unwell' ? 'orange-cat-sleep.png?v=3' : 'orange-cat-idle.png?v=3');
+    portrait.className = 'cat-mood-portrait';
+    portrait.style.backgroundImage = 'url("assets/' + recoveryImage + '")';
+    portrait.style.backgroundPosition = 'center';
+    portrait.style.backgroundSize = 'contain';
+    portrait.setAttribute('aria-label', name + (moodId === 'bored' ? '開心地陪你玩' : (moodId === 'tired' || moodId === 'unwell' ? '安心休息' : '慢慢放鬆下來')));
+    portrait.classList.remove('settled');
+    void portrait.offsetWidth;
+    portrait.classList.add('settled');
     setCatBubble(name + '慢慢平靜下來了。');
     document.getElementById('cat-mood-tag').textContent = '💛 謝謝你的陪伴';
     document.getElementById('cat-mood-title').textContent = '小小的陪伴，也很重要';
