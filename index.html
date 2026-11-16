@@ -418,7 +418,8 @@
   .cat-growth-top { display: flex; justify-content: space-between; gap: 8px; font-size: .78rem; font-weight: 800; }
   .cat-growth-track { height: 8px; margin: 5px 0 3px; overflow: hidden; border-radius: 999px; background: #475569; }
   .cat-growth-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #f59e0b, #fbbf24); transition: width .45s ease; }
-  .cat-growth-note { color: #cbd5e1; font-size: .7rem; }
+  .cat-growth-note { display: flex; justify-content: space-between; gap: 8px; color: #cbd5e1; font-size: .7rem; }
+  .cat-calendar { margin-top: 3px; color: #fde68a; font-size: .72rem; text-align: center; }
   .cat-stat {
     border: 1px solid rgba(255,255,255,.18);
     border-radius: 999px;
@@ -658,7 +659,8 @@
   <div class="cat-growth" aria-label="小橘貓成長進度">
     <div class="cat-growth-top"><span id="cat-growth-label">🐣 幼貓</span><span id="cat-growth-xp">0 / 8 經驗</span></div>
     <div class="cat-growth-track" role="progressbar" id="cat-growth-progress" aria-label="成長進度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="cat-growth-fill" id="cat-growth-fill"></div></div>
-    <div class="cat-growth-note" id="cat-growth-note">今天陪伴 0 / 4 種活動</div>
+    <div class="cat-growth-note"><span id="cat-days-raised">🐾 陪伴第 1 天</span><span id="cat-growth-note">今天陪伴 0 / 4 種活動</span></div>
+    <div class="cat-calendar" id="cat-calendar" aria-label="今日國曆與農曆日期"></div>
   </div>
   <div class="cat-room" id="cat-room">
     <div class="shoji-window" aria-hidden="true"></div>
@@ -1146,6 +1148,13 @@
   catState.affection = Number(catState.affection) || 0;
   catState.mood = Number.isFinite(Number(catState.mood)) ? Number(catState.mood) : 60;
   catState.experience = Math.max(0, Number(catState.experience) || 0);
+  function localDateKey(date) {
+    return date.getFullYear() + '-' + String(date.getMonth() + 1).padStart(2, '0') + '-' + String(date.getDate()).padStart(2, '0');
+  }
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(catState.adoptedOn || '')) {
+    catState.adoptedOn = localDateKey(new Date());
+    localStorage.setItem('emotion_magic_cat', JSON.stringify(catState));
+  }
 
   function getCatGrowthStage(experience) {
     if (experience >= 24) return { key: 'adult', label: '🐈 成貓', start: 24, next: 24 };
@@ -1154,7 +1163,7 @@
   }
 
   function getCatDailyActivities() {
-    const today = new Date().toLocaleDateString('en-CA');
+    const today = localDateKey(new Date());
     let data;
     try { data = JSON.parse(localStorage.getItem('emotion_magic_cat_daily') || '{}'); } catch (e) { data = {}; }
     if (data.date !== today) data = { date: today, activities: {} };
@@ -1175,6 +1184,19 @@
     document.getElementById('cat-growth-progress').setAttribute('aria-valuenow', String(percent));
     const activities = getCatDailyActivities().activities;
     document.getElementById('cat-growth-note').textContent = '今天陪伴 ' + Object.keys(activities).length + ' / 4 種活動';
+    const adoptedParts = catState.adoptedOn.split('-').map(Number);
+    const todayParts = localDateKey(new Date()).split('-').map(Number);
+    const adoptedDay = Date.UTC(adoptedParts[0], adoptedParts[1] - 1, adoptedParts[2]);
+    const today = Date.UTC(todayParts[0], todayParts[1] - 1, todayParts[2]);
+    const daysRaised = Math.max(1, Math.floor((today - adoptedDay) / 86400000) + 1);
+    document.getElementById('cat-days-raised').textContent = '🐾 陪伴第 ' + daysRaised + ' 天';
+    const now = new Date();
+    const calendarDate = new Intl.DateTimeFormat('zh-TW', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'Asia/Taipei' }).format(now);
+    let lunarDate = '農曆日期無法顯示';
+    try {
+      lunarDate = new Intl.DateTimeFormat('zh-TW-u-ca-chinese', { month: 'long', day: 'numeric', timeZone: 'Asia/Taipei' }).format(now);
+    } catch (e) {}
+    document.getElementById('cat-calendar').textContent = '📅 ' + calendarDate + '・農曆 ' + lunarDate;
     const cat = document.getElementById('cat-home-cat');
     if (cat) {
       cat.classList.toggle('growth-juvenile', stage.key === 'juvenile');
