@@ -109,7 +109,7 @@
     bottom: 10px;
     width: auto;
     height: 132px;
-    z-index: 30;
+    z-index: 10000;
     pointer-events: none;
   }
   .cat-sprite {
@@ -338,6 +338,232 @@
     margin-top: 8px;
     text-decoration: underline;
   }
+
+  /* 小橘貓之家：日式室內活動空間 */
+  .cat-home {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    padding: max(10px, env(safe-area-inset-top)) 12px max(12px, env(safe-area-inset-bottom));
+    background: linear-gradient(180deg, #17233a 0%, #0f172a 100%);
+    color: #422006;
+    overflow: hidden;
+  }
+  .cat-home.is-open { display: flex; }
+  body.cat-home-open { padding: 0; overflow: hidden; }
+  body.cat-home-open > .container,
+  body.cat-home-open > .audio-control,
+  body.cat-home-open > .cat-companion,
+  body.cat-home-open > .overlay {
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .cat-home-header {
+    width: min(760px, 100%);
+    margin: 0 auto;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    color: #fff7ed;
+  }
+  .cat-home-title { margin: 0; font-size: clamp(1.25rem, 5vw, 1.65rem); }
+  .cat-home-back {
+    border: 1px solid #64748b;
+    border-radius: 999px;
+    padding: 9px 12px;
+    background: #1e293b;
+    color: #f8fafc;
+    font-weight: 800;
+    cursor: pointer;
+  }
+  .cat-home-stats { display: flex; gap: 6px; }
+  .cat-stat {
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 999px;
+    padding: 7px 9px;
+    background: rgba(15,23,42,.68);
+    color: #fff7ed;
+    font-size: .8rem;
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .cat-room {
+    position: relative;
+    flex: 1;
+    width: min(760px, 100%);
+    min-height: 360px;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 4px solid #78350f;
+    border-radius: 24px;
+    background:
+      linear-gradient(90deg, transparent 49.6%, rgba(120,53,15,.18) 50%, transparent 50.4%),
+      linear-gradient(#fde68a 0 57%, #d9f99d 57% 59%, #e7d7a5 59% 100%);
+    box-shadow: inset 0 0 0 3px #fef3c7, 0 16px 30px rgba(0,0,0,.3);
+  }
+  .cat-room::after {
+    content: "";
+    position: absolute;
+    inset: 59% 0 0;
+    z-index: 0;
+    background:
+      linear-gradient(90deg, transparent 49%, rgba(120,53,15,.18) 50%, transparent 51%),
+      repeating-linear-gradient(0deg, transparent 0 68px, rgba(120,53,15,.18) 69px 71px),
+      #d8c99a;
+  }
+  .room-beam {
+    position: absolute;
+    left: 0; right: 0; top: 56%;
+    z-index: 2;
+    height: 12px;
+    background: #92400e;
+    box-shadow: 0 2px 0 #fbbf24;
+  }
+  .shoji-window {
+    position: absolute;
+    top: 7%;
+    left: 7%;
+    width: 42%;
+    height: 37%;
+    z-index: 1;
+    border: 8px solid #78350f;
+    border-radius: 5px;
+    background:
+      linear-gradient(90deg, transparent 48%, #92400e 49% 52%, transparent 53%),
+      linear-gradient(transparent 47%, #92400e 48% 52%, transparent 53%),
+      linear-gradient(145deg, #bae6fd, #fff7ed 70%);
+    box-shadow: inset 0 0 0 4px rgba(255,255,255,.45);
+  }
+  .shoji-window::after {
+    content: "☁️  ☀️";
+    position: absolute;
+    inset: 14% 8%;
+    color: #fff;
+    font-size: clamp(1.2rem, 6vw, 2.4rem);
+    letter-spacing: 12px;
+    opacity: .9;
+  }
+  .room-shelf {
+    position: absolute;
+    z-index: 3;
+    top: 13%;
+    right: 7%;
+    width: 30%;
+    padding: 10px 8px;
+    border: 5px solid #78350f;
+    border-radius: 8px;
+    background: #fef3c7;
+    text-align: center;
+    font-size: clamp(1.2rem, 6vw, 2rem);
+    letter-spacing: 4px;
+  }
+  .room-object {
+    position: absolute;
+    z-index: 6;
+    border: 0;
+    background: transparent;
+    color: #713f12;
+    font: inherit;
+    font-weight: 900;
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+  .room-object span {
+    display: block;
+    padding: 3px 7px;
+    border-radius: 999px;
+    background: rgba(255,247,237,.88);
+    font-size: .7rem;
+  }
+  .room-object .room-emoji {
+    padding: 0;
+    background: transparent;
+    font-size: clamp(2.2rem, 13vw, 4.5rem);
+    filter: drop-shadow(0 5px 3px rgba(69,26,3,.22));
+  }
+  .room-object:focus-visible { outline: 4px solid #0ea5e9; outline-offset: 3px; border-radius: 12px; }
+  .spot-window { left: 10%; top: 39%; }
+  .spot-toy { left: 12%; bottom: 5%; }
+  .spot-bed { right: 7%; bottom: 6%; }
+  .spot-bowl { right: 28%; bottom: 3%; }
+  .cat-home-cat {
+    position: absolute;
+    z-index: 10002;
+    left: 50%;
+    top: 69%;
+    width: clamp(92px, 24vw, 132px);
+    aspect-ratio: 1;
+    border: 0;
+    background-image: url('assets/orange-cat-sprite.png');
+    background-repeat: no-repeat;
+    background-size: 400% 100%;
+    background-position: 0 0;
+    filter: drop-shadow(0 8px 5px rgba(69,26,3,.28));
+    transform: translate(-50%, -50%);
+    transition: left 1.15s ease-in-out, top 1.15s ease-in-out;
+    pointer-events: auto;
+    cursor: pointer;
+    animation: cat-home-step .55s ease-in-out infinite alternate;
+  }
+  .cat-home-cat.sitting { background-position: 33.33% 0; animation: cat-home-breathe 1.8s ease-in-out infinite; }
+  .cat-home-cat.sleeping { background-position: 66.66% 0; animation: cat-home-breathe 2.4s ease-in-out infinite; }
+  .cat-home-cat.eating { background-position: 100% 0; animation: cat-home-nibble .32s ease-in-out infinite alternate; }
+  .cat-home-cat.happy { background-position: 33.33% 0; animation: cat-home-happy .45s ease-in-out 4 alternate; }
+  @keyframes cat-home-step { to { transform: translate(-50%, calc(-50% - 5px)) rotate(-1deg); } }
+  @keyframes cat-home-breathe { 50% { transform: translate(-50%, -50%) scale(1.025); } }
+  @keyframes cat-home-nibble { to { transform: translate(-50%, -47%) rotate(2deg); } }
+  @keyframes cat-home-happy { to { transform: translate(-50%, calc(-50% - 13px)) rotate(3deg); } }
+  .cat-bubble {
+    position: absolute;
+    z-index: 10003;
+    left: 50%;
+    top: 47%;
+    max-width: 78%;
+    transform: translateX(-50%);
+    padding: 8px 12px;
+    border: 2px solid #f59e0b;
+    border-radius: 16px 16px 16px 4px;
+    background: rgba(255,247,237,.96);
+    color: #78350f;
+    font-size: .82rem;
+    font-weight: 800;
+    text-align: center;
+    box-shadow: 0 5px 12px rgba(69,26,3,.18);
+    pointer-events: none;
+  }
+  .cat-home-actions {
+    width: min(760px, 100%);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 7px;
+  }
+  .cat-home-action {
+    min-height: 50px;
+    border: 1px solid #fbbf24;
+    border-radius: 14px;
+    background: #fff7ed;
+    color: #78350f;
+    font-size: .88rem;
+    font-weight: 900;
+    cursor: pointer;
+  }
+  .cat-home-action:active { transform: translateY(2px); }
+  @media (max-height: 620px) {
+    .cat-home-header { min-height: 42px; }
+    .cat-home-title { font-size: 1.1rem; }
+    .cat-room { min-height: 280px; }
+    .cat-home-action { min-height: 42px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cat-home-cat { transition-duration: .01ms; animation: none !important; }
+  }
+
 </style>
 </head>
 <body>
@@ -367,6 +593,44 @@
     <button class="cat-feed" onclick="feedCat()">餵食</button>
   </div>
 </div>
+
+
+<section class="cat-home" id="cat-home" aria-hidden="true" aria-label="小橘貓之家">
+  <header class="cat-home-header">
+    <button class="cat-home-back" onclick="closeCatHome()">← 返回</button>
+    <h2 class="cat-home-title">🐱 小橘貓之家</h2>
+    <div class="cat-home-stats" aria-label="小橘貓狀態">
+      <span class="cat-stat" id="cat-home-food">🐟 0</span>
+      <span class="cat-stat" id="cat-home-affection">💛 0</span>
+    </div>
+  </header>
+  <div class="cat-room" id="cat-room">
+    <div class="shoji-window" aria-hidden="true"></div>
+    <div class="room-shelf" aria-hidden="true">🪴 📚 🧶</div>
+    <div class="room-beam" aria-hidden="true"></div>
+    <button class="room-object spot-window" onclick="moveCatHomeTo('window')" aria-label="到窗邊看風景">
+      <span class="room-emoji">🪟</span><span>窗邊</span>
+    </button>
+    <button class="room-object spot-toy" onclick="moveCatHomeTo('toy')" aria-label="玩毛線球">
+      <span class="room-emoji">🧶</span><span>玩具</span>
+    </button>
+    <button class="room-object spot-bowl" onclick="moveCatHomeTo('bowl')" aria-label="到食物碗">
+      <span class="room-emoji">🥣</span><span>食物碗</span>
+    </button>
+    <button class="room-object spot-bed" onclick="moveCatHomeTo('bed')" aria-label="到貓窩休息">
+      <span class="room-emoji">🧺</span><span>貓窩</span>
+    </button>
+    <button class="cat-home-cat sitting" id="cat-home-cat" onclick="catHomeAction('pet')" aria-label="摸摸小橘貓"></button>
+    <div class="cat-bubble" id="cat-bubble" role="status">歡迎回家，摸摸我吧！</div>
+  </div>
+  <nav class="cat-home-actions" aria-label="小橘貓互動">
+    <button class="cat-home-action" onclick="catHomeAction('walk')">🐾 散步</button>
+    <button class="cat-home-action" onclick="catHomeAction('pet')">🤲 摸摸</button>
+    <button class="cat-home-action" onclick="catHomeAction('feed')">🐟 餵食</button>
+    <button class="cat-home-action" onclick="catHomeAction('sleep')">🌙 睡覺</button>
+  </nav>
+</section>
+
 
 <div class="overlay" id="overlay">
   <div class="modal" id="modal-content"></div>
@@ -830,10 +1094,22 @@
   let lockBoard = false;
   let matchedPairsCount = 0;
 
-  let catState = JSON.parse(localStorage.getItem('emotion_magic_cat') || '{"food":0,"affection":0}');
+  let catState = JSON.parse(localStorage.getItem('emotion_magic_cat') || '{"food":0,"affection":0,"mood":60}');
+  catState.food = Number(catState.food) || 0;
+  catState.affection = Number(catState.affection) || 0;
+  catState.mood = Number.isFinite(Number(catState.mood)) ? Number(catState.mood) : 60;
 
   function updateCatUI() {
-    document.getElementById('cat-food').textContent = `🐟 ${catState.food}`;
+    document.getElementById('cat-food').textContent = '🐟 ' + catState.food;
+    const homeFood = document.getElementById('cat-home-food');
+    const homeAffection = document.getElementById('cat-home-affection');
+    if (homeFood) homeFood.textContent = '🐟 ' + catState.food;
+    if (homeAffection) homeAffection.textContent = '💛 ' + catState.affection;
+  }
+
+  function saveCatState() {
+    localStorage.setItem('emotion_magic_cat', JSON.stringify(catState));
+    updateCatUI();
   }
 
   function awardCatFood(amount) {
@@ -849,11 +1125,108 @@
       setTimeout(() => sprite.className = 'cat-sprite', 1200);
       return;
     }
-    catState.food -= 3; catState.affection++;
-    localStorage.setItem('emotion_magic_cat', JSON.stringify(catState));
-    updateCatUI();
+    catState.food -= 3;
+    catState.affection++;
+    catState.mood = Math.min(100, catState.mood + 8);
+    saveCatState();
     sprite.className = 'cat-sprite eating';
     setTimeout(() => sprite.className = 'cat-sprite', 1600);
+  }
+
+
+  let catHomeTimer = null;
+  let catHomeMoveTimer = null;
+  const catHomeSpots = {
+    center: { x: 50, y: 72, pose: 'sitting', message: '今天也一起慢慢來。' },
+    window: { x: 28, y: 52, pose: 'sitting', message: '窗外的雲慢慢飄過去了。' },
+    toy: { x: 25, y: 78, pose: 'happy', message: '毛線球滾走啦！' },
+    bowl: { x: 63, y: 80, pose: 'eating', message: '聞起來好香！' },
+    bed: { x: 83, y: 76, pose: 'sleeping', message: '這裡暖暖的，想睡一下。' }
+  };
+
+  function setCatBubble(message) {
+    const bubble = document.getElementById('cat-bubble');
+    if (bubble) bubble.textContent = message;
+  }
+
+  function setCatHomePose(pose) {
+    const cat = document.getElementById('cat-home-cat');
+    if (!cat) return;
+    cat.className = 'cat-home-cat ' + (pose || '');
+  }
+
+  function moveCatHomeTo(name, customMessage) {
+    const spot = catHomeSpots[name] || catHomeSpots.center;
+    const cat = document.getElementById('cat-home-cat');
+    if (!cat) return;
+    clearTimeout(catHomeMoveTimer);
+    setCatHomePose('');
+    cat.style.left = spot.x + '%';
+    cat.style.top = spot.y + '%';
+    setCatBubble(customMessage || '小橘貓正走過去……');
+    catHomeMoveTimer = setTimeout(function () {
+      setCatHomePose(spot.pose);
+      setCatBubble(customMessage || spot.message);
+    }, 1180);
+  }
+
+  function scheduleCatHomeRoaming() {
+    clearInterval(catHomeTimer);
+    const names = ['center', 'window', 'toy', 'bed'];
+    catHomeTimer = setInterval(function () {
+      const next = names[Math.floor(Math.random() * names.length)];
+      moveCatHomeTo(next);
+    }, 4800);
+  }
+
+  function openCatHome() {
+    clearInterval(timerId);
+    document.body.classList.remove('menu-open');
+    document.body.classList.add('cat-home-open');
+    document.getElementById('overlay').style.display = 'none';
+    const home = document.getElementById('cat-home');
+    home.classList.add('is-open');
+    home.setAttribute('aria-hidden', 'false');
+    updateCatUI();
+    moveCatHomeTo('center', '歡迎回家，摸摸我吧！');
+    scheduleCatHomeRoaming();
+  }
+
+  function closeCatHome() {
+    clearInterval(catHomeTimer);
+    clearTimeout(catHomeMoveTimer);
+    document.body.classList.remove('cat-home-open');
+    const home = document.getElementById('cat-home');
+    home.classList.remove('is-open');
+    home.setAttribute('aria-hidden', 'true');
+    showMainMenu();
+  }
+
+  function catHomeAction(action) {
+    clearInterval(catHomeTimer);
+    if (action === 'walk') {
+      moveCatHomeTo(['window', 'toy', 'center'][Math.floor(Math.random() * 3)], '一起在房間散步吧！');
+    } else if (action === 'pet') {
+      catState.mood = Math.min(100, catState.mood + 5);
+      catState.affection += 1;
+      saveCatState();
+      setCatHomePose('happy');
+      setCatBubble('呼嚕呼嚕～好喜歡你！');
+    } else if (action === 'feed') {
+      if (catState.food < 3) {
+        setCatHomePose('sitting');
+        setCatBubble('還需要 3 份貓糧，可以玩遊戲或讀故事獲得。');
+      } else {
+        catState.food -= 3;
+        catState.affection += 2;
+        catState.mood = Math.min(100, catState.mood + 8);
+        saveCatState();
+        moveCatHomeTo('bowl', '謝謝你，開動囉！');
+      }
+    } else if (action === 'sleep') {
+      moveCatHomeTo('bed', '晚安，陪我休息一下。');
+    }
+    setTimeout(scheduleCatHomeRoaming, 5600);
   }
 
   showMainMenu();
@@ -890,6 +1263,7 @@
       <button class="menu-btn" onclick="startMemoryGame()">4️⃣ 🧠 記憶翻牌配對遊戲</button>
       <button class="menu-btn" onclick="openJournalModal()">5️⃣ 心情日記與每日一籤 📖</button>
       <button class="menu-btn" onclick="openStoryModal()" style="background: #0284c7; color: #fff;">6️⃣ 📚 心情故事集 (精華摘要與原文連結)</button>
+      <button class="menu-btn" onclick="openCatHome()" style="background: #f59e0b; color: #451a03; border-color: #fbbf24;">7️⃣ 🐱 小橘貓之家</button>
     `;
   }
 
