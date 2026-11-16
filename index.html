@@ -109,7 +109,7 @@
     bottom: 10px;
     width: auto;
     height: 118px;
-    z-index: 19;
+    z-index: 30;
     pointer-events: none;
   }
   .cat-sprite {
@@ -155,6 +155,20 @@
   @keyframes cat-wander {
     from { transform: translateX(0); }
     to { transform: translateX(calc(100vw - 150px)); }
+  }
+  .menu-open .cat-companion {
+    top: 8px;
+    right: 8px;
+    left: auto;
+    bottom: auto;
+    width: 86px;
+    height: 86px;
+  }
+  .menu-open .cat-sprite {
+    width: 64px;
+    height: 64px;
+    bottom: 18px;
+    animation: none;
   }
 
   .grid {
@@ -861,6 +875,7 @@
   }
 
   function showMainMenu() {
+    document.body.classList.add('menu-open');
     document.getElementById('timer').textContent = "00:00.0";
     document.getElementById('target-display').textContent = "請選擇";
     document.getElementById('grid').innerHTML = '';
@@ -880,6 +895,7 @@
 
   // ================= 模式一：依序尋找 =================
   function startSequentialGame() {
+    document.body.classList.remove('menu-open');
     initAudio(); startBGM();
     seqQueue = shuffle(emotionPool);
     seqIndex = 0; penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
@@ -912,6 +928,7 @@
 
   // ================= 模式二：情緒找碴 =================
   function startDiffGame() {
+    document.body.classList.remove('menu-open');
     initAudio(); startBGM();
     diffRound = 1; penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
     document.getElementById('overlay').style.display = 'none';
@@ -954,6 +971,7 @@
 
   // ================= 模式三：情境對號入座 =================
   function startScenarioGame() {
+    document.body.classList.remove('menu-open');
     initAudio(); startBGM();
     scenarioCurrent = 0; penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
     document.getElementById('overlay').style.display = 'none';
@@ -989,6 +1007,7 @@
 
   // ================= 模式四：記憶翻牌配對 =================
   function startMemoryGame() {
+    document.body.classList.remove('menu-open');
     initAudio(); startBGM();
     firstCard = null; secondCard = null; lockBoard = false; matchedPairsCount = 0;
     penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
