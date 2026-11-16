@@ -1614,6 +1614,7 @@
 
   function closeCatVisit() {
     clearTimeout(catVisitTimer);
+    document.getElementById('cat-visit-stage').classList.remove('playing');
     document.body.classList.remove('cat-visit-open');
     const visit = document.getElementById('cat-visit');
     visit.classList.remove('is-open');
