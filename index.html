@@ -102,6 +102,60 @@
     vertical-align: middle;
   }
 
+  .cat-companion {
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    width: 118px;
+    height: 118px;
+    z-index: 5;
+    pointer-events: none;
+  }
+  .cat-sprite {
+    position: absolute;
+    left: 0;
+    bottom: 28px;
+    width: 86px;
+    height: 86px;
+    background-image: url('assets/orange-cat-sprite.png');
+    background-repeat: no-repeat;
+    background-size: 400% 100%;
+    background-position: 0 0;
+    animation: cat-wander 12s ease-in-out infinite alternate;
+  }
+  .cat-sprite.sitting { background-position: 33.33% 0; animation: none; }
+  .cat-sprite.sleeping { background-position: 66.66% 0; animation: none; }
+  .cat-sprite.eating { background-position: 100% 0; animation: none; }
+  .cat-panel {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(30, 41, 59, 0.92);
+    border: 1px solid #475569;
+    border-radius: 999px;
+    padding: 4px 7px;
+    color: #f8fafc;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    pointer-events: auto;
+  }
+  .cat-feed {
+    border: 0;
+    border-radius: 999px;
+    background: #f59e0b;
+    color: #451a03;
+    font-size: 0.72rem;
+    font-weight: bold;
+    padding: 3px 6px;
+  }
+  @keyframes cat-wander {
+    from { transform: translateX(0); }
+    to { transform: translateX(-24px); }
+  }
+
   .grid {
     display: grid;
     gap: 10px;
@@ -289,6 +343,14 @@
     </div>
   </div>
   <div class="grid cols-3" id="grid"></div>
+</div>
+
+<div class="cat-companion" aria-label="小橘貓陪伴區">
+  <div class="cat-sprite" id="cat-sprite"></div>
+  <div class="cat-panel">
+    <span id="cat-food">🐟 0</span>
+    <button class="cat-feed" onclick="feedCat()">餵食</button>
+  </div>
 </div>
 
 <div class="overlay" id="overlay">
@@ -753,7 +815,34 @@
   let lockBoard = false;
   let matchedPairsCount = 0;
 
+  let catState = JSON.parse(localStorage.getItem('emotion_magic_cat') || '{"food":0,"affection":0}');
+
+  function updateCatUI() {
+    document.getElementById('cat-food').textContent = `🐟 ${catState.food}`;
+  }
+
+  function awardCatFood(amount) {
+    catState.food += amount;
+    localStorage.setItem('emotion_magic_cat', JSON.stringify(catState));
+    updateCatUI();
+  }
+
+  function feedCat() {
+    const sprite = document.getElementById('cat-sprite');
+    if (catState.food < 3) {
+      sprite.className = 'cat-sprite sitting';
+      setTimeout(() => sprite.className = 'cat-sprite', 1200);
+      return;
+    }
+    catState.food -= 3; catState.affection++;
+    localStorage.setItem('emotion_magic_cat', JSON.stringify(catState));
+    updateCatUI();
+    sprite.className = 'cat-sprite eating';
+    setTimeout(() => sprite.className = 'cat-sprite', 1600);
+  }
+
   showMainMenu();
+  updateCatUI();
 
   function shuffle(array) {
     const arr = [...array];
@@ -982,6 +1071,7 @@
 
   function renderRandomStory() {
     const randomStory = mindStories[Math.floor(Math.random() * mindStories.length)];
+    awardCatFood(2);
     document.getElementById('overlay').style.display = 'flex';
     document.getElementById('modal-content').innerHTML = `
       <h2>📚 心情故事集</h2>
@@ -1018,6 +1108,7 @@
 
   function endGame(titleMsg) {
     clearInterval(timerId); stopBGM();
+    awardCatFood(3);
     const totalTime = (Date.now() - startTime) / 1000 + penaltySeconds;
     const mins = String(Math.floor(totalTime / 60)).padStart(2, '0');
     const secs = (totalTime % 60).toFixed(1).padStart(4, '0');
