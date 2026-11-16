@@ -503,10 +503,10 @@
     appearance: none;
     -webkit-appearance: none;
     background-color: transparent;
-    background-image: url('assets/orange-cat-sprite.png');
+    background-image: url('assets/orange-cat-idle.png');
     background-repeat: no-repeat;
-    background-size: 400% 100%;
-    background-position: 0 0;
+    background-size: contain;
+    background-position: center;
     filter: drop-shadow(0 8px 5px rgba(69,26,3,.28));
     transform: translate(-50%, -50%);
     transition: left 1.15s ease-in-out, top 1.15s ease-in-out;
@@ -514,10 +514,10 @@
     cursor: pointer;
     animation: cat-home-step .55s ease-in-out infinite alternate;
   }
-  .cat-home-cat.sitting { background-position: 33.33% 0; animation: cat-home-breathe 1.8s ease-in-out infinite; }
-  .cat-home-cat.sleeping { background-position: 66.66% 0; animation: cat-home-breathe 2.4s ease-in-out infinite; }
-  .cat-home-cat.eating { background-position: 100% 0; animation: cat-home-nibble .32s ease-in-out infinite alternate; }
-  .cat-home-cat.happy { background-position: 33.33% 0; animation: cat-home-happy .45s ease-in-out 4 alternate; }
+  .cat-home-cat.sitting { animation: cat-home-breathe 1.8s ease-in-out infinite; }
+  .cat-home-cat.sleeping { animation: cat-home-breathe 2.4s ease-in-out infinite; }
+  .cat-home-cat.eating { animation: cat-home-nibble .32s ease-in-out infinite alternate; }
+  .cat-home-cat.happy { animation: cat-home-happy .45s ease-in-out 4 alternate; }
   @keyframes cat-home-step { to { transform: translate(-50%, calc(-50% - 5px)) rotate(-1deg); } }
   @keyframes cat-home-breathe { 50% { transform: translate(-50%, -50%) scale(1.025); } }
   @keyframes cat-home-nibble { to { transform: translate(-50%, -47%) rotate(2deg); } }
