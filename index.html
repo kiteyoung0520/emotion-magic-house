@@ -2225,6 +2225,7 @@
   const DEFAULT_CAT_WEATHER_LOCATION = { name: '臺北', latitude: 25.033, longitude: 121.5654, timezone: 'Asia/Taipei', country: '臺灣' };
   let catWeatherState = { location: DEFAULT_CAT_WEATHER_LOCATION, current: null, updatedAt: 0 };
   let catWeatherLastReaction = 0;
+  let catWeatherLoading = false;
 
   function loadCatWeatherState() {
     try {
@@ -2273,6 +2274,7 @@
     url.search = new URLSearchParams({ latitude: place.latitude, longitude: place.longitude, current: 'temperature_2m,apparent_temperature,is_day,weather_code,precipitation,snowfall,cloud_cover', timezone: place.timezone || 'auto', forecast_days: '1' });
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 12000);
+    catWeatherLoading = true;
     try {
       const response = await fetch(url.toString(), { signal: controller.signal });
       if (!response.ok) throw new Error('weather request failed');
@@ -2288,7 +2290,7 @@
       const status = document.getElementById('cat-weather-search-status');
       if (status && document.getElementById('cat-weather-dialog').classList.contains('is-open')) status.textContent = catWeatherState.current ? '暫時無法連線，先顯示上次更新的天氣。' : '暫時無法取得天氣，請稍後再試。';
       return false;
-    } finally { clearTimeout(timeout); }
+    } finally { clearTimeout(timeout); catWeatherLoading = false; }
   }
 
   function initCatWeather() {
@@ -2304,7 +2306,7 @@
     dialog.classList.add('is-open');
     dialog.setAttribute('aria-hidden', 'false');
     document.getElementById('cat-weather-results').replaceChildren();
-    document.getElementById('cat-weather-search-status').textContent = '';
+    document.getElementById('cat-weather-search-status').textContent = catWeatherLoading ? '正在更新天氣資料……' : (catWeatherState.current ? '' : '目前暫時無法取得即時天氣，窗景會先使用柔和預設畫面；連線恢復後自動更新。');
     document.getElementById('cat-weather-search-input').focus();
   }
 
@@ -2360,8 +2362,8 @@
     renderCatWeather();
     document.getElementById('cat-weather-search-status').textContent = '已選擇 ' + displayName + '，正在更新窗景……';
     const ok = await refreshCatWeather();
-    document.getElementById('cat-weather-search-status').textContent = ok ? '窗景已更新為 ' + displayName + ' 的天氣。' : '地區已儲存，天氣資料稍後會自動重試。';
-    setTimeout(closeCatWeatherDialog, 900);
+    document.getElementById('cat-weather-search-status').textContent = ok ? '窗景已更新為 ' + displayName + ' 的天氣。' : '暫時無法取得即時天氣，地區已保存；連線恢復後會自動更新。';
+    if (ok) setTimeout(closeCatWeatherDialog, 900);
   }
 
   function inviteCatToWeatherWindow() {
