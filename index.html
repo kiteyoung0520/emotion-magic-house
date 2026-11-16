@@ -406,6 +406,19 @@
     cursor: pointer;
   }
   .cat-home-stats { display: flex; gap: 6px; }
+  .cat-growth {
+    width: min(760px, 100%);
+    margin: 0 auto;
+    padding: 8px 12px;
+    border: 1px solid rgba(251,191,36,.55);
+    border-radius: 14px;
+    background: rgba(15,23,42,.78);
+    color: #fff7ed;
+  }
+  .cat-growth-top { display: flex; justify-content: space-between; gap: 8px; font-size: .78rem; font-weight: 800; }
+  .cat-growth-track { height: 8px; margin: 5px 0 3px; overflow: hidden; border-radius: 999px; background: #475569; }
+  .cat-growth-fill { width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, #f59e0b, #fbbf24); transition: width .45s ease; }
+  .cat-growth-note { color: #cbd5e1; font-size: .7rem; }
   .cat-stat {
     border: 1px solid rgba(255,255,255,.18);
     border-radius: 999px;
@@ -539,6 +552,8 @@
     cursor: pointer;
     animation: cat-home-step .55s ease-in-out infinite alternate;
   }
+  .cat-home-cat.growth-juvenile { width: clamp(99px, 26vw, 142px); height: clamp(132px, 35vw, 188px); }
+  .cat-home-cat.growth-adult { width: clamp(106px, 28vw, 150px); height: clamp(141px, 37vw, 198px); }
   .cat-home-cat.walking { background-image: url('assets/orange-cat-walk.png?v=3'); animation: cat-home-step .55s ease-in-out infinite alternate; }
   .cat-home-cat.sitting { background-image: url('assets/orange-cat-idle.png?v=3'); animation: cat-home-breathe 1.8s ease-in-out infinite; }
   .cat-home-cat.sleeping { background-image: url('assets/orange-cat-sleep.png?v=3'); animation: cat-home-breathe 2.4s ease-in-out infinite; }
@@ -640,6 +655,11 @@
       <span class="cat-stat" id="cat-home-affection">💛 0</span>
     </div>
   </header>
+  <div class="cat-growth" aria-label="小橘貓成長進度">
+    <div class="cat-growth-top"><span id="cat-growth-label">🐣 幼貓</span><span id="cat-growth-xp">0 / 8 經驗</span></div>
+    <div class="cat-growth-track" role="progressbar" id="cat-growth-progress" aria-label="成長進度" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="cat-growth-fill" id="cat-growth-fill"></div></div>
+    <div class="cat-growth-note" id="cat-growth-note">今天陪伴 0 / 4 種活動</div>
+  </div>
   <div class="cat-room" id="cat-room">
     <div class="shoji-window" aria-hidden="true"></div>
     <div class="room-shelf" aria-hidden="true">🪴 📚 🧶</div>
@@ -1125,6 +1145,42 @@
   catState.food = Number(catState.food) || 0;
   catState.affection = Number(catState.affection) || 0;
   catState.mood = Number.isFinite(Number(catState.mood)) ? Number(catState.mood) : 60;
+  catState.experience = Math.max(0, Number(catState.experience) || 0);
+
+  function getCatGrowthStage(experience) {
+    if (experience >= 24) return { key: 'adult', label: '🐈 成貓', start: 24, next: 24 };
+    if (experience >= 8) return { key: 'juvenile', label: '🐱 少年貓', start: 8, next: 24 };
+    return { key: 'kitten', label: '🐣 幼貓', start: 0, next: 8 };
+  }
+
+  function getCatDailyActivities() {
+    const today = new Date().toLocaleDateString('en-CA');
+    let data;
+    try { data = JSON.parse(localStorage.getItem('emotion_magic_cat_daily') || '{}'); } catch (e) { data = {}; }
+    if (data.date !== today) data = { date: today, activities: {} };
+    if (!data.activities || typeof data.activities !== 'object') data.activities = {};
+    return data;
+  }
+
+  function updateCatGrowthUI() {
+    const stage = getCatGrowthStage(catState.experience);
+    const label = document.getElementById('cat-growth-label');
+    if (!label) return;
+    const gained = Math.min(catState.experience - stage.start, stage.next - stage.start);
+    const needed = stage.next - stage.start;
+    const percent = stage.key === 'adult' ? 100 : Math.round(gained / needed * 100);
+    document.getElementById('cat-growth-label').textContent = stage.label;
+    document.getElementById('cat-growth-xp').textContent = stage.key === 'adult' ? '已完成成長' : gained + ' / ' + needed + ' 經驗';
+    document.getElementById('cat-growth-fill').style.width = percent + '%';
+    document.getElementById('cat-growth-progress').setAttribute('aria-valuenow', String(percent));
+    const activities = getCatDailyActivities().activities;
+    document.getElementById('cat-growth-note').textContent = '今天陪伴 ' + Object.keys(activities).length + ' / 4 種活動';
+    const cat = document.getElementById('cat-home-cat');
+    if (cat) {
+      cat.classList.toggle('growth-juvenile', stage.key === 'juvenile');
+      cat.classList.toggle('growth-adult', stage.key === 'adult');
+    }
+  }
 
   function updateCatUI() {
     document.getElementById('cat-food').textContent = '🐟 ' + catState.food;
@@ -1132,11 +1188,29 @@
     const homeAffection = document.getElementById('cat-home-affection');
     if (homeFood) homeFood.textContent = '🐟 ' + catState.food;
     if (homeAffection) homeAffection.textContent = '💛 ' + catState.affection;
+    updateCatGrowthUI();
   }
 
   function saveCatState() {
     localStorage.setItem('emotion_magic_cat', JSON.stringify(catState));
     updateCatUI();
+  }
+
+  function awardCatExperience(activity) {
+    const rewards = { game: 2, story: 1, diary: 2, care: 1 };
+    if (!Object.prototype.hasOwnProperty.call(rewards, activity)) return;
+    const daily = getCatDailyActivities();
+    if (daily.activities[activity]) return;
+    const oldStage = getCatGrowthStage(catState.experience).key;
+    daily.activities[activity] = true;
+    catState.experience += rewards[activity];
+    localStorage.setItem('emotion_magic_cat_daily', JSON.stringify(daily));
+    saveCatState();
+    const newStage = getCatGrowthStage(catState.experience).key;
+    if (oldStage !== newStage && document.body.classList.contains('cat-home-open')) {
+      const messages = { juvenile: '小橘貓長大一點了！現在是少年貓。', adult: '小橘貓長成成貓了！謝謝你一路陪伴。' };
+      setCatBubble(messages[newStage]);
+    }
   }
 
   function schedulePageCatLife() {
@@ -1166,6 +1240,7 @@
     catState.food -= 3;
     catState.affection++;
     catState.mood = Math.min(100, catState.mood + 8);
+    awardCatExperience('care');
     saveCatState();
     sprite.className = 'cat-sprite eating';
     setTimeout(() => sprite.className = document.body.classList.contains('menu-open') ? 'cat-sprite sitting' : 'cat-sprite', 1600);
@@ -1197,6 +1272,9 @@
     clearInterval(catHomeFrameTimer);
     cat.style.removeProperty('background-image');
     cat.className = 'cat-home-cat ' + (pose || '');
+    const growthStage = getCatGrowthStage(catState.experience).key;
+    cat.classList.toggle('growth-juvenile', growthStage === 'juvenile');
+    cat.classList.toggle('growth-adult', growthStage === 'adult');
     if (pose === 'walking') {
       let frame = 0;
       cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
@@ -1296,6 +1374,7 @@
     } else if (action === 'pet') {
       catState.mood = Math.min(100, catState.mood + 5);
       catState.affection += 1;
+      awardCatExperience('care');
       saveCatState();
       setCatHomePose('happy');
       setCatBubble('呼嚕呼嚕～好喜歡你！');
@@ -1307,17 +1386,12 @@
         catState.food -= 3;
         catState.affection += 2;
         catState.mood = Math.min(100, catState.mood + 8);
+        awardCatExperience('care');
         saveCatState();
         moveCatHomeTo('bowl', '謝謝你，開動囉！');
       }
     } else if (action === 'sleep') {
       moveCatHomeTo('bed', '晚安，陪我休息一下。');
-    } else if (action === 'grooming') {
-      setCatHomePose('grooming'); setCatBubble('小橘貓仔細地舔舔毛，整理得漂漂亮亮。');
-    } else if (action === 'stretching') {
-      setCatHomePose('stretching'); setCatBubble('前腳伸長，舒服地伸個懶腰！');
-    } else if (action === 'alert') {
-      setCatHomePose('alert'); setCatBubble('耳朵豎起來，小橘貓正在聽聲音。');
     }
     setTimeout(scheduleCatHomeRoaming, 5600);
   }
@@ -1535,6 +1609,7 @@
     records.unshift({ id: String(now.getTime()), createdAt: now.toISOString(), text: entry });
     localStorage.setItem('emotion_diary_records', JSON.stringify(records));
     localStorage.setItem('my_emotion_diary', entry);
+    awardCatExperience('diary');
     document.getElementById('diary-save-status').textContent = '已儲存這次心情紀錄。';
   }
 
@@ -1570,6 +1645,7 @@
   function renderRandomStory() {
     const randomStory = mindStories[Math.floor(Math.random() * mindStories.length)];
     document.getElementById('modal-content').classList.remove('main-menu-modal');
+    awardCatExperience('story');
     awardCatFood(2);
     document.getElementById('overlay').style.display = 'flex';
     document.getElementById('modal-content').innerHTML = `
@@ -1607,6 +1683,7 @@
 
   function endGame(titleMsg) {
     clearInterval(timerId); stopBGM();
+    awardCatExperience('game');
     awardCatFood(3);
     const totalTime = (Date.now() - startTime) / 1000 + penaltySeconds;
     const mins = String(Math.floor(totalTime / 60)).padStart(2, '0');
