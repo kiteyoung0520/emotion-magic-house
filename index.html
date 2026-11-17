@@ -524,10 +524,10 @@
     box-shadow: inset 0 1px rgba(255,255,255,.12), 0 5px 14px rgba(0,0,0,.16);
   }
   .dog-food-count { display: inline-flex; align-items: center; gap: .28em; }
-  .dog-food-icon { display: inline-block; width: 1.3em; height: 1.3em; flex: 0 0 auto; vertical-align: -.28em; }
+  .dog-food-icon { display: inline-block; width: 1.3em; height: 1.1em; flex: 0 0 auto; vertical-align: -.2em; }
   .icon-definitions { position: absolute; width: 0; height: 0; overflow: hidden; }
   .cat-home-action .dog-food-icon { width: 1.2em; height: 1.2em; }
-  .room-object .dog-food-icon { width: clamp(2.2rem, 13vw, 4.5rem); height: auto; filter: drop-shadow(0 5px 3px rgba(69,26,3,.22)); }
+  .room-object .dog-food-icon { width: clamp(2.2rem, 13vw, 4.5rem); height: auto; aspect-ratio: 40 / 34; filter: drop-shadow(0 5px 3px rgba(69,26,3,.22)); }
   .cat-room {
     position: relative;
     flex: 1;
@@ -983,7 +983,7 @@
 <div class="cat-companion" aria-label="小邊陪伴區">
     <div class="cat-sprite" id="cat-sprite" role="img" aria-label="小邊，可以拖曳移動" title="拖曳小邊可以帶牠移動"></div>
   <div class="cat-panel">
-    <span id="cat-food" class="dog-food-count" role="img" aria-label="狗糧 0 份"><svg class="dog-food-icon" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg><span data-food-amount>0</span></span>
+    <span id="cat-food" class="dog-food-count" role="img" aria-label="狗糧 0 份"><svg class="dog-food-icon" viewBox="0 0 40 34" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg><span data-food-amount>0</span></span>
     <button class="cat-feed" onclick="feedCat()">餵食</button>
   </div>
 </div>
@@ -996,7 +996,7 @@
     <button class="cat-home-back" onclick="closeCatHome()">← 返回</button>
     <h2 class="cat-home-title">🐶 小邊之家</h2>
     <div class="cat-home-stats" aria-label="小邊狀態">
-      <span class="cat-stat dog-food-count" id="cat-home-food" role="img" aria-label="狗糧 0 份"><svg class="dog-food-icon" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg><span data-food-amount>0</span></span>
+      <span class="cat-stat dog-food-count" id="cat-home-food" role="img" aria-label="狗糧 0 份"><svg class="dog-food-icon" viewBox="0 0 40 34" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg><span data-food-amount>0</span></span>
       <span class="cat-stat" id="cat-home-affection">💛 0</span>
     </div>
   </header>
@@ -1021,7 +1021,7 @@
       <span class="room-emoji">🎾</span><span>玩具</span>
     </button>
     <button class="room-object spot-bowl" onclick="moveCatHomeTo('bowl')" aria-label="到食物碗">
-      <svg class="room-emoji dog-food-icon" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg><span>食物碗</span>
+      <svg class="room-emoji dog-food-icon" viewBox="0 0 40 34" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg><span>食物碗</span>
     </button>
     <button class="room-object spot-bed" onclick="moveCatHomeTo('bed')" aria-label="到狗窩休息">
       <span class="room-emoji">🧺</span><span>狗窩</span>
@@ -1033,7 +1033,7 @@
     <button class="cat-home-action" onclick="catHomeAction('walk')">🐾 散步</button>
     <button class="cat-home-action" onclick="catHomeAction('pet')">🤲 摸摸</button>
     <button class="cat-home-action" onclick="openCatFeelingsDialog()">💛 心情陪伴</button>
-    <button class="cat-home-action" onclick="catHomeAction('feed')"><svg class="dog-food-icon" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg>餵食</button>
+    <button class="cat-home-action" onclick="catHomeAction('feed')"><svg class="dog-food-icon" viewBox="0 0 40 34" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg>餵食</button>
     <button class="cat-home-action" onclick="catHomeAction('sleep')">🌙 睡覺</button>
     <button class="cat-home-action cat-call-button" id="cat-call-button" type="button" onclick="summonCat()">✨ 呼喚</button>
   </nav>
@@ -1090,7 +1090,7 @@
   <header class="cat-visit-header">
     <button class="cat-home-back" type="button" onclick="closeCatVisit()">← 回到小邊之家</button>
     <h2 class="cat-visit-title"><span id="cat-visit-name">小邊</span>來啦</h2>
-    <span class="cat-stat dog-food-count" id="cat-visit-food" role="img" aria-label="狗糧 0 份"><svg class="dog-food-icon" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg><span data-food-amount>0</span></span>
+    <span class="cat-stat dog-food-count" id="cat-visit-food" role="img" aria-label="狗糧 0 份"><svg class="dog-food-icon" viewBox="0 0 40 34" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg><span data-food-amount>0</span></span>
   </header>
   <div class="cat-visit-stage" id="cat-visit-stage">
     <div class="cat-visit-bubble" id="cat-visit-bubble" role="status">聽見你叫我了！</div>
@@ -1098,7 +1098,7 @@
     <div class="cat-visit-toy" aria-hidden="true">🎾</div>
   </div>
   <nav class="cat-visit-actions" aria-label="和小邊互動">
-    <button class="cat-home-action" type="button" data-visit-action="feed" aria-pressed="false" onclick="catVisitAction('feed')"><svg class="dog-food-icon" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg>餵牠吃飯</button>
+    <button class="cat-home-action" type="button" data-visit-action="feed" aria-pressed="false" onclick="catVisitAction('feed')"><svg class="dog-food-icon" viewBox="0 0 40 34" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg>餵牠吃飯</button>
     <button class="cat-home-action" type="button" data-visit-action="pet" aria-pressed="false" onclick="catVisitAction('pet')">🤲 摸摸牠</button>
     <button class="cat-home-action" type="button" data-visit-action="play" aria-pressed="false" onclick="catVisitAction('play')">🎾 一起玩</button>
   </nav>
