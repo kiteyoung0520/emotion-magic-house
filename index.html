@@ -121,7 +121,7 @@
     background-size: contain;
     background-position: center;
     filter: drop-shadow(0 7px 4px rgba(0,0,0,.28));
-    animation: cat-wander 24s ease-in-out infinite alternate, cat-css-walk-frames .9s steps(1,end) infinite;
+    animation: cat-wander 24s ease-in-out infinite alternate, border-collie-walk-cycle 1.08s steps(1,end) infinite;
   }
   .cat-sprite.sitting { background-image: url('assets/border-collie/border-collie-sitting.webp?v=3'); animation: cat-page-breathe 1.8s ease-in-out infinite; }
   .cat-sprite.sleeping { background-image: url('assets/border-collie/border-collie-sleeping.webp?v=3'); animation: cat-page-breathe 2.4s ease-in-out infinite; }
@@ -185,22 +185,28 @@
   .interactive-toy.is-visible { display: flex; }
   .interactive-toy.dragging { cursor: grabbing; scale: 1.1; filter: drop-shadow(0 0 16px rgba(255,216,152,.72)); }
   .interactive-toy:focus-visible { outline: 3px solid #38bdf8; outline-offset: 3px; }
-  .cat-play-bubble { position: fixed; z-index: 10005; left: 50%; bottom: 118px; display: none; max-width: 82vw; transform: translateX(-50%); padding: 8px 14px; border: 1px solid rgba(255,234,197,.76); border-radius: 999px; background: rgba(255,249,236,.96); color: #664636; font-size: .84rem; font-weight: 900; box-shadow: 0 6px 20px rgba(0,0,0,.2); pointer-events: none; }
-  .cat-play-bubble.is-visible { display: block; animation: play-bubble-pop .22s ease-out both; }
-  @keyframes play-bubble-pop { from { opacity: 0; transform: translate(-50%,8px) scale(.94); } to { opacity: 1; transform: translate(-50%,0) scale(1); } }
+  .cat-play-bubble { position: fixed; z-index: 10005; left: 50%; top: 0; display: none; max-width: min(82vw,420px); transform: translate(-50%,-100%); padding: 8px 14px; border: 1px solid rgba(255,234,197,.76); border-radius: 18px; background: rgba(255,249,236,.97); color: #664636; font-size: .84rem; font-weight: 900; line-height: 1.4; text-align: center; box-shadow: 0 6px 20px rgba(0,0,0,.2); pointer-events: none; opacity: 0; transition: opacity .25s ease, transform .25s ease; }
+  .cat-play-bubble.is-visible { display: block; opacity: 1; animation: play-bubble-pop .22s ease-out both; }
+  @keyframes play-bubble-pop { from { opacity: 0; transform: translate(-50%,calc(-100% + 8px)) scale(.94); } to { opacity: 1; transform: translate(-50%,-100%) scale(1); } }
   @keyframes cat-wander {
     0% { transform: translate(0, 0) rotate(-1deg); }
     48% { transform: translate(calc(100vw - 160px), -5px) rotate(1deg); }
     52% { transform: translate(calc(100vw - 160px), 0) scaleX(-1); }
     100% { transform: translate(0, -4px) scaleX(-1); }
   }
-  @keyframes cat-css-walk-frames {
-    0% { background-image: url('assets/border-collie/border-collie-walk-3.webp?v=1'); }
-    16.67% { background-image: url('assets/border-collie/border-collie-walk-4.webp?v=1'); }
-    33.34% { background-image: url('assets/border-collie/border-collie-walk-5.webp?v=1'); }
-    50% { background-image: url('assets/border-collie/border-collie-walk-6.webp?v=1'); }
-    66.67% { background-image: url('assets/border-collie/border-collie-walk-7.webp?v=1'); }
-    83.34%, 100% { background-image: url('assets/border-collie/border-collie-walk-8.webp?v=1'); }
+  @keyframes border-collie-walk-cycle {
+    0% { background-image: url('assets/border-collie/border-collie-walk-11.webp?v=2'); }
+    8.333% { background-image: url('assets/border-collie/border-collie-walk-12.webp?v=2'); }
+    16.667% { background-image: url('assets/border-collie/border-collie-walk-13.webp?v=2'); }
+    25% { background-image: url('assets/border-collie/border-collie-walk-14.webp?v=2'); }
+    33.333% { background-image: url('assets/border-collie/border-collie-walk-15.webp?v=2'); }
+    41.667% { background-image: url('assets/border-collie/border-collie-walk-16.webp?v=2'); }
+    50% { background-image: url('assets/border-collie/border-collie-walk-17.webp?v=2'); }
+    58.333% { background-image: url('assets/border-collie/border-collie-walk-18.webp?v=2'); }
+    66.667% { background-image: url('assets/border-collie/border-collie-walk-19.webp?v=2'); }
+    75% { background-image: url('assets/border-collie/border-collie-walk-20.webp?v=2'); }
+    83.333% { background-image: url('assets/border-collie/border-collie-walk-21.webp?v=2'); }
+    91.667%, 100% { background-image: url('assets/border-collie/border-collie-walk-22.webp?v=2'); }
   }
   @keyframes cat-page-breathe { 50% { transform: translateY(-3px) scale(1.025); } }
   @keyframes cat-page-nibble { to { transform: translateY(4px) rotate(1deg); } }
@@ -691,7 +697,7 @@
   }
   .cat-home-cat.growth-juvenile { width: clamp(152px, 40vw, 215px); height: clamp(136px, 36vw, 195px); }
   .cat-home-cat.growth-adult { width: clamp(162px, 42vw, 228px); height: clamp(142px, 38vw, 205px); }
-  .cat-home-cat.walking { background-image: url('assets/border-collie/border-collie-walk-3.webp?v=1'); animation: cat-home-step .9s linear infinite, cat-home-walk-frames .9s steps(1,end) infinite; }
+  .cat-home-cat.walking { background-image: url('assets/border-collie/border-collie-walk-11.webp?v=2'); animation: cat-home-step 1.08s linear infinite, border-collie-walk-cycle 1.08s steps(1,end) infinite; }
   .cat-home-cat.sitting { background-image: url('assets/border-collie/border-collie-sitting.webp?v=3'); animation: cat-home-breathe 1.8s ease-in-out infinite; }
   .cat-home-cat.sleeping { background-image: url('assets/border-collie/border-collie-sleeping.webp?v=3'); animation: cat-home-breathe 2.4s ease-in-out infinite; }
   .cat-home-cat.eating { background-image: url('assets/border-collie/border-collie-sitting.webp?v=3'); animation: cat-home-nibble .32s ease-in-out infinite alternate; }
@@ -711,14 +717,7 @@
   .cat-home-cat.belly-up { background-image: url('assets/border-collie/border-collie-belly-up.webp?v=1'); animation: cat-home-belly-up 1.9s ease-in-out infinite; }
   .cat-home-cat.being-held { z-index: 10003; background-image: url('assets/border-collie/border-collie-lying.webp?v=1'); background-size: contain; animation: cat-home-held .34s ease-in-out infinite alternate; cursor: grabbing; touch-action: none; }
   @keyframes cat-home-step { to { transform: translate(-50%, calc(-50% - 5px)) scaleX(var(--face)) rotate(-1deg); } }
-  @keyframes cat-home-walk-frames {
-    0% { background-image: url('assets/border-collie/border-collie-walk-3.webp?v=1'); }
-    16.67% { background-image: url('assets/border-collie/border-collie-walk-4.webp?v=1'); }
-    33.34% { background-image: url('assets/border-collie/border-collie-walk-5.webp?v=1'); }
-    50% { background-image: url('assets/border-collie/border-collie-walk-6.webp?v=1'); }
-    66.67% { background-image: url('assets/border-collie/border-collie-walk-7.webp?v=1'); }
-    83.34%, 100% { background-image: url('assets/border-collie/border-collie-walk-8.webp?v=1'); }
-  }
+  @keyframes cat-home-walk-frames { 0% { background-image: url('assets/border-collie/border-collie-walk-11.webp?v=2'); } }
   @keyframes cat-home-breathe { 50% { transform: translate(-50%, -50%) scaleX(var(--face)) scale(1.025); } }
   @keyframes cat-home-nibble { to { transform: translate(-50%, -47%) scaleX(var(--face)) rotate(2deg); } }
   @keyframes cat-home-happy { to { transform: translate(-50%, calc(-50% - 13px)) scaleX(var(--face)) rotate(3deg); } }
@@ -737,7 +736,7 @@
     position: absolute;
     z-index: 10003;
     left: 50%;
-    top: 47%;
+    top: 0;
     max-width: 78%;
     transform: translateX(-50%);
     padding: 8px 12px;
@@ -750,7 +749,10 @@
     text-align: center;
     box-shadow: 0 5px 12px rgba(69,26,3,.18);
     pointer-events: none;
+    opacity: 1;
+    transition: opacity .28s ease, transform .28s ease;
   }
+  .cat-bubble.is-fading, .cat-visit-bubble.is-fading { opacity: 0; }
   .cat-home-actions {
     width: min(760px, 100%);
     margin: 0 auto;
@@ -829,7 +831,7 @@
   .cat-visit-title { margin: 0; font-size: clamp(1.25rem,5vw,1.8rem); text-align: center; text-shadow: 0 2px 18px rgba(255,208,143,.26); }
   .cat-visit-stage { position: relative; flex: 1; width: min(760px,100%); min-height: 255px; margin: 0 auto; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 1px solid rgba(255,235,205,.25); border-radius: 30px; background: radial-gradient(ellipse at 50% 72%, rgba(255,218,157,.22), transparent 44%), linear-gradient(145deg, rgba(255,255,255,.075), rgba(255,255,255,.025)); box-shadow: inset 0 1px rgba(255,255,255,.12), 0 22px 50px rgba(0,0,0,.22); }
   .cat-visit-stage::before { content: "✦     ·       ✧       ·     ✦"; position: absolute; inset: 13% 0 auto; color: rgba(255,239,212,.48); font-size: 1rem; letter-spacing: .8rem; text-align: center; }
-  .cat-visit-bubble { position: absolute; z-index: 2; top: 9%; left: 50%; max-width: min(82%,520px); transform: translateX(-50%); padding: 10px 16px; border: 1px solid rgba(255,234,197,.72); border-radius: 18px 18px 18px 5px; background: rgba(255,249,236,.96); color: #664636; font-size: .92rem; font-weight: 900; line-height: 1.45; text-align: center; box-shadow: 0 8px 26px rgba(30,20,30,.22); }
+  .cat-visit-bubble { position: absolute; z-index: 2; top: 5%; left: 50%; max-width: min(82%,520px); transform: translateX(-50%); padding: 10px 16px; border: 1px solid rgba(255,234,197,.72); border-radius: 18px 18px 18px 5px; background: rgba(255,249,236,.96); color: #664636; font-size: .92rem; font-weight: 900; line-height: 1.45; text-align: center; box-shadow: 0 8px 26px rgba(30,20,30,.22); opacity: 1; transition: opacity .28s ease; }
   .cat-visit-cat { position: absolute; z-index: 1; top: 57%; left: 50%; width: clamp(250px,72vw,390px); height: clamp(230px,65vw,360px); padding: 0; transform: translate(-50%,-50%); border: 0; background-color: transparent; background-image: url('assets/border-collie/border-collie-sitting.webp?v=3'); background-repeat: no-repeat; background-size: contain; background-position: center; filter: drop-shadow(0 14px 12px rgba(31,20,22,.28)); cursor: grab; touch-action: none; animation: cat-visit-breathe 2.1s ease-in-out infinite; }
   .cat-visit-cat.sleeping { background-image: url('assets/border-collie/border-collie-sleeping.webp?v=3'); }
   .cat-visit-cat.eating { background-image: url('assets/border-collie/border-collie-sitting.webp?v=3'); animation: cat-visit-nibble .38s ease-in-out infinite alternate; }
@@ -844,7 +846,7 @@
   .cat-visit-cat.being-held { z-index: 4; background-image: url('assets/border-collie/border-collie-lying.webp?v=1'); background-size: contain; animation: cat-visit-held .34s ease-in-out infinite alternate; cursor: grabbing; }
   .cat-visit-cat.growth-juvenile { width: clamp(266px,76vw,400px); height: clamp(242px,68vw,370px); }
   .cat-visit-cat.growth-adult { width: clamp(280px,80vw,420px); height: clamp(254px,72vw,392px); }
-  .cat-visit-cat.arriving { left: -35%; top: 60%; animation: cat-visit-run-in 1.15s cubic-bezier(.18,.72,.25,1) both, cat-visit-run-frames .9s steps(1,end) infinite; }
+  .cat-visit-cat.arriving { left: -35%; top: 60%; animation: cat-visit-run-in 1.15s cubic-bezier(.18,.72,.25,1) both, border-collie-walk-cycle 1.08s steps(1,end) infinite; }
   .cat-visit-toy { position: absolute; z-index: 2; left: 20%; bottom: 18%; opacity: 0; font-size: clamp(2rem,9vw,3.4rem); filter: drop-shadow(0 6px 8px rgba(0,0,0,.22)); pointer-events: none; }
   .cat-visit-stage.playing .cat-visit-toy { animation: cat-yarn-play 1.8s ease-in-out both; }
   @keyframes cat-visit-breathe { 50% { transform: translate(-50%,-52%) scale(1.025); } }
@@ -856,14 +858,7 @@
   @keyframes cat-visit-belly-up { 50% { transform: translate(-50%,-52%) rotate(-2deg) scale(1.035); } }
   @keyframes cat-visit-held { from { transform: translate(-50%,-50%) rotate(-3deg) scale(.98); } to { transform: translate(-50%,-53%) rotate(3deg) scale(1.01); } }
   @keyframes cat-visit-run-in { 0% { opacity: 0; left: -35%; transform: translate(0,-50%) scale(.82) rotate(-4deg); } 12% { opacity: 1; } 82% { transform: translate(-50%,-50%) scale(1.025) rotate(2deg); } 92% { transform: translate(-50%,-50%) scale(.985) rotate(-1deg); } 100% { opacity: 1; left: 50%; transform: translate(-50%,-50%) scale(1) rotate(0); } }
-  @keyframes cat-visit-run-frames {
-    0% { background-image: url('assets/border-collie/border-collie-walk-3.webp?v=1'); }
-    16.67% { background-image: url('assets/border-collie/border-collie-walk-4.webp?v=1'); }
-    33.34% { background-image: url('assets/border-collie/border-collie-walk-5.webp?v=1'); }
-    50% { background-image: url('assets/border-collie/border-collie-walk-6.webp?v=1'); }
-    66.67% { background-image: url('assets/border-collie/border-collie-walk-7.webp?v=1'); }
-    83.34%, 100% { background-image: url('assets/border-collie/border-collie-walk-8.webp?v=1'); }
-  }
+  @keyframes cat-visit-run-frames { 0% { background-image: url('assets/border-collie/border-collie-walk-11.webp?v=2'); } }
   @keyframes cat-yarn-play { 0% { opacity: 0; transform: translate(0,0) rotate(0); } 15%,75% { opacity: 1; } 50% { transform: translate(42vw,-34px) rotate(240deg); } 100% { opacity: 0; transform: translate(70vw,0) rotate(420deg); } }
   .cat-visit-actions { width: min(760px,100%); margin: 0 auto; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
   .cat-visit-actions .cat-home-action { min-height: 52px; }
@@ -1655,6 +1650,8 @@
   let catHomeMoveTimer = null;
   let catHomeApproachTimer = null;
   let catHomeFrameTimer = null;
+  let catHomeBubbleTimer = null;
+  let catVisitBubbleTimer = null;
   let catBreathInterval = null;
   let pageCatFrameTimer = null;
   let catVisitTimer = null;
@@ -1662,7 +1659,7 @@
   let catVisitFrameTimer = null;
   let lastCatVisitNaturalPose = null;
   let lastCatMoodId = '';
-  const catWalkFrames = [3, 4, 5, 6, 7, 8].map(function (frame) { return 'assets/border-collie/border-collie-walk-' + frame + '.webp?v=1'; });
+  const catWalkFrames = Array.from({ length: 12 }, function (_, index) { return 'assets/border-collie/border-collie-walk-' + (index + 11) + '.webp?v=2'; });
   catWalkFrames.forEach(function (src) { const image = new Image(); image.src = src; });
   const catHomeSpots = {
     center: { x: 50, y: 72, pose: 'sitting', message: '今天也一起慢慢來。' },
@@ -1672,9 +1669,36 @@
     bed: { x: 83, y: 76, pose: 'sleeping', message: '這裡暖暖的，想睡一下。' }
   };
 
-  function setCatBubble(message) {
+  function catBubbleDuration(message) {
+    const chars = Array.from(String(message || '')).length;
+    return Math.max(2600, Math.min(5200, 1800 + chars * 78));
+  }
+
+  function positionCatHomeBubble(bubble) {
+    const room = document.getElementById('cat-room');
+    const cat = document.getElementById('cat-home-cat');
+    if (!room || !cat || !bubble) return;
+    const roomRect = room.getBoundingClientRect();
+    const catRect = cat.getBoundingClientRect();
+    const halfWidth = bubble.offsetWidth / 2;
+    const centerX = Math.max(halfWidth + 8, Math.min(roomRect.width - halfWidth - 8, catRect.left + catRect.width / 2 - roomRect.left));
+    bubble.style.left = centerX + 'px';
+    bubble.style.top = Math.max(8, catRect.top - roomRect.top - 10) + 'px';
+    bubble.style.transform = 'translate(-50%,-100%)';
+  }
+
+  function setCatBubble(message, options) {
     const bubble = document.getElementById('cat-bubble');
-    if (bubble) bubble.textContent = message;
+    if (!bubble) return;
+    options = options || {};
+    clearTimeout(catHomeBubbleTimer);
+    bubble.classList.remove('is-fading');
+    bubble.textContent = message;
+    requestAnimationFrame(function () { positionCatHomeBubble(bubble); });
+    if (options.persistent) return;
+    catHomeBubbleTimer = setTimeout(function () {
+      bubble.classList.add('is-fading');
+    }, catBubbleDuration(message));
   }
 
   function placeInteractiveToy() {
@@ -1706,13 +1730,25 @@
   let toyDrag = null;
   let catChaseTimer = null;
   let catPlayBubbleTimer = null;
+  let catPlayBubbleHideTimer = null;
   function showCatPlayBubble(message) {
     const bubble = document.getElementById('cat-play-bubble');
     if (!bubble) return;
     clearTimeout(catPlayBubbleTimer);
+    clearTimeout(catPlayBubbleHideTimer);
+    bubble.style.removeProperty('opacity');
     bubble.textContent = message;
     bubble.classList.add('is-visible');
-    catPlayBubbleTimer = setTimeout(function () { bubble.classList.remove('is-visible'); }, 1800);
+    const sprite = document.getElementById('cat-sprite');
+    if (sprite) {
+      const rect = sprite.getBoundingClientRect();
+      bubble.style.left = Math.max(12, Math.min(window.innerWidth - 12, rect.left + rect.width / 2)) + 'px';
+      bubble.style.top = Math.max(12, rect.top - 10) + 'px';
+    }
+    catPlayBubbleTimer = setTimeout(function () {
+      bubble.style.opacity = '0';
+      catPlayBubbleHideTimer = setTimeout(function () { bubble.classList.remove('is-visible'); bubble.style.removeProperty('opacity'); }, 280);
+    }, catBubbleDuration(message));
   }
 
   function resetPageCatChase() {
@@ -1974,7 +2010,7 @@
       catHomeFrameTimer = setInterval(function () {
         frame = (frame + 1) % catWalkFrames.length;
         cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-      }, 150);
+      }, 90);
     }
   }
 
@@ -1986,7 +2022,7 @@
     pageCatFrameTimer = setInterval(function () {
       frame = (frame + 1) % catWalkFrames.length;
       cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-    }, 150);
+    }, 90);
   }
 
   function stopPageCatWalkFrames() {
@@ -2051,7 +2087,11 @@
 
   function setCatVisitBubble(message) {
     const bubble = document.getElementById('cat-visit-bubble');
-    if (bubble) bubble.textContent = message;
+    if (!bubble) return;
+    clearTimeout(catVisitBubbleTimer);
+    bubble.classList.remove('is-fading');
+    bubble.textContent = message;
+    catVisitBubbleTimer = setTimeout(function () { bubble.classList.add('is-fading'); }, catBubbleDuration(message));
   }
 
   function showCatVisitDesire() {
@@ -2110,7 +2150,7 @@
       catVisitFrameTimer = setInterval(function () {
         frame = (frame + 1) % catWalkFrames.length;
         cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-      }, 150);
+      }, 90);
       catVisitIdleTimer = setTimeout(function () {
         clearInterval(catVisitFrameTimer);
         catVisitFrameTimer = null;
@@ -2232,7 +2272,7 @@
     applyCatLighting();
     updateCatUI();
     moveCatHomeTo('center', '歡迎回家，摸摸我吧！');
-    setCatBubble('點一下房間空白處，讓小邊跑來陪你。');
+    setCatBubble('點一下房間空白處，讓小邊跑來陪你。', { persistent: true });
     scheduleCatHomeRoaming();
   }
 
@@ -3025,3 +3065,5 @@
 </script>
 </body>
 </html>
+
+
