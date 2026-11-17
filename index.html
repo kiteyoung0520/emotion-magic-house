@@ -266,8 +266,9 @@
     width: 152px;
     height: 162px;
     bottom: 23px;
-    background-image: url('assets/border-collie/border-collie-sitting.webp?v=3');
-    animation: cat-page-breathe 1.8s ease-in-out infinite;
+    background-image: url('assets/border-collie/border-collie-atlas-idle.webp?v=1');
+    background-size: 400% 400%;
+    animation: cat-page-breathe 1.8s ease-in-out infinite, border-collie-atlas-cycle 2s steps(1,end) infinite;
   }
   .menu-open .cat-sprite.eating { background-image: url('assets/border-collie/border-collie-atlas-eat.webp?v=1'); background-size: 400% 400%; animation: cat-page-nibble .9s ease-in-out infinite, border-collie-atlas-cycle 1.8s steps(1,end) infinite; }
   .menu-open .cat-sprite.happy { background-image: url('assets/border-collie/border-collie-atlas-play.webp?v=1'); background-size: 400% 400%; animation: cat-page-happy .7s ease-in-out infinite alternate, border-collie-atlas-cycle 1.6s steps(1,end) infinite; }
