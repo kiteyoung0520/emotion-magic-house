@@ -116,12 +116,12 @@
     bottom: 35px;
     width: 156px;
     height: 148px;
-    background-image: url('assets/border-collie/border-collie-walk-1.webp?v=3');
+    background-image: url('assets/border-collie/border-collie-atlas-walk-v3-clean.webp?v=1');
     background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center;
+    background-size: 400% 400%;
+    background-position: 0 0;
     filter: drop-shadow(0 7px 4px rgba(0,0,0,.28));
-    animation: cat-wander 24s ease-in-out infinite alternate, border-collie-walk-cycle 1.2s steps(1,end) infinite;
+    animation: cat-wander 24s ease-in-out infinite alternate, border-collie-atlas-cycle 1.6s steps(1,end) infinite;
   }
   .cat-sprite.sitting, .cat-sprite.sleeping, .cat-sprite.eating, .cat-sprite.happy, .cat-sprite.grooming, .cat-sprite.stretching, .cat-sprite.alert, .cat-sprite.curious, .cat-sprite.belly-up { background-size: 400% 400%; }
   .cat-sprite.sitting { background-image: url('assets/border-collie/border-collie-atlas-idle.webp?v=1'); animation: cat-page-breathe 1.8s ease-in-out infinite, border-collie-atlas-cycle 2s steps(1,end) infinite; }
@@ -137,7 +137,7 @@
   .cat-sprite.bored { background-image: url('assets/border-collie/border-collie-atlas-moods.webp?v=1'); background-position: 0 33.333%; background-size: 400% 400%; animation: cat-page-breathe 2.4s ease-in-out infinite, border-collie-mood-bored 1.5s steps(1,end) infinite; }
   .cat-sprite.scared { background-image: url('assets/border-collie/border-collie-atlas-moods.webp?v=1'); background-position: 0 66.667%; background-size: 400% 400%; animation: cat-page-alert .8s ease-in-out infinite alternate, border-collie-mood-scared 1.5s steps(1,end) infinite; }
   .cat-sprite.angry { background-image: url('assets/border-collie/border-collie-atlas-moods.webp?v=1'); background-position: 0 100%; background-size: 400% 400%; animation: cat-page-alert .8s ease-in-out infinite alternate, border-collie-mood-angry 1.5s steps(1,end) infinite; }
-  .cat-sprite.chasing { background-image: url('assets/border-collie/border-collie-atlas-play.webp?v=1'); background-size: 400% 400%; animation: cat-page-chase-body var(--chase-duration,1.2s) ease-in-out infinite, border-collie-atlas-cycle 1.6s steps(1,end) infinite; transition: left var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1), top var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1); }
+  .cat-sprite.chasing { background-image: url('assets/border-collie/border-collie-atlas-run-v1-clean.webp?v=1'); background-size: 400% 400%; animation: cat-page-chase-body 1.12s ease-in-out infinite, border-collie-atlas-cycle 1.12s steps(1,end) infinite; transition: left var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1), top var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1); }
   .cat-panel {
     position: absolute;
     right: 10px;
@@ -163,7 +163,6 @@
     font-weight: bold;
     padding: 3px 6px;
   }
-  .cat-sprite.chasing { background-image: url('assets/border-collie/border-collie-atlas-play.webp?v=1'); background-size: 400% 400%; animation: cat-page-chase-body var(--chase-duration,1.2s) ease-in-out infinite, border-collie-atlas-cycle 1.6s steps(1,end) infinite; transition: left var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1), top var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1); }
   .cat-sprite { pointer-events: auto; cursor: grab; touch-action: none; }
   .cat-sprite.being-held { z-index: 10003; bottom: auto; background-image: url('assets/border-collie/border-collie-atlas-held.webp?v=1'); background-repeat: no-repeat; background-size: 400% 400%; background-position: 0 0; animation: cat-page-held .55s ease-in-out infinite alternate !important; cursor: grabbing; transform-origin: center top; }
   @keyframes cat-page-held { from { transform: rotate(-3deg) scale(.98); } to { transform: translateY(-6px) rotate(3deg) scale(1.01); } }
@@ -202,20 +201,6 @@
     52% { transform: translate(calc(100vw - 160px), 5px) scaleX(-1) rotate(-2deg); }
     76% { transform: translate(calc(25vw - 40px), -1px) scaleX(-1) rotate(-.8deg); }
     96%, 100% { transform: translate(0, 3px) scaleX(-1) rotate(-1deg); }
-  }
-  @keyframes border-collie-walk-cycle {
-    0% { background-image: url('assets/border-collie/border-collie-walk-11.webp?v=2'); }
-    8.333% { background-image: url('assets/border-collie/border-collie-walk-12.webp?v=2'); }
-    16.667% { background-image: url('assets/border-collie/border-collie-walk-13.webp?v=2'); }
-    25% { background-image: url('assets/border-collie/border-collie-walk-14.webp?v=2'); }
-    33.333% { background-image: url('assets/border-collie/border-collie-walk-15.webp?v=2'); }
-    41.667% { background-image: url('assets/border-collie/border-collie-walk-16.webp?v=2'); }
-    50% { background-image: url('assets/border-collie/border-collie-walk-17.webp?v=2'); }
-    58.333% { background-image: url('assets/border-collie/border-collie-walk-18.webp?v=2'); }
-    66.667% { background-image: url('assets/border-collie/border-collie-walk-19.webp?v=2'); }
-    75% { background-image: url('assets/border-collie/border-collie-walk-20.webp?v=2'); }
-    83.333% { background-image: url('assets/border-collie/border-collie-walk-21.webp?v=2'); }
-    91.667%, 100% { background-image: url('assets/border-collie/border-collie-walk-22.webp?v=2'); }
   }
   @keyframes cat-page-chase-body {
     0%, 100% { transform: translateY(3px) scaleX(var(--chase-face,1)) rotate(-1deg); }
@@ -756,7 +741,8 @@
   }
   .cat-home-cat.growth-juvenile { width: clamp(152px, 40vw, 215px); height: clamp(136px, 36vw, 195px); }
   .cat-home-cat.growth-adult { width: clamp(162px, 42vw, 228px); height: clamp(142px, 38vw, 205px); }
-  .cat-home-cat.walking { background-image: url('assets/border-collie/border-collie-walk-11.webp?v=2'); animation: cat-home-walk-body 1.2s linear infinite, border-collie-walk-cycle 1.2s steps(1,end) infinite; }
+  .cat-home-cat.walking { background-image: url('assets/border-collie/border-collie-atlas-walk-v3-clean.webp?v=1'); background-size: 400% 400%; animation: cat-home-walk-body 1.6s linear infinite, border-collie-atlas-cycle 1.6s steps(1,end) infinite; }
+  .cat-home-cat.running { background-image: url('assets/border-collie/border-collie-atlas-run-v1-clean.webp?v=1'); background-size: 400% 400%; animation: cat-home-walk-body 1.12s linear infinite, border-collie-atlas-cycle 1.12s steps(1,end) infinite; }
   .cat-home-cat.sitting { background-image: url('assets/border-collie/border-collie-atlas-idle.webp?v=1'); background-size: 400% 400%; animation: cat-home-breathe 1.8s ease-in-out infinite, border-collie-atlas-cycle 2s steps(1,end) infinite; }
   .cat-home-cat.sleeping { background-image: url('assets/border-collie/border-collie-atlas-sleep.webp?v=1'); background-size: 400% 400%; animation: cat-home-breathe 2.4s ease-in-out infinite, border-collie-atlas-cycle 2s steps(1,end) infinite; }
   .cat-home-cat.eating { background-image: url('assets/border-collie/border-collie-atlas-eat.webp?v=1'); background-size: 400% 400%; animation: cat-home-nibble .9s ease-in-out infinite, border-collie-atlas-cycle 1.8s steps(1,end) infinite; }
@@ -782,7 +768,6 @@
     66% { transform: translate(-50%, calc(-50% + 1px)) scaleX(var(--face)) rotate(-.8deg); }
     83% { transform: translate(-50%, calc(-50% - 2px)) scaleX(var(--face)) rotate(.6deg); }
   }
-  @keyframes cat-home-walk-frames { 0% { background-image: url('assets/border-collie/border-collie-walk-11.webp?v=2'); } }
   @keyframes cat-home-breathe { 50% { transform: translate(-50%, -50%) scaleX(var(--face)) scale(1.025); } }
   @keyframes cat-home-nibble { to { transform: translate(-50%, -47%) scaleX(var(--face)) rotate(2deg); } }
   @keyframes cat-home-happy { to { transform: translate(-50%, calc(-50% - 13px)) scaleX(var(--face)) rotate(3deg); } }
@@ -907,11 +892,12 @@
   .cat-visit-cat.stretching { background-image: url('assets/border-collie/border-collie-atlas-stretch.webp?v=1'); background-size: 400% 400%; animation: cat-visit-stretch 3s ease-in-out forwards, border-collie-stretch-cycle 3s steps(1,end) 1 forwards; }
   .cat-visit-cat.loaf { background-image: url('assets/border-collie/border-collie-atlas-loaf.webp?v=1'); background-size: 400% 400%; animation: cat-visit-breathe 2.8s ease-in-out infinite, border-collie-atlas-cycle 2.4s steps(1,end) infinite; }
   .cat-visit-cat.belly-up { background-image: url('assets/border-collie/border-collie-atlas-belly.webp?v=1'); background-size: 400% 400%; animation: cat-visit-belly-up 1.9s ease-in-out infinite, border-collie-atlas-cycle 2s steps(1,end) infinite; }
-  .cat-visit-cat.walking { transform: translate(-50%,-50%) scaleX(var(--visit-face,1)); animation: cat-visit-walk-body 1.2s linear infinite; transition: left var(--visit-walk-duration,2s) linear, top var(--visit-walk-duration,2s) linear; }
+  .cat-visit-cat.walking { background-image: url('assets/border-collie/border-collie-atlas-walk-v3-clean.webp?v=1'); background-size: 400% 400%; animation: cat-visit-walk-body 1.6s linear infinite, border-collie-atlas-cycle 1.6s steps(1,end) infinite; transition: left var(--visit-walk-duration,2s) linear, top var(--visit-walk-duration,2s) linear; }
+  .cat-visit-cat.running { background-image: url('assets/border-collie/border-collie-atlas-run-v1-clean.webp?v=1'); background-size: 400% 400%; animation: cat-visit-walk-body 1.12s linear infinite, border-collie-atlas-cycle 1.12s steps(1,end) infinite; transition: left var(--visit-walk-duration,2s) linear, top var(--visit-walk-duration,2s) linear; }
   .cat-visit-cat.being-held { z-index: 4; background-image: url('assets/border-collie/border-collie-atlas-held.webp?v=1'); background-repeat: no-repeat; background-size: 400% 400%; background-position: 0 0; animation: cat-visit-held .55s ease-in-out infinite alternate; cursor: grabbing; }
   .cat-visit-cat.growth-juvenile { width: clamp(266px,76vw,400px); height: clamp(242px,68vw,370px); }
   .cat-visit-cat.growth-adult { width: clamp(280px,80vw,420px); height: clamp(254px,72vw,392px); }
-  .cat-visit-cat.arriving { left: -35%; top: 60%; background-size: contain; background-position: center; animation: cat-visit-run-in 1.15s cubic-bezier(.18,.72,.25,1) both, border-collie-walk-cycle 1.2s steps(1,end) infinite; }
+  .cat-visit-cat.arriving { left: -35%; top: 60%; animation: cat-visit-run-in 1.15s cubic-bezier(.18,.72,.25,1) both, border-collie-atlas-cycle 1.12s steps(1,end) infinite; }
   .cat-visit-toy { position: absolute; z-index: 2; left: 20%; bottom: 18%; width: clamp(44px,12vw,68px); aspect-ratio: 1; opacity: 0; filter: drop-shadow(0 6px 8px rgba(0,0,0,.22)); pointer-events: none; }
   .cat-visit-toy img { display: block; width: 100%; height: 100%; object-fit: contain; }
   .cat-visit-stage.playing .cat-visit-toy { animation: cat-yarn-play 1.8s ease-in-out both; }
@@ -932,7 +918,6 @@
   @keyframes cat-visit-belly-up { 50% { transform: translate(-50%,-52%) rotate(-2deg) scale(1.035); } }
   @keyframes cat-visit-held { from { transform: translate(-50%,-50%) rotate(-3deg) scale(.98); } to { transform: translate(-50%,-53%) rotate(3deg) scale(1.01); } }
   @keyframes cat-visit-run-in { 0% { opacity: 0; left: -35%; transform: translate(0,-50%) scale(.82) rotate(-4deg); } 12% { opacity: 1; } 82% { transform: translate(-50%,-50%) scale(1.025) rotate(2deg); } 92% { transform: translate(-50%,-50%) scale(.985) rotate(-1deg); } 100% { opacity: 1; left: 50%; transform: translate(-50%,-50%) scale(1) rotate(0); } }
-  @keyframes cat-visit-run-frames { 0% { background-image: url('assets/border-collie/border-collie-walk-11.webp?v=2'); } }
   @keyframes cat-yarn-play { 0% { opacity: 0; transform: translate(0,0) rotate(0); } 15%,75% { opacity: 1; } 50% { transform: translate(42vw,-34px) rotate(240deg); } 100% { opacity: 0; transform: translate(70vw,0) rotate(420deg); } }
   .cat-visit-actions { width: min(760px,100%); margin: 0 auto; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
   .cat-visit-actions .cat-home-action { min-height: 52px; }
@@ -1758,8 +1743,8 @@
   let catVisitFocusMode = false;
   let catVisitFocusedAction = null;
   let lastCatMoodId = '';
-  const catWalkFrames = Array.from({ length: 12 }, function (_, index) { return 'assets/border-collie/border-collie-walk-' + (index + 11) + '.webp?v=2'; });
-  catWalkFrames.forEach(function (src) { const image = new Image(); image.src = src; });
+  const catWalkAtlas = 'assets/border-collie/border-collie-atlas-walk-v3-clean.webp?v=1';
+  const catRunAtlas = 'assets/border-collie/border-collie-atlas-run-v1-clean.webp?v=1';
   const catPoseAssets = {
     sitting: 'idle', alert: 'idle', curious: 'idle',
     sleeping: 'sleep', tired: 'sleep', unwell: 'sleep',
@@ -1770,9 +1755,12 @@
   };
   const catPoseImageCache = new Map();
   const catPoseRequestIds = new WeakMap();
+  preloadCatPoseImage(catWalkAtlas);
+  preloadCatPoseImage(catRunAtlas);
 
   function catPoseImage(pose) {
-    if (pose === 'walking') return catWalkFrames[0];
+    if (!pose || pose === 'walking') return catWalkAtlas;
+    if (pose === 'running' || pose === 'chasing') return catRunAtlas;
     const atlas = catPoseAssets[pose];
     return atlas ? 'assets/border-collie/border-collie-atlas-' + atlas + '.webp?v=1' : '';
   }
@@ -1954,7 +1942,6 @@
     cat.style.top = targetTop + 'px';
     cat.style.setProperty('--chase-duration', duration + 's');
     cat.style.setProperty('--chase-face', x < currentX ? -1 : 1);
-    startPageCatWalkFrames();
     showCatPlayBubble('小邊追著網球跑過來了！');
     catChaseTimer = setTimeout(function () {
       setPageCatPose('happy').then(function (ready) {
@@ -1974,7 +1961,7 @@
       }
       const roomX = Math.max(12, Math.min(88, (x - room.left) / room.width * 100));
       const roomY = Math.max(24, Math.min(88, (y - room.top) / room.height * 100));
-      moveCatHomeToPosition(roomX, roomY, '追到網球了！小邊開心地拍了拍。', 'happy');
+      moveCatHomeToPosition(roomX, roomY, '追到網球了！小邊開心地拍了拍。', 'happy', '', 'running');
       return;
     }
     chasePageCatTo(x, y);
@@ -2137,7 +2124,7 @@
     }, true);
   }
 
-  function moveCatHomeToPosition(x, y, message, pose, approachMessage) {
+  function moveCatHomeToPosition(x, y, message, pose, approachMessage, movementPose) {
     const cat = document.getElementById('cat-home-cat');
     if (!cat) return;
     clearTimeout(catHomeMoveTimer);
@@ -2150,12 +2137,14 @@
     const currentX = parseFloat(cat.style.left) || 50;
     const currentY = parseFloat(cat.style.top) || 72;
     const distance = Math.hypot((x - currentX) * room.clientWidth / 100, (y - currentY) * room.clientHeight / 100);
-    const duration = Math.max(1.8, Math.min(4.6, 1.5 + distance / 230));
+    const duration = movementPose === 'running'
+      ? Math.max(1.1, Math.min(2.8, .9 + distance / 320))
+      : Math.max(1.8, Math.min(4.6, 1.5 + distance / 230));
     cat.style.setProperty('--face', x < currentX ? -1 : 1);
     cat.style.setProperty('--move-duration', duration + 's');
     setCatHomePose('alert');
     setCatBubble(approachMessage || '小邊發現網球了……');
-    catHomeApproachTimer = setTimeout(function () { setCatHomePose('walking'); }, 360);
+    catHomeApproachTimer = setTimeout(function () { setCatHomePose(movementPose === 'running' ? 'running' : 'walking'); }, 360);
     cat.style.left = x + '%';
     cat.style.top = y + '%';
     catHomeMoveTimer = setTimeout(function () {
@@ -2174,27 +2163,7 @@
       const growthStage = getCatGrowthStage(catState.experience).key;
       cat.classList.toggle('growth-juvenile', growthStage === 'juvenile');
       cat.classList.toggle('growth-adult', growthStage === 'adult');
-      if (nextPose === 'walking') {
-        let frame = 0;
-        cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-        catHomeFrameTimer = setInterval(function () {
-          frame = (frame + 1) % catWalkFrames.length;
-          cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-        }, 100);
-      }
     });
-  }
-
-  function startPageCatWalkFrames() {
-    clearInterval(pageCatFrameTimer);
-    const cat = document.getElementById('cat-sprite');
-    if (!cat) return;
-    let frame = 0;
-    cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-    pageCatFrameTimer = setInterval(function () {
-      frame = (frame + 1) % catWalkFrames.length;
-      cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-    }, 100);
   }
 
   function setPageCatPose(pose) {
@@ -2204,8 +2173,6 @@
     const className = nextPose && nextPose !== 'walking' ? 'cat-sprite ' + nextPose : 'cat-sprite';
     return commitCatPose(cat, className, nextPose, function () {
       clearInterval(pageCatFrameTimer);
-    }, function () {
-      if (!nextPose || nextPose === 'walking') startPageCatWalkFrames();
     });
   }
 
@@ -2358,12 +2325,6 @@
         cat.style.setProperty('--visit-walk-duration', duration + 's');
         cat.style.left = nextX + '%';
         cat.style.top = nextY + '%';
-        let frame = 0;
-        cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-        catVisitFrameTimer = setInterval(function () {
-          frame = (frame + 1) % catWalkFrames.length;
-          cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-        }, 100);
         catVisitIdleTimer = setTimeout(function () {
           clearInterval(catVisitFrameTimer);
           catVisitFrameTimer = null;
@@ -2401,17 +2362,18 @@
     visitCat.style.removeProperty('--visit-face');
     visitCat.style.removeProperty('--visit-walk-duration');
     lastCatVisitNaturalPose = null;
-    setCatVisitPose('sitting');
-    const cat = visitCat;
-    cat.classList.add('arriving');
-    setCatVisitBubble(catState.name + '聽見你叫牠了，噠噠噠跑來陪你！');
-    catVisitTimer = setTimeout(function () {
-      if (!document.body.classList.contains('cat-visit-open')) return;
-      cat.classList.remove('arriving');
-      setCatVisitPose('sitting');
-      setCatVisitBubble(catState.name + '到囉，現在專心陪你。想摸摸、餵點心，還是一起玩？');
-      scheduleCatVisitNaturalMotion(6200);
-    }, 1150);
+    setCatVisitPose('running').then(function (ready) {
+      if (!ready || !document.body.classList.contains('cat-visit-open')) return;
+      visitCat.classList.add('arriving');
+      setCatVisitBubble(catState.name + '聽見你叫牠了，噠噠噠跑來陪你！');
+      catVisitTimer = setTimeout(function () {
+        if (!document.body.classList.contains('cat-visit-open')) return;
+        visitCat.classList.remove('arriving');
+        setCatVisitPose('sitting');
+        setCatVisitBubble(catState.name + '到囉，現在專心陪你。想摸摸、餵點心，還是一起玩？');
+        scheduleCatVisitNaturalMotion(6200);
+      }, 1150);
+    });
   }
 
   function closeCatVisit() {
@@ -2510,7 +2472,7 @@
         '牠在你身旁坐下，陪你慢慢休息。'
       ];
       clearTimeout(catHomeTimer);
-      moveCatHomeToPosition(x, y, replies[Math.floor(Math.random() * replies.length)], 'curious', '小邊注意到你了，正跑過來……');
+      moveCatHomeToPosition(x, y, replies[Math.floor(Math.random() * replies.length)], 'curious', '小邊注意到你了，正跑過來……', 'running');
       scheduleCatHomeRoaming();
     });
   }
