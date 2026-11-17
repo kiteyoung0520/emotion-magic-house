@@ -156,7 +156,7 @@
     font-weight: bold;
     padding: 3px 6px;
   }
-  .cat-sprite.chasing { animation: none !important; transition: left var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1), top var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1); }
+  .cat-sprite.chasing { animation: cat-page-chase-body var(--chase-duration,1.2s) ease-in-out infinite; transition: left var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1), top var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1); }
   .cat-sprite { pointer-events: auto; cursor: grab; touch-action: none; }
   .cat-sprite.being-held { z-index: 10003; bottom: auto; background-image: url('assets/border-collie/border-collie-lying.webp?v=1'); background-size: contain; animation: cat-page-held .34s ease-in-out infinite alternate !important; cursor: grabbing; transform-origin: center top; }
   @keyframes cat-page-held { from { transform: rotate(-3deg) scale(.98); } to { transform: translateY(-6px) rotate(3deg) scale(1.01); } }
@@ -189,10 +189,13 @@
   .cat-play-bubble.is-visible { display: block; opacity: 1; animation: play-bubble-pop .22s ease-out both; }
   @keyframes play-bubble-pop { from { opacity: 0; transform: translate(-50%,calc(-100% + 8px)) scale(.94); } to { opacity: 1; transform: translate(-50%,-100%) scale(1); } }
   @keyframes cat-wander {
-    0% { transform: translate(0, 0) rotate(-1deg); }
-    48% { transform: translate(calc(100vw - 160px), -5px) rotate(1deg); }
-    52% { transform: translate(calc(100vw - 160px), 0) scaleX(-1); }
-    100% { transform: translate(0, -4px) scaleX(-1); }
+    0%, 4% { transform: translate(0, 3px) rotate(-1deg) scaleX(1); }
+    18% { transform: translate(calc(25vw - 40px), -1px) rotate(.8deg) scaleX(1); }
+    44% { transform: translate(calc(100vw - 160px), 2px) rotate(1.2deg) scaleX(1); }
+    48% { transform: translate(calc(100vw - 160px), 5px) rotate(2deg) scaleX(1); }
+    52% { transform: translate(calc(100vw - 160px), 5px) scaleX(-1) rotate(-2deg); }
+    76% { transform: translate(calc(25vw - 40px), -1px) scaleX(-1) rotate(-.8deg); }
+    96%, 100% { transform: translate(0, 3px) scaleX(-1) rotate(-1deg); }
   }
   @keyframes border-collie-walk-cycle {
     0% { background-image: url('assets/border-collie/border-collie-walk-11.webp?v=2'); }
@@ -207,6 +210,12 @@
     75% { background-image: url('assets/border-collie/border-collie-walk-20.webp?v=2'); }
     83.333% { background-image: url('assets/border-collie/border-collie-walk-21.webp?v=2'); }
     91.667%, 100% { background-image: url('assets/border-collie/border-collie-walk-22.webp?v=2'); }
+  }
+  @keyframes cat-page-chase-body {
+    0%, 100% { transform: translateY(3px) scaleX(var(--chase-face,1)) rotate(-1deg); }
+    22% { transform: translateY(-2px) scaleX(var(--chase-face,1)) rotate(1.2deg); }
+    50% { transform: translateY(2px) scaleX(var(--chase-face,1)) rotate(-.6deg); }
+    76% { transform: translateY(-3px) scaleX(var(--chase-face,1)) rotate(1deg); }
   }
   @keyframes cat-page-breathe { 50% { transform: translateY(-3px) scale(1.025); } }
   @keyframes cat-page-nibble { to { transform: translateY(4px) rotate(1deg); } }
@@ -697,7 +706,7 @@
   }
   .cat-home-cat.growth-juvenile { width: clamp(152px, 40vw, 215px); height: clamp(136px, 36vw, 195px); }
   .cat-home-cat.growth-adult { width: clamp(162px, 42vw, 228px); height: clamp(142px, 38vw, 205px); }
-  .cat-home-cat.walking { background-image: url('assets/border-collie/border-collie-walk-11.webp?v=2'); animation: cat-home-step 1.08s linear infinite, border-collie-walk-cycle 1.08s steps(1,end) infinite; }
+  .cat-home-cat.walking { background-image: url('assets/border-collie/border-collie-walk-11.webp?v=2'); animation: cat-home-walk-body 1.08s linear infinite, border-collie-walk-cycle 1.08s steps(1,end) infinite; }
   .cat-home-cat.sitting { background-image: url('assets/border-collie/border-collie-sitting.webp?v=3'); animation: cat-home-breathe 1.8s ease-in-out infinite; }
   .cat-home-cat.sleeping { background-image: url('assets/border-collie/border-collie-sleeping.webp?v=3'); animation: cat-home-breathe 2.4s ease-in-out infinite; }
   .cat-home-cat.eating { background-image: url('assets/border-collie/border-collie-sitting.webp?v=3'); animation: cat-home-nibble .32s ease-in-out infinite alternate; }
@@ -717,6 +726,14 @@
   .cat-home-cat.belly-up { background-image: url('assets/border-collie/border-collie-belly-up.webp?v=1'); animation: cat-home-belly-up 1.9s ease-in-out infinite; }
   .cat-home-cat.being-held { z-index: 10003; background-image: url('assets/border-collie/border-collie-lying.webp?v=1'); background-size: contain; animation: cat-home-held .34s ease-in-out infinite alternate; cursor: grabbing; touch-action: none; }
   @keyframes cat-home-step { to { transform: translate(-50%, calc(-50% - 5px)) scaleX(var(--face)) rotate(-1deg); } }
+  @keyframes cat-home-walk-body {
+    0%, 100% { transform: translate(-50%, calc(-50% + 3px)) scaleX(var(--face)) rotate(-1deg); }
+    16% { transform: translate(-50%, calc(-50% - 1px)) scaleX(var(--face)) rotate(.8deg); }
+    33% { transform: translate(-50%, calc(-50% + 2px)) scaleX(var(--face)) rotate(-.5deg); }
+    50% { transform: translate(-50%, calc(-50% - 3px)) scaleX(var(--face)) rotate(1deg); }
+    66% { transform: translate(-50%, calc(-50% + 1px)) scaleX(var(--face)) rotate(-.8deg); }
+    83% { transform: translate(-50%, calc(-50% - 2px)) scaleX(var(--face)) rotate(.6deg); }
+  }
   @keyframes cat-home-walk-frames { 0% { background-image: url('assets/border-collie/border-collie-walk-11.webp?v=2'); } }
   @keyframes cat-home-breathe { 50% { transform: translate(-50%, -50%) scaleX(var(--face)) scale(1.025); } }
   @keyframes cat-home-nibble { to { transform: translate(-50%, -47%) scaleX(var(--face)) rotate(2deg); } }
@@ -842,7 +859,7 @@
   .cat-visit-cat.loaf { background-image: url('assets/border-collie/border-collie-lying.webp?v=1'); animation: cat-visit-breathe 2.8s ease-in-out infinite; }
   .cat-visit-cat.curious { background-image: url('assets/border-collie/border-collie-sitting.webp?v=1'); animation: cat-visit-curious 1.25s ease-in-out infinite alternate; }
   .cat-visit-cat.belly-up { background-image: url('assets/border-collie/border-collie-belly-up.webp?v=1'); animation: cat-visit-belly-up 1.9s ease-in-out infinite; }
-  .cat-visit-cat.walking { transform: translate(-50%,-50%) scaleX(var(--visit-face,1)); animation: none; transition: left var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1), top var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1); }
+  .cat-visit-cat.walking { transform: translate(-50%,-50%) scaleX(var(--visit-face,1)); animation: cat-visit-walk-body 1.08s linear infinite; transition: left var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1), top var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1); }
   .cat-visit-cat.being-held { z-index: 4; background-image: url('assets/border-collie/border-collie-lying.webp?v=1'); background-size: contain; animation: cat-visit-held .34s ease-in-out infinite alternate; cursor: grabbing; }
   .cat-visit-cat.growth-juvenile { width: clamp(266px,76vw,400px); height: clamp(242px,68vw,370px); }
   .cat-visit-cat.growth-adult { width: clamp(280px,80vw,420px); height: clamp(254px,72vw,392px); }
@@ -850,6 +867,14 @@
   .cat-visit-toy { position: absolute; z-index: 2; left: 20%; bottom: 18%; opacity: 0; font-size: clamp(2rem,9vw,3.4rem); filter: drop-shadow(0 6px 8px rgba(0,0,0,.22)); pointer-events: none; }
   .cat-visit-stage.playing .cat-visit-toy { animation: cat-yarn-play 1.8s ease-in-out both; }
   @keyframes cat-visit-breathe { 50% { transform: translate(-50%,-52%) scale(1.025); } }
+  @keyframes cat-visit-walk-body {
+    0%, 100% { transform: translate(-50%, calc(-50% + 3px)) scaleX(var(--visit-face,1)) rotate(-1deg); }
+    16% { transform: translate(-50%, calc(-50% - 1px)) scaleX(var(--visit-face,1)) rotate(.8deg); }
+    33% { transform: translate(-50%, calc(-50% + 2px)) scaleX(var(--visit-face,1)) rotate(-.5deg); }
+    50% { transform: translate(-50%, calc(-50% - 3px)) scaleX(var(--visit-face,1)) rotate(1deg); }
+    66% { transform: translate(-50%, calc(-50% + 1px)) scaleX(var(--visit-face,1)) rotate(-.8deg); }
+    83% { transform: translate(-50%, calc(-50% - 2px)) scaleX(var(--visit-face,1)) rotate(.6deg); }
+  }
   @keyframes cat-visit-nibble { to { transform: translate(-50%,-48%) rotate(1.5deg); } }
   @keyframes cat-visit-happy { to { transform: translate(-50%,-55%) rotate(1.4deg); } }
   @keyframes cat-visit-groom { to { transform: translate(-50%,-49%) rotate(-1deg); } }
@@ -1771,6 +1796,7 @@
     cat.style.removeProperty('left');
     cat.style.removeProperty('bottom');
     cat.style.removeProperty('--chase-duration');
+    cat.style.removeProperty('--chase-face');
     cat.style.removeProperty('background-image');
     cat.className = document.body.classList.contains('menu-open') ? 'cat-sprite sitting' : 'cat-sprite';
     if (!document.body.classList.contains('menu-open')) startPageCatWalkFrames();
@@ -1795,6 +1821,7 @@
     cat.style.left = targetLeft + 'px';
     cat.style.top = targetTop + 'px';
     cat.style.setProperty('--chase-duration', duration + 's');
+    cat.style.setProperty('--chase-face', x < currentX ? -1 : 1);
     startPageCatWalkFrames();
     showCatPlayBubble('小邊追著網球跑過來了！');
     catChaseTimer = setTimeout(function () {
