@@ -121,7 +121,7 @@
     background-size: contain;
     background-position: center;
     filter: drop-shadow(0 7px 4px rgba(0,0,0,.28));
-    animation: cat-wander 24s ease-in-out infinite alternate, border-collie-walk-cycle 1.08s steps(1,end) infinite;
+    animation: cat-wander 24s ease-in-out infinite alternate, border-collie-walk-cycle 1.2s steps(1,end) infinite;
   }
   .cat-sprite.sitting, .cat-sprite.sleeping, .cat-sprite.eating, .cat-sprite.happy, .cat-sprite.grooming, .cat-sprite.stretching, .cat-sprite.alert, .cat-sprite.curious, .cat-sprite.belly-up { background-size: 400% 400%; }
   .cat-sprite.sitting { background-image: url('assets/border-collie/border-collie-atlas-idle.webp?v=1'); animation: cat-page-breathe 1.8s ease-in-out infinite, border-collie-atlas-cycle 2s steps(1,end) infinite; }
@@ -749,14 +749,14 @@
     touch-action: none;
     filter: drop-shadow(0 8px 5px rgba(69,26,3,.28));
     transform: translate(-50%, -50%) scaleX(var(--face));
-    transition: left var(--move-duration, 2.5s) cubic-bezier(.35,.05,.25,1), top var(--move-duration, 2.5s) cubic-bezier(.35,.05,.25,1);
+    transition: left var(--move-duration, 2.5s) linear, top var(--move-duration, 2.5s) linear;
     pointer-events: auto;
     cursor: pointer;
     animation: cat-home-step .55s ease-in-out infinite alternate;
   }
   .cat-home-cat.growth-juvenile { width: clamp(152px, 40vw, 215px); height: clamp(136px, 36vw, 195px); }
   .cat-home-cat.growth-adult { width: clamp(162px, 42vw, 228px); height: clamp(142px, 38vw, 205px); }
-  .cat-home-cat.walking { background-image: url('assets/border-collie/border-collie-walk-11.webp?v=2'); animation: cat-home-walk-body 1.08s linear infinite, border-collie-walk-cycle 1.08s steps(1,end) infinite; }
+  .cat-home-cat.walking { background-image: url('assets/border-collie/border-collie-walk-11.webp?v=2'); animation: cat-home-walk-body 1.2s linear infinite, border-collie-walk-cycle 1.2s steps(1,end) infinite; }
   .cat-home-cat.sitting { background-image: url('assets/border-collie/border-collie-atlas-idle.webp?v=1'); background-size: 400% 400%; animation: cat-home-breathe 1.8s ease-in-out infinite, border-collie-atlas-cycle 2s steps(1,end) infinite; }
   .cat-home-cat.sleeping { background-image: url('assets/border-collie/border-collie-atlas-sleep.webp?v=1'); background-size: 400% 400%; animation: cat-home-breathe 2.4s ease-in-out infinite, border-collie-atlas-cycle 2s steps(1,end) infinite; }
   .cat-home-cat.eating { background-image: url('assets/border-collie/border-collie-atlas-eat.webp?v=1'); background-size: 400% 400%; animation: cat-home-nibble .9s ease-in-out infinite, border-collie-atlas-cycle 1.8s steps(1,end) infinite; }
@@ -907,11 +907,11 @@
   .cat-visit-cat.stretching { background-image: url('assets/border-collie/border-collie-atlas-stretch.webp?v=1'); background-size: 400% 400%; animation: cat-visit-stretch 3s ease-in-out forwards, border-collie-stretch-cycle 3s steps(1,end) 1 forwards; }
   .cat-visit-cat.loaf { background-image: url('assets/border-collie/border-collie-atlas-loaf.webp?v=1'); background-size: 400% 400%; animation: cat-visit-breathe 2.8s ease-in-out infinite, border-collie-atlas-cycle 2.4s steps(1,end) infinite; }
   .cat-visit-cat.belly-up { background-image: url('assets/border-collie/border-collie-atlas-belly.webp?v=1'); background-size: 400% 400%; animation: cat-visit-belly-up 1.9s ease-in-out infinite, border-collie-atlas-cycle 2s steps(1,end) infinite; }
-  .cat-visit-cat.walking { transform: translate(-50%,-50%) scaleX(var(--visit-face,1)); animation: cat-visit-walk-body 1.08s linear infinite; transition: left var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1), top var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1); }
+  .cat-visit-cat.walking { transform: translate(-50%,-50%) scaleX(var(--visit-face,1)); animation: cat-visit-walk-body 1.2s linear infinite; transition: left var(--visit-walk-duration,2s) linear, top var(--visit-walk-duration,2s) linear; }
   .cat-visit-cat.being-held { z-index: 4; background-image: url('assets/border-collie/border-collie-atlas-held.webp?v=1'); background-repeat: no-repeat; background-size: 400% 400%; background-position: 0 0; animation: cat-visit-held .55s ease-in-out infinite alternate; cursor: grabbing; }
   .cat-visit-cat.growth-juvenile { width: clamp(266px,76vw,400px); height: clamp(242px,68vw,370px); }
   .cat-visit-cat.growth-adult { width: clamp(280px,80vw,420px); height: clamp(254px,72vw,392px); }
-  .cat-visit-cat.arriving { left: -35%; top: 60%; background-size: contain; background-position: center; animation: cat-visit-run-in 1.15s cubic-bezier(.18,.72,.25,1) both, border-collie-walk-cycle 1.08s steps(1,end) infinite; }
+  .cat-visit-cat.arriving { left: -35%; top: 60%; background-size: contain; background-position: center; animation: cat-visit-run-in 1.15s cubic-bezier(.18,.72,.25,1) both, border-collie-walk-cycle 1.2s steps(1,end) infinite; }
   .cat-visit-toy { position: absolute; z-index: 2; left: 20%; bottom: 18%; width: clamp(44px,12vw,68px); aspect-ratio: 1; opacity: 0; filter: drop-shadow(0 6px 8px rgba(0,0,0,.22)); pointer-events: none; }
   .cat-visit-toy img { display: block; width: 100%; height: 100%; object-fit: contain; }
   .cat-visit-stage.playing .cat-visit-toy { animation: cat-yarn-play 1.8s ease-in-out both; }
@@ -949,9 +949,9 @@
   @media (max-width: 480px) { .cat-home-actions { grid-template-columns: repeat(3, minmax(0, 1fr)); } .cat-name-field input { width: 84px; } .cat-calendar-row { gap: 5px; } }
   @media (max-width: 380px) { .cat-name-field input { width: 72px; } .cat-name-field { font-size: .62rem; } .cat-visit-actions { gap: 6px; } .cat-visit-actions .cat-home-action { padding: 6px 3px; font-size: .76rem; } }
   @media (prefers-reduced-motion: reduce) {
-    .cat-home-cat { transition-duration: .01ms; animation: none !important; }
+    .cat-home-cat { transition-duration: var(--move-duration, 2.5s) !important; animation: none !important; }
     .cat-visit-cat, .cat-visit-stage.playing .cat-visit-toy { animation: none !important; }
-    .cat-visit-cat.walking { transition-duration: .01ms !important; }
+    .cat-visit-cat.walking { transition-duration: var(--visit-walk-duration, 2s) !important; }
     .cat-sprite.chasing { transition-duration: .01ms !important; }
     .interactive-toy { transition: none; }
     .cat-breath-orb { animation: none !important; }
@@ -2180,7 +2180,7 @@
         catHomeFrameTimer = setInterval(function () {
           frame = (frame + 1) % catWalkFrames.length;
           cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-        }, 90);
+        }, 100);
       }
     });
   }
@@ -2194,7 +2194,7 @@
     pageCatFrameTimer = setInterval(function () {
       frame = (frame + 1) % catWalkFrames.length;
       cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-    }, 90);
+    }, 100);
   }
 
   function setPageCatPose(pose) {
@@ -2363,7 +2363,7 @@
         catVisitFrameTimer = setInterval(function () {
           frame = (frame + 1) % catWalkFrames.length;
           cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-        }, 90);
+        }, 100);
         catVisitIdleTimer = setTimeout(function () {
           clearInterval(catVisitFrameTimer);
           catVisitFrameTimer = null;
