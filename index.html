@@ -523,6 +523,11 @@
     white-space: nowrap;
     box-shadow: inset 0 1px rgba(255,255,255,.12), 0 5px 14px rgba(0,0,0,.16);
   }
+  .dog-food-count { display: inline-flex; align-items: center; gap: .28em; }
+  .dog-food-icon { display: inline-block; width: 1.3em; height: 1.3em; flex: 0 0 auto; vertical-align: -.28em; }
+  .icon-definitions { position: absolute; width: 0; height: 0; overflow: hidden; }
+  .cat-home-action .dog-food-icon { width: 1.2em; height: 1.2em; }
+  .room-object .dog-food-icon { width: clamp(2.2rem, 13vw, 4.5rem); height: auto; filter: drop-shadow(0 5px 3px rgba(69,26,3,.22)); }
   .cat-room {
     position: relative;
     flex: 1;
@@ -943,6 +948,20 @@
 </head>
 <body>
 
+<svg class="icon-definitions" aria-hidden="true" focusable="false">
+  <symbol id="dog-food-bowl-icon" viewBox="0 0 40 34">
+    <ellipse cx="20" cy="30.8" rx="12.5" ry="1.5" fill="#402b28" opacity=".18" />
+    <path d="M5.5 17.5h29l-3.1 9.2a4.6 4.6 0 0 1-4.4 3.1H13a4.6 4.6 0 0 1-4.4-3.1z" fill="#e9a45d" stroke="#74482f" stroke-width="1.7" stroke-linejoin="round" />
+    <path d="M7.7 22.2h24.6l-.9 2.8H8.6z" fill="#f6bf78" opacity=".75" />
+    <path d="M4 15.4c0-.9.7-1.6 1.6-1.6h28.8c.9 0 1.6.7 1.6 1.6v2.2H4z" fill="#ffd38c" stroke="#74482f" stroke-width="1.7" stroke-linejoin="round" />
+    <path d="M9.2 13.4c-.9-1.5.1-3.2 1.8-3.2.6-2 3.4-2 4 0 1.7.2 2.2 2.2.8 3.2-.5.5-1.2.8-2 .8h-2.5c-.9 0-1.6-.3-2.1-.8z" fill="#70452e" />
+    <path d="M17.1 12.5c-.7-1.3.2-2.7 1.6-2.7.5-1.7 2.8-1.7 3.3 0 1.4.2 1.8 1.9.7 2.7-.4.4-1 .7-1.7.7h-2.1c-.7 0-1.3-.2-1.8-.7z" fill="#805135" />
+    <path d="M25.1 13.4c-.8-1.4.1-2.9 1.7-2.9.5-1.8 3.1-1.8 3.6 0 1.5.2 2 2 .7 2.9-.5.4-1.1.7-1.8.7h-2.3c-.8 0-1.4-.2-1.9-.7z" fill="#70452e" />
+    <circle cx="20" cy="23.7" r="1.3" fill="#9b6039" />
+    <circle cx="17.2" cy="25.1" r=".85" fill="#9b6039" />
+    <circle cx="22.8" cy="25.1" r=".85" fill="#9b6039" />
+  </symbol>
+</svg>
 <button class="audio-control" id="audio-toggle-btn" onclick="toggleMute()">
   🔊 <span>音樂：開</span>
 </button>
@@ -964,7 +983,7 @@
 <div class="cat-companion" aria-label="小邊陪伴區">
     <div class="cat-sprite" id="cat-sprite" role="img" aria-label="小邊，可以拖曳移動" title="拖曳小邊可以帶牠移動"></div>
   <div class="cat-panel">
-    <span id="cat-food">🥣 0</span>
+    <span id="cat-food" class="dog-food-count" role="img" aria-label="狗糧 0 份"><svg class="dog-food-icon" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg><span data-food-amount>0</span></span>
     <button class="cat-feed" onclick="feedCat()">餵食</button>
   </div>
 </div>
@@ -977,7 +996,7 @@
     <button class="cat-home-back" onclick="closeCatHome()">← 返回</button>
     <h2 class="cat-home-title">🐶 小邊之家</h2>
     <div class="cat-home-stats" aria-label="小邊狀態">
-      <span class="cat-stat" id="cat-home-food">🥣 0</span>
+      <span class="cat-stat dog-food-count" id="cat-home-food" role="img" aria-label="狗糧 0 份"><svg class="dog-food-icon" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg><span data-food-amount>0</span></span>
       <span class="cat-stat" id="cat-home-affection">💛 0</span>
     </div>
   </header>
@@ -1002,7 +1021,7 @@
       <span class="room-emoji">🎾</span><span>玩具</span>
     </button>
     <button class="room-object spot-bowl" onclick="moveCatHomeTo('bowl')" aria-label="到食物碗">
-      <span class="room-emoji">🥣</span><span>食物碗</span>
+      <svg class="room-emoji dog-food-icon" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg><span>食物碗</span>
     </button>
     <button class="room-object spot-bed" onclick="moveCatHomeTo('bed')" aria-label="到狗窩休息">
       <span class="room-emoji">🧺</span><span>狗窩</span>
@@ -1014,7 +1033,7 @@
     <button class="cat-home-action" onclick="catHomeAction('walk')">🐾 散步</button>
     <button class="cat-home-action" onclick="catHomeAction('pet')">🤲 摸摸</button>
     <button class="cat-home-action" onclick="openCatFeelingsDialog()">💛 心情陪伴</button>
-    <button class="cat-home-action" onclick="catHomeAction('feed')">🥣 餵食</button>
+    <button class="cat-home-action" onclick="catHomeAction('feed')"><svg class="dog-food-icon" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg>餵食</button>
     <button class="cat-home-action" onclick="catHomeAction('sleep')">🌙 睡覺</button>
     <button class="cat-home-action cat-call-button" id="cat-call-button" type="button" onclick="summonCat()">✨ 呼喚</button>
   </nav>
@@ -1071,7 +1090,7 @@
   <header class="cat-visit-header">
     <button class="cat-home-back" type="button" onclick="closeCatVisit()">← 回到小邊之家</button>
     <h2 class="cat-visit-title"><span id="cat-visit-name">小邊</span>來啦</h2>
-    <span class="cat-stat" id="cat-visit-food">🥣 0</span>
+    <span class="cat-stat dog-food-count" id="cat-visit-food" role="img" aria-label="狗糧 0 份"><svg class="dog-food-icon" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg><span data-food-amount>0</span></span>
   </header>
   <div class="cat-visit-stage" id="cat-visit-stage">
     <div class="cat-visit-bubble" id="cat-visit-bubble" role="status">聽見你叫我了！</div>
@@ -1079,7 +1098,7 @@
     <div class="cat-visit-toy" aria-hidden="true">🎾</div>
   </div>
   <nav class="cat-visit-actions" aria-label="和小邊互動">
-    <button class="cat-home-action" type="button" data-visit-action="feed" aria-pressed="false" onclick="catVisitAction('feed')">🥣 餵牠吃飯</button>
+    <button class="cat-home-action" type="button" data-visit-action="feed" aria-pressed="false" onclick="catVisitAction('feed')"><svg class="dog-food-icon" aria-hidden="true"><use href="#dog-food-bowl-icon"></use></svg>餵牠吃飯</button>
     <button class="cat-home-action" type="button" data-visit-action="pet" aria-pressed="false" onclick="catVisitAction('pet')">🤲 摸摸牠</button>
     <button class="cat-home-action" type="button" data-visit-action="play" aria-pressed="false" onclick="catVisitAction('play')">🎾 一起玩</button>
   </nav>
@@ -1612,17 +1631,23 @@
   }
 
   function updateCatUI() {
-    document.getElementById('cat-food').textContent = '🥣 ' + catState.food;
+    const updateFoodCount = element => {
+      if (!element) return;
+      const amount = element.querySelector('[data-food-amount]');
+      if (amount) amount.textContent = String(catState.food);
+      element.setAttribute('aria-label', '狗糧 ' + catState.food + ' 份');
+    };
+    updateFoodCount(document.getElementById('cat-food'));
     const homeFood = document.getElementById('cat-home-food');
     const homeAffection = document.getElementById('cat-home-affection');
-    if (homeFood) homeFood.textContent = '🥣 ' + catState.food;
+    updateFoodCount(homeFood);
     if (homeAffection) homeAffection.textContent = '💛 ' + catState.affection;
     const nameInput = document.getElementById('cat-name-input');
     if (nameInput && document.activeElement !== nameInput) nameInput.value = catState.name;
     const visitName = document.getElementById('cat-visit-name');
     const visitFood = document.getElementById('cat-visit-food');
     if (visitName) visitName.textContent = catState.name;
-    if (visitFood) visitFood.textContent = '🥣 ' + catState.food;
+    updateFoodCount(visitFood);
     updateCatGrowthUI();
   }
 
