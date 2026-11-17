@@ -165,7 +165,7 @@
   }
   .cat-sprite.chasing { background-image: url('assets/border-collie/border-collie-atlas-play.webp?v=1'); background-size: 400% 400%; animation: cat-page-chase-body var(--chase-duration,1.2s) ease-in-out infinite, border-collie-atlas-cycle 1.6s steps(1,end) infinite; transition: left var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1), top var(--chase-duration,1.2s) cubic-bezier(.2,.8,.2,1); }
   .cat-sprite { pointer-events: auto; cursor: grab; touch-action: none; }
-  .cat-sprite.being-held { z-index: 10003; bottom: auto; background-image: url('assets/border-collie/border-collie-atlas-held.webp?v=1'); background-size: 400% 400%; animation: cat-page-held .55s ease-in-out infinite alternate, border-collie-atlas-cycle 2s steps(1,end) infinite !important; cursor: grabbing; transform-origin: center top; }
+  .cat-sprite.being-held { z-index: 10003; bottom: auto; background-image: url('assets/border-collie/border-collie-atlas-held.webp?v=1'); background-repeat: no-repeat; background-size: 400% 400%; background-position: 0 0; animation: cat-page-held .55s ease-in-out infinite alternate !important; cursor: grabbing; transform-origin: center top; }
   @keyframes cat-page-held { from { transform: rotate(-3deg) scale(.98); } to { transform: translateY(-6px) rotate(3deg) scale(1.01); } }
   .interactive-toy {
     position: fixed;
@@ -758,7 +758,7 @@
   .cat-home-cat.tired, .cat-home-cat.unwell { background-image: url('assets/border-collie/border-collie-atlas-sleep.webp?v=1'); background-size: 400% 400%; animation: cat-home-breathe 3.2s ease-in-out infinite, border-collie-atlas-cycle 2.4s steps(1,end) infinite; }
   .cat-home-cat.loaf { background-image: url('assets/border-collie/border-collie-atlas-loaf.webp?v=1'); background-size: 400% 400%; animation: cat-home-breathe 2.8s ease-in-out infinite, border-collie-atlas-cycle 2.4s steps(1,end) infinite; }
   .cat-home-cat.belly-up { background-image: url('assets/border-collie/border-collie-atlas-belly.webp?v=1'); background-size: 400% 400%; animation: cat-home-belly-up 1.9s ease-in-out infinite, border-collie-atlas-cycle 2s steps(1,end) infinite; }
-  .cat-home-cat.being-held { z-index: 10003; background-image: url('assets/border-collie/border-collie-atlas-held.webp?v=1'); background-size: 400% 400%; animation: cat-home-held .55s ease-in-out infinite alternate, border-collie-atlas-cycle 2s steps(1,end) infinite; cursor: grabbing; touch-action: none; }
+  .cat-home-cat.being-held { z-index: 10003; background-image: url('assets/border-collie/border-collie-atlas-held.webp?v=1'); background-repeat: no-repeat; background-size: 400% 400%; background-position: 0 0; animation: cat-home-held .55s ease-in-out infinite alternate; cursor: grabbing; touch-action: none; }
   @keyframes cat-home-step { to { transform: translate(-50%, calc(-50% - 5px)) scaleX(var(--face)) rotate(-1deg); } }
   @keyframes cat-home-walk-body {
     0%, 100% { transform: translate(-50%, calc(-50% + 3px)) scaleX(var(--face)) rotate(-1deg); }
@@ -894,7 +894,7 @@
   .cat-visit-cat.loaf { background-image: url('assets/border-collie/border-collie-atlas-loaf.webp?v=1'); background-size: 400% 400%; animation: cat-visit-breathe 2.8s ease-in-out infinite, border-collie-atlas-cycle 2.4s steps(1,end) infinite; }
   .cat-visit-cat.belly-up { background-image: url('assets/border-collie/border-collie-atlas-belly.webp?v=1'); background-size: 400% 400%; animation: cat-visit-belly-up 1.9s ease-in-out infinite, border-collie-atlas-cycle 2s steps(1,end) infinite; }
   .cat-visit-cat.walking { transform: translate(-50%,-50%) scaleX(var(--visit-face,1)); animation: cat-visit-walk-body 1.08s linear infinite; transition: left var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1), top var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1); }
-  .cat-visit-cat.being-held { z-index: 4; background-image: url('assets/border-collie/border-collie-atlas-held.webp?v=1'); background-size: 400% 400%; animation: cat-visit-held .55s ease-in-out infinite alternate, border-collie-atlas-cycle 2s steps(1,end) infinite; cursor: grabbing; }
+  .cat-visit-cat.being-held { z-index: 4; background-image: url('assets/border-collie/border-collie-atlas-held.webp?v=1'); background-repeat: no-repeat; background-size: 400% 400%; background-position: 0 0; animation: cat-visit-held .55s ease-in-out infinite alternate; cursor: grabbing; }
   .cat-visit-cat.growth-juvenile { width: clamp(266px,76vw,400px); height: clamp(242px,68vw,370px); }
   .cat-visit-cat.growth-adult { width: clamp(280px,80vw,420px); height: clamp(254px,72vw,392px); }
   .cat-visit-cat.arriving { left: -35%; top: 60%; background-size: contain; background-position: center; animation: cat-visit-run-in 1.15s cubic-bezier(.18,.72,.25,1) both, border-collie-walk-cycle 1.08s steps(1,end) infinite; }
