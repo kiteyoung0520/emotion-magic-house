@@ -1735,9 +1735,7 @@
   function positionCatPlayBubble(bubble, sprite) {
     if (!bubble || !sprite) return;
     const rect = sprite.getBoundingClientRect();
-    const bubbleRect = bubble.getBoundingClientRect();
-    const halfWidth = bubbleRect.width / 2;
-    bubble.style.left = Math.max(halfWidth + 8, Math.min(window.innerWidth - halfWidth - 8, rect.left + rect.width / 2)) + 'px';
+    bubble.style.left = '50%';
     bubble.style.top = Math.max(bubbleRect.height + 12, rect.top - 10) + 'px';
   }
   function showCatPlayBubble(message) {
