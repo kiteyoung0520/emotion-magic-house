@@ -887,6 +887,10 @@
   @keyframes cat-yarn-play { 0% { opacity: 0; transform: translate(0,0) rotate(0); } 15%,75% { opacity: 1; } 50% { transform: translate(42vw,-34px) rotate(240deg); } 100% { opacity: 0; transform: translate(70vw,0) rotate(420deg); } }
   .cat-visit-actions { width: min(760px,100%); margin: 0 auto; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
   .cat-visit-actions .cat-home-action { min-height: 52px; }
+  .cat-visit-actions button { transition: opacity .25s ease, transform .25s ease, box-shadow .25s ease; }
+  .cat-visit-actions.is-focused button:not(.is-active) { opacity: .42; }
+  .cat-visit-actions button.is-active { transform: translateY(-3px) scale(1.035); box-shadow: 0 0 0 3px rgba(255,224,170,.35), 0 8px 22px rgba(255,203,139,.2); }
+  .cat-visit-stage.is-focused { box-shadow: inset 0 0 0 1px rgba(255,231,193,.32), 0 22px 50px rgba(0,0,0,.22), 0 0 34px rgba(255,205,139,.13); }
   @media (max-height: 620px) {
     .cat-home-header { min-height: 42px; }
     .cat-home-title { font-size: 1.1rem; }
@@ -1047,9 +1051,9 @@
     <div class="cat-visit-toy" aria-hidden="true">🎾</div>
   </div>
   <nav class="cat-visit-actions" aria-label="和小邊互動">
-    <button class="cat-home-action" type="button" onclick="catVisitAction('feed')">🦴 餵牠吃飯</button>
-    <button class="cat-home-action" type="button" onclick="catVisitAction('pet')">🤲 摸摸牠</button>
-    <button class="cat-home-action" type="button" onclick="catVisitAction('play')">🎾 一起玩</button>
+    <button class="cat-home-action" type="button" data-visit-action="feed" aria-pressed="false" onclick="catVisitAction('feed')">🦴 餵牠吃飯</button>
+    <button class="cat-home-action" type="button" data-visit-action="pet" aria-pressed="false" onclick="catVisitAction('pet')">🤲 摸摸牠</button>
+    <button class="cat-home-action" type="button" data-visit-action="play" aria-pressed="false" onclick="catVisitAction('play')">🎾 一起玩</button>
   </nav>
 </section>
 
@@ -1683,6 +1687,8 @@
   let catVisitIdleTimer = null;
   let catVisitFrameTimer = null;
   let lastCatVisitNaturalPose = null;
+  let catVisitFocusMode = false;
+  let catVisitFocusedAction = null;
   let lastCatMoodId = '';
   const catWalkFrames = Array.from({ length: 12 }, function (_, index) { return 'assets/border-collie/border-collie-walk-' + (index + 11) + '.webp?v=2'; });
   catWalkFrames.forEach(function (src) { const image = new Image(); image.src = src; });
@@ -2132,6 +2138,26 @@
     catVisitBubbleTimer = setTimeout(function () { bubble.classList.add('is-fading'); }, catBubbleDuration(message));
   }
 
+  function setCatVisitActionFocus(action) {
+    const nav = document.querySelector('.cat-visit-actions');
+    const stage = document.getElementById('cat-visit-stage');
+    if (!nav || !stage) return;
+    catVisitFocusedAction = action || null;
+    nav.classList.toggle('is-focused', Boolean(action));
+    stage.classList.toggle('is-focused', Boolean(action));
+    nav.querySelectorAll('[data-visit-action]').forEach(function (button) {
+      const active = button.dataset.visitAction === action;
+      button.classList.toggle('is-active', active);
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+  }
+
+  function finishCatVisitInteraction() {
+    setCatVisitActionFocus(null);
+    setCatVisitPose('sitting');
+    if (catVisitFocusMode) scheduleCatVisitNaturalMotion(5600 + Math.random() * 2400);
+  }
+
   function showCatVisitDesire() {
     const name = catState.name || '小邊';
     const wishes = [
@@ -2173,7 +2199,14 @@
       scheduleCatVisitNaturalMotion(700);
       return;
     }
-    if (Math.random() < .56) {
+    if (catVisitFocusMode) {
+      const calmPoses = ['sitting', 'grooming', 'stretching', 'loaf', 'curious'];
+      let pose = calmPoses[Math.floor(Math.random() * calmPoses.length)];
+      if (pose === lastCatVisitNaturalPose) pose = 'sitting';
+      lastCatVisitNaturalPose = pose;
+      setCatVisitPose(pose);
+      scheduleCatVisitNaturalMotion(5600 + Math.random() * 3000);
+    } else if (Math.random() < .56) {
       const currentX = parseFloat(cat.style.left) || 50;
       const nextX = 22 + Math.random() * 56;
       const nextY = 46 + Math.random() * 23;
@@ -2212,6 +2245,8 @@
     clearInterval(catHomeFrameTimer);
     clearTimeout(catVisitTimer);
     stopCatVisitNaturalMotion();
+    catVisitFocusMode = true;
+    setCatVisitActionFocus(null);
     const visit = document.getElementById('cat-visit');
     document.body.classList.add('cat-visit-open');
     visit.classList.add('is-open');
@@ -2230,15 +2265,17 @@
     catVisitTimer = setTimeout(function () {
       if (!document.body.classList.contains('cat-visit-open')) return;
       cat.classList.remove('arriving');
-      setCatVisitPose('happy');
-      setCatVisitBubble(catState.name + '跑到你身邊啦！尾巴搖呀搖，先喘口氣陪你。');
-      catVisitTimer = setTimeout(showCatVisitDesire, 1500);
+      setCatVisitPose('sitting');
+      setCatVisitBubble(catState.name + '到囉，現在專心陪你。想摸摸、餵點心，還是一起玩？');
+      scheduleCatVisitNaturalMotion(6200);
     }, 1150);
   }
 
   function closeCatVisit() {
     clearTimeout(catVisitTimer);
     stopCatVisitNaturalMotion();
+    catVisitFocusMode = false;
+    setCatVisitActionFocus(null);
     document.getElementById('cat-visit-stage').classList.remove('playing');
     document.body.classList.remove('cat-visit-open');
     const visit = document.getElementById('cat-visit');
@@ -2254,11 +2291,12 @@
     clearTimeout(catVisitTimer);
     const name = catState.name || '小邊';
     const stage = document.getElementById('cat-visit-stage');
+    setCatVisitActionFocus(action);
     if (action === 'feed') {
       if (catState.food < 3) {
         setCatVisitPose('alert');
         setCatVisitBubble('狗狗點心還不夠 3 份，可以玩遊戲或讀故事收集喔。');
-        scheduleCatVisitNaturalMotion(1800);
+        catVisitTimer = setTimeout(finishCatVisitInteraction, 1700);
         return;
       }
       catState.food -= 3;
@@ -2268,7 +2306,7 @@
       saveCatState();
       setCatVisitPose('eating');
       setCatVisitBubble('謝謝你！' + name + '開動囉，汪～');
-      scheduleCatVisitNaturalMotion(2600);
+      catVisitTimer = setTimeout(finishCatVisitInteraction, 2600);
     } else if (action === 'pet') {
       catState.affection += 1;
       catState.mood = Math.min(100, catState.mood + 5);
@@ -2281,7 +2319,7 @@
         setCatVisitPose('happy');
         setCatVisitBubble('呼嚕呼嚕～' + name + '好喜歡你的摸摸！');
       }
-      scheduleCatVisitNaturalMotion(1800);
+      catVisitTimer = setTimeout(finishCatVisitInteraction, 2400);
     } else if (action === 'play') {
       catState.affection += 1;
       catState.mood = Math.min(100, catState.mood + 7);
@@ -2294,7 +2332,7 @@
       stage.classList.add('playing');
       catVisitTimer = setTimeout(function () {
         stage.classList.remove('playing');
-        scheduleCatVisitNaturalMotion(450);
+        finishCatVisitInteraction();
       }, 1900);
     }
   }
