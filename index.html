@@ -129,7 +129,7 @@
   .cat-sprite.eating { background-image: url('assets/border-collie/border-collie-atlas-eat.webp?v=1'); animation: cat-page-nibble .9s ease-in-out infinite, border-collie-atlas-cycle 1.8s steps(1,end) infinite; }
   .cat-sprite.happy { background-image: url('assets/border-collie/border-collie-atlas-play.webp?v=1'); animation: cat-page-happy .7s ease-in-out infinite alternate, border-collie-atlas-cycle 1.6s steps(1,end) infinite; }
   .cat-sprite.grooming { background-image: url('assets/border-collie/border-collie-atlas-groom.webp?v=1'); animation: cat-page-groom 1s ease-in-out infinite alternate, border-collie-atlas-cycle 2s steps(1,end) infinite; }
-  .cat-sprite.stretching { background-image: url('assets/border-collie/border-collie-atlas-stretch.webp?v=1'); animation: cat-page-stretch 1.8s ease-in-out, border-collie-atlas-cycle 2s steps(1,end) 1 forwards; }
+  .cat-sprite.stretching { background-image: url('assets/border-collie/border-collie-atlas-stretch.webp?v=1'); animation: cat-page-stretch 3s ease-in-out forwards, border-collie-stretch-cycle 3s steps(1,end) 1 forwards; }
   .cat-sprite.alert, .cat-sprite.curious { background-image: url('assets/border-collie/border-collie-atlas-idle.webp?v=1'); animation: cat-page-alert 1.2s ease-in-out infinite alternate, border-collie-atlas-cycle 2s steps(1,end) infinite; }
   .cat-sprite.belly-up { background-image: url('assets/border-collie/border-collie-atlas-belly.webp?v=1'); animation: cat-page-belly-up 1.8s ease-in-out infinite, border-collie-atlas-cycle 2s steps(1,end) infinite; }
   .cat-sprite.sad { background-image: url('assets/border-collie/border-collie-atlas-moods.webp?v=1'); background-position: 0 0; background-size: 400% 400%; animation: cat-page-breathe 2.4s ease-in-out infinite, border-collie-mood-sad 1.5s steps(1,end) infinite; }
@@ -227,7 +227,7 @@
   @keyframes cat-page-nibble { to { transform: translateY(4px) rotate(1deg); } }
   @keyframes cat-page-happy { to { transform: translateY(-12px) rotate(3deg); } }
   @keyframes cat-page-groom { to { transform: rotate(-2deg) translateY(2px); } }
-  @keyframes cat-page-stretch { 50% { transform: scaleX(1.06) translateY(3px); } }
+  @keyframes cat-page-stretch { 0%,30% { transform: scale(1); } 62%,100% { transform: scaleX(1.06) translateY(4px) rotate(-1deg); } }
   @keyframes cat-page-alert { to { transform: translateY(-2px) rotate(1deg); } }
   @keyframes cat-page-belly-up { 50% { transform: translateY(-5px) rotate(-3deg) scale(1.04); } }
   @keyframes border-collie-atlas-cycle {
@@ -247,6 +247,20 @@
     81.25% { background-position: 33.333% 100%; }
     87.5% { background-position: 66.667% 100%; }
     93.75%, 100% { background-position: 100% 100%; }
+  }
+  @keyframes border-collie-stretch-cycle {
+    0% { background-position: 0 0; }
+    4% { background-position: 33.333% 0; }
+    8% { background-position: 66.667% 0; }
+    12% { background-position: 100% 0; }
+    16% { background-position: 0 33.333%; }
+    20% { background-position: 33.333% 33.333%; }
+    24% { background-position: 66.667% 33.333%; }
+    28% { background-position: 100% 33.333%; }
+    32% { background-position: 0 66.667%; }
+    36% { background-position: 33.333% 66.667%; }
+    40% { background-position: 66.667% 66.667%; }
+    44%, 100% { background-position: 100% 66.667%; }
   }
   @keyframes border-collie-mood-sad { 0%,100% { background-position: 0 0; } 25% { background-position: 33.333% 0; } 50% { background-position: 66.667% 0; } 75% { background-position: 100% 0; } }
   @keyframes border-collie-mood-bored { 0%,100% { background-position: 0 33.333%; } 25% { background-position: 33.333% 33.333%; } 50% { background-position: 66.667% 33.333%; } 75% { background-position: 100% 33.333%; } }
@@ -272,7 +286,7 @@
   .menu-open .cat-sprite.eating { background-image: url('assets/border-collie/border-collie-atlas-eat.webp?v=1'); background-size: 400% 400%; animation: cat-page-nibble .9s ease-in-out infinite, border-collie-atlas-cycle 1.8s steps(1,end) infinite; }
   .menu-open .cat-sprite.happy { background-image: url('assets/border-collie/border-collie-atlas-play.webp?v=1'); background-size: 400% 400%; animation: cat-page-happy .7s ease-in-out infinite alternate, border-collie-atlas-cycle 1.6s steps(1,end) infinite; }
   .menu-open .cat-sprite.grooming { background-image: url('assets/border-collie/border-collie-atlas-groom.webp?v=1'); background-size: 400% 400%; animation: cat-page-groom 1s ease-in-out infinite alternate, border-collie-atlas-cycle 2s steps(1,end) infinite; }
-  .menu-open .cat-sprite.stretching { background-image: url('assets/border-collie/border-collie-atlas-stretch.webp?v=1'); background-size: 400% 400%; animation: cat-page-stretch 1.8s ease-in-out, border-collie-atlas-cycle 2s steps(1,end) 1 forwards; }
+  .menu-open .cat-sprite.stretching { background-image: url('assets/border-collie/border-collie-atlas-stretch.webp?v=1'); background-size: 400% 400%; animation: cat-page-stretch 3s ease-in-out forwards, border-collie-stretch-cycle 3s steps(1,end) 1 forwards; }
   .menu-open .cat-sprite.alert { background-image: url('assets/border-collie/border-collie-atlas-idle.webp?v=1'); background-size: 400% 400%; animation: cat-page-alert .8s ease-in-out infinite alternate, border-collie-atlas-cycle 2s steps(1,end) infinite; }
   @media (max-width: 480px) {
     .menu-open .modal.main-menu-modal { padding-top: 118px; }
@@ -748,7 +762,7 @@
   .cat-home-cat.eating { background-image: url('assets/border-collie/border-collie-atlas-eat.webp?v=1'); background-size: 400% 400%; animation: cat-home-nibble .9s ease-in-out infinite, border-collie-atlas-cycle 1.8s steps(1,end) infinite; }
   .cat-home-cat.happy { background-image: url('assets/border-collie/border-collie-atlas-play.webp?v=1'); background-size: 400% 400%; animation: cat-home-happy .75s ease-in-out infinite alternate, border-collie-atlas-cycle 1.6s steps(1,end) infinite; }
   .cat-home-cat.grooming { background-image: url('assets/border-collie/border-collie-atlas-groom.webp?v=1'); background-size: 400% 400%; animation: cat-home-groom 1s ease-in-out infinite alternate, border-collie-atlas-cycle 2s steps(1,end) infinite; }
-  .cat-home-cat.stretching { background-image: url('assets/border-collie/border-collie-atlas-stretch.webp?v=1'); background-size: 400% 400%; animation: cat-home-stretch 1.8s ease-in-out, border-collie-atlas-cycle 2s steps(1,end) 1 forwards; }
+  .cat-home-cat.stretching { background-image: url('assets/border-collie/border-collie-atlas-stretch.webp?v=1'); background-size: 400% 400%; animation: cat-home-stretch 3s ease-in-out forwards, border-collie-stretch-cycle 3s steps(1,end) 1 forwards; }
   .cat-home-cat.alert, .cat-home-cat.curious { background-image: url('assets/border-collie/border-collie-atlas-idle.webp?v=1'); background-size: 400% 400%; animation: cat-home-alert 1.2s ease-in-out infinite alternate, border-collie-atlas-cycle 2s steps(1,end) infinite; }
   .cat-home-cat.sad, .cat-home-cat.bored, .cat-home-cat.scared, .cat-home-cat.angry, .cat-home-cat.tired, .cat-home-cat.unwell { background-size: contain; background-position: center; background-repeat: no-repeat; }
   .cat-home-cat.sad { background-image: url('assets/border-collie/border-collie-atlas-moods.webp?v=1'); background-size: 400% 400%; animation: cat-home-sad 2.4s ease-in-out infinite, border-collie-mood-sad 1.5s steps(1,end) infinite; }
@@ -773,7 +787,7 @@
   @keyframes cat-home-nibble { to { transform: translate(-50%, -47%) scaleX(var(--face)) rotate(2deg); } }
   @keyframes cat-home-happy { to { transform: translate(-50%, calc(-50% - 13px)) scaleX(var(--face)) rotate(3deg); } }
   @keyframes cat-home-groom { to { transform: translate(-50%, -48%) scaleX(var(--face)) rotate(-2deg); } }
-  @keyframes cat-home-stretch { 50% { transform: translate(-50%, -47%) scaleX(var(--face)) scaleX(1.08); } }
+  @keyframes cat-home-stretch { 0%,30% { transform: translate(-50%,-50%) scaleX(var(--face)); } 62%,100% { transform: translate(-50%,-47%) scaleX(var(--face)) scaleX(1.08) rotate(-1deg); } }
   @keyframes cat-home-alert { to { transform: translate(-50%, -52%) scaleX(var(--face)); } }
   @keyframes cat-home-sad { 50% { transform: translate(-50%, -48%) scaleX(var(--face)) scale(.99); } }
   @keyframes cat-home-bored { 50% { transform: translate(-50%, -50%) scaleX(var(--face)) rotate(-1deg) translateY(2px); } }
@@ -890,7 +904,7 @@
   .cat-visit-cat.happy { background-image: url('assets/border-collie/border-collie-atlas-play.webp?v=1'); background-size: 400% 400%; animation: cat-visit-happy .75s ease-in-out infinite alternate, border-collie-atlas-cycle 1.6s steps(1,end) infinite; }
   .cat-visit-cat.alert, .cat-visit-cat.curious { background-image: url('assets/border-collie/border-collie-atlas-idle.webp?v=1'); background-size: 400% 400%; animation: cat-visit-breathe 1.2s ease-in-out infinite, border-collie-atlas-cycle 2s steps(1,end) infinite; }
   .cat-visit-cat.grooming { background-image: url('assets/border-collie/border-collie-atlas-groom.webp?v=1'); background-size: 400% 400%; animation: cat-visit-groom 1s ease-in-out infinite alternate, border-collie-atlas-cycle 2s steps(1,end) infinite; }
-  .cat-visit-cat.stretching { background-image: url('assets/border-collie/border-collie-atlas-stretch.webp?v=1'); background-size: 400% 400%; animation: cat-visit-stretch 1.8s ease-in-out, border-collie-atlas-cycle 2s steps(1,end) 1 forwards; }
+  .cat-visit-cat.stretching { background-image: url('assets/border-collie/border-collie-atlas-stretch.webp?v=1'); background-size: 400% 400%; animation: cat-visit-stretch 3s ease-in-out forwards, border-collie-stretch-cycle 3s steps(1,end) 1 forwards; }
   .cat-visit-cat.loaf { background-image: url('assets/border-collie/border-collie-atlas-loaf.webp?v=1'); background-size: 400% 400%; animation: cat-visit-breathe 2.8s ease-in-out infinite, border-collie-atlas-cycle 2.4s steps(1,end) infinite; }
   .cat-visit-cat.belly-up { background-image: url('assets/border-collie/border-collie-atlas-belly.webp?v=1'); background-size: 400% 400%; animation: cat-visit-belly-up 1.9s ease-in-out infinite, border-collie-atlas-cycle 2s steps(1,end) infinite; }
   .cat-visit-cat.walking { transform: translate(-50%,-50%) scaleX(var(--visit-face,1)); animation: cat-visit-walk-body 1.08s linear infinite; transition: left var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1), top var(--visit-walk-duration,2s) cubic-bezier(.2,.7,.25,1); }
@@ -913,7 +927,7 @@
   @keyframes cat-visit-nibble { to { transform: translate(-50%,-48%) rotate(1.5deg); } }
   @keyframes cat-visit-happy { to { transform: translate(-50%,-55%) rotate(1.4deg); } }
   @keyframes cat-visit-groom { to { transform: translate(-50%,-49%) rotate(-1deg); } }
-  @keyframes cat-visit-stretch { 50% { transform: translate(-50%,-49%) scaleX(1.035); } }
+  @keyframes cat-visit-stretch { 0%,30% { transform: translate(-50%,-50%) scale(1); } 62%,100% { transform: translate(-50%,-47%) scaleX(1.06) rotate(-1deg); } }
   @keyframes cat-visit-curious { to { transform: translate(-50%,-52%) rotate(1deg); } }
   @keyframes cat-visit-belly-up { 50% { transform: translate(-50%,-52%) rotate(-2deg) scale(1.035); } }
   @keyframes cat-visit-held { from { transform: translate(-50%,-50%) rotate(-3deg) scale(.98); } to { transform: translate(-50%,-53%) rotate(3deg) scale(1.01); } }
@@ -1700,9 +1714,8 @@
     clearTimeout(pageCatLifeTimer);
     pageCatLifeTimer = setTimeout(function () {
       if (!document.body.classList.contains('menu-open')) return;
-      const sprite = document.getElementById('cat-sprite');
       const poses = ['sitting', 'grooming', 'stretching', 'alert'];
-      sprite.className = 'cat-sprite ' + poses[Math.floor(Math.random() * poses.length)];
+      setPageCatPose(poses[Math.floor(Math.random() * poses.length)]);
       schedulePageCatLife();
     }, 2800 + Math.random() * 4200);
   }
@@ -1716,8 +1729,8 @@
   function feedCat() {
     const sprite = document.getElementById('cat-sprite');
     if (catState.food < 3) {
-      sprite.className = 'cat-sprite sitting';
-      setTimeout(() => sprite.className = 'cat-sprite sitting', 1200);
+      setPageCatPose('sitting');
+      setTimeout(() => setPageCatPose('sitting'), 1200);
       return;
     }
     catState.food -= 3;
@@ -1725,8 +1738,8 @@
     catState.mood = Math.min(100, catState.mood + 8);
     awardCatExperience('care');
     saveCatState();
-    sprite.className = 'cat-sprite eating';
-    setTimeout(() => sprite.className = document.body.classList.contains('menu-open') ? 'cat-sprite sitting' : 'cat-sprite', 1600);
+    setPageCatPose('eating');
+    setTimeout(() => setPageCatPose(document.body.classList.contains('menu-open') ? 'sitting' : ''), 1600);
   }
 
 
@@ -1747,6 +1760,66 @@
   let lastCatMoodId = '';
   const catWalkFrames = Array.from({ length: 12 }, function (_, index) { return 'assets/border-collie/border-collie-walk-' + (index + 11) + '.webp?v=2'; });
   catWalkFrames.forEach(function (src) { const image = new Image(); image.src = src; });
+  const catPoseAssets = {
+    sitting: 'idle', alert: 'idle', curious: 'idle',
+    sleeping: 'sleep', tired: 'sleep', unwell: 'sleep',
+    eating: 'eat', happy: 'play', chasing: 'play',
+    grooming: 'groom', stretching: 'stretch', 'belly-up': 'belly',
+    loaf: 'loaf', sad: 'moods', bored: 'moods', scared: 'moods', angry: 'moods',
+    'being-held': 'held'
+  };
+  const catPoseImageCache = new Map();
+  const catPoseRequestIds = new WeakMap();
+
+  function catPoseImage(pose) {
+    if (pose === 'walking') return catWalkFrames[0];
+    const atlas = catPoseAssets[pose];
+    return atlas ? 'assets/border-collie/border-collie-atlas-' + atlas + '.webp?v=1' : '';
+  }
+
+  function preloadCatPoseImage(src) {
+    if (!src) return Promise.resolve(true);
+    if (catPoseImageCache.has(src)) return catPoseImageCache.get(src);
+    const image = new Image();
+    image.decoding = 'async';
+    const loaded = new Promise(function (resolve) {
+      image.onload = function () { resolve(image.naturalWidth > 0); };
+      image.onerror = function () { resolve(false); };
+    });
+    image.src = src;
+    let decoded;
+    try {
+      decoded = typeof image.decode === 'function' ? image.decode().then(function () { return true; }, function () { return loaded; }) : loaded;
+    } catch (_) {
+      decoded = loaded;
+    }
+    const request = Promise.resolve(decoded).then(function (ready) {
+      if (!ready) catPoseImageCache.delete(src);
+      return ready;
+    });
+    catPoseImageCache.set(src, request);
+    return request;
+  }
+
+  function cancelCatPoseRequest(cat) {
+    if (!cat) return;
+    catPoseRequestIds.set(cat, (catPoseRequestIds.get(cat) || 0) + 1);
+  }
+
+  function commitCatPose(cat, className, pose, beforeApply, afterApply) {
+    if (!cat) return Promise.resolve(false);
+    const requestId = (catPoseRequestIds.get(cat) || 0) + 1;
+    catPoseRequestIds.set(cat, requestId);
+    const src = catPoseImage(pose);
+    return preloadCatPoseImage(src).then(function (ready) {
+      if (!ready || catPoseRequestIds.get(cat) !== requestId || !cat.isConnected) return false;
+      if (beforeApply) beforeApply();
+      cat.className = className;
+      cat.style.removeProperty('background-image');
+      if (afterApply) afterApply();
+      return true;
+    });
+  }
   const catHomeSpots = {
     center: { x: 50, y: 72, pose: 'sitting', message: '今天也一起慢慢來。' },
     window: { x: 28, y: 52, pose: 'sitting', message: '窗外的雲慢慢飄過去了。' },
@@ -1850,7 +1923,6 @@
 
   function resetPageCatChase() {
     clearTimeout(catChaseTimer);
-    clearInterval(pageCatFrameTimer);
     const cat = document.getElementById('cat-sprite');
     if (!cat) return;
     cat.style.removeProperty('top');
@@ -1858,9 +1930,7 @@
     cat.style.removeProperty('bottom');
     cat.style.removeProperty('--chase-duration');
     cat.style.removeProperty('--chase-face');
-    cat.style.removeProperty('background-image');
-    cat.className = document.body.classList.contains('menu-open') ? 'cat-sprite sitting' : 'cat-sprite';
-    if (!document.body.classList.contains('menu-open')) startPageCatWalkFrames();
+    setPageCatPose(document.body.classList.contains('menu-open') ? 'sitting' : '');
   }
 
   function chasePageCatTo(x, y) {
@@ -1877,6 +1947,7 @@
     const duration = Math.max(.8, Math.min(2.8, distance / 260));
     clearTimeout(catChaseTimer);
     clearInterval(pageCatFrameTimer);
+    cancelCatPoseRequest(cat);
     cat.className = 'cat-sprite chasing';
     cat.style.bottom = 'auto';
     cat.style.left = targetLeft + 'px';
@@ -1886,11 +1957,11 @@
     startPageCatWalkFrames();
     showCatPlayBubble('小邊追著網球跑過來了！');
     catChaseTimer = setTimeout(function () {
-      clearInterval(pageCatFrameTimer);
-      cat.className = 'cat-sprite happy';
-      cat.style.removeProperty('background-image');
-      showCatPlayBubble('抓到網球啦！');
-      catChaseTimer = setTimeout(resetPageCatChase, 1400);
+      setPageCatPose('happy').then(function (ready) {
+        if (!ready) return;
+        showCatPlayBubble('抓到網球啦！');
+        catChaseTimer = setTimeout(resetPageCatChase, 1400);
+      });
     }, duration * 1000);
   }
 
@@ -1968,6 +2039,7 @@
       const centerX = catRect.left + catRect.width / 2;
       const centerY = catRect.top + catRect.height / 2;
       drag = { pointerId: event.pointerId, parent, mode, offsetX: event.clientX - centerX, offsetY: event.clientY - centerY, startX: event.clientX, startY: event.clientY, moved: false };
+      cancelCatPoseRequest(cat);
       if (mode === 'game') {
         clearTimeout(catChaseTimer);
         clearInterval(pageCatFrameTimer);
@@ -2023,16 +2095,14 @@
       if (cat.hasPointerCapture(event.pointerId)) cat.releasePointerCapture(event.pointerId);
       if (scene === 'game') {
         cat.classList.remove('being-held');
-        cat.style.removeProperty('background-image');
         if (wasMoved) {
           cat.style.bottom = 'auto';
-          cat.className = 'cat-sprite sitting';
+          setPageCatPose('sitting');
         } else {
           cat.style.removeProperty('top');
           cat.style.removeProperty('left');
           cat.style.removeProperty('bottom');
-          cat.className = 'cat-sprite';
-          if (!document.body.classList.contains('menu-open')) startPageCatWalkFrames();
+          setPageCatPose('');
         }
         if (wasMoved && !cancelled) showCatPlayBubble('小邊被你帶到新地方了！');
       } else {
@@ -2096,26 +2166,29 @@
 
   function setCatHomePose(pose) {
     const cat = document.getElementById('cat-home-cat');
-    if (!cat) return;
-    clearInterval(catHomeFrameTimer);
-    cat.style.removeProperty('background-image');
-    cat.className = 'cat-home-cat ' + (pose || '');
-    const growthStage = getCatGrowthStage(catState.experience).key;
-    cat.classList.toggle('growth-juvenile', growthStage === 'juvenile');
-    cat.classList.toggle('growth-adult', growthStage === 'adult');
-    if (pose === 'walking') {
-      let frame = 0;
-      cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-      catHomeFrameTimer = setInterval(function () {
-        frame = (frame + 1) % catWalkFrames.length;
+    const nextPose = pose || '';
+    return commitCatPose(cat, 'cat-home-cat ' + nextPose, nextPose, function () {
+      clearInterval(catHomeFrameTimer);
+      catHomeFrameTimer = null;
+    }, function () {
+      const growthStage = getCatGrowthStage(catState.experience).key;
+      cat.classList.toggle('growth-juvenile', growthStage === 'juvenile');
+      cat.classList.toggle('growth-adult', growthStage === 'adult');
+      if (nextPose === 'walking') {
+        let frame = 0;
         cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-      }, 90);
-    }
+        catHomeFrameTimer = setInterval(function () {
+          frame = (frame + 1) % catWalkFrames.length;
+          cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
+        }, 90);
+      }
+    });
   }
 
   function startPageCatWalkFrames() {
     clearInterval(pageCatFrameTimer);
     const cat = document.getElementById('cat-sprite');
+    if (!cat) return;
     let frame = 0;
     cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
     pageCatFrameTimer = setInterval(function () {
@@ -2124,9 +2197,16 @@
     }, 90);
   }
 
-  function stopPageCatWalkFrames() {
-    clearInterval(pageCatFrameTimer);
-    document.getElementById('cat-sprite').style.removeProperty('background-image');
+  function setPageCatPose(pose) {
+    const cat = document.getElementById('cat-sprite');
+    if (!cat) return Promise.resolve(false);
+    const nextPose = pose || '';
+    const className = nextPose && nextPose !== 'walking' ? 'cat-sprite ' + nextPose : 'cat-sprite';
+    return commitCatPose(cat, className, nextPose, function () {
+      clearInterval(pageCatFrameTimer);
+    }, function () {
+      if (!nextPose || nextPose === 'walking') startPageCatWalkFrames();
+    });
   }
 
   function moveCatHomeTo(name, customMessage) {
@@ -2145,7 +2225,9 @@
       } else if (roll < .58) {
         setCatHomePose('grooming'); setCatBubble('小邊正在慢慢整理毛毛。');
       } else if (roll < .72) {
-        setCatHomePose('stretching'); setCatBubble('先伸個大大的懶腰！');
+      setCatHomePose('stretching').then(function (ready) {
+        if (ready && document.body.classList.contains('cat-home-open')) setCatBubble('先伸個大大的懶腰！');
+      });
       } else if (roll < .78) {
         setCatHomePose('alert'); setCatBubble('咦？小邊好像聽見了什麼。');
       } else if (roll < .84) {
@@ -2177,14 +2259,15 @@
 
   function setCatVisitPose(pose) {
     const cat = document.getElementById('cat-visit-cat');
-    if (!cat) return;
-    clearInterval(catVisitFrameTimer);
-    catVisitFrameTimer = null;
-    cat.style.removeProperty('background-image');
-    cat.className = 'cat-visit-cat ' + (pose || 'sitting');
-    const growthStage = getCatGrowthStage(catState.experience).key;
-    cat.classList.toggle('growth-juvenile', growthStage === 'juvenile');
-    cat.classList.toggle('growth-adult', growthStage === 'adult');
+    const nextPose = pose || 'sitting';
+    return commitCatPose(cat, 'cat-visit-cat ' + nextPose, nextPose, function () {
+      clearInterval(catVisitFrameTimer);
+      catVisitFrameTimer = null;
+    }, function () {
+      const growthStage = getCatGrowthStage(catState.experience).key;
+      cat.classList.toggle('growth-juvenile', growthStage === 'juvenile');
+      cat.classList.toggle('growth-adult', growthStage === 'adult');
+    });
   }
 
   function setCatVisitBubble(message) {
@@ -2269,24 +2352,26 @@
       const nextX = 22 + Math.random() * 56;
       const nextY = 46 + Math.random() * 23;
       const duration = Math.max(1.5, Math.min(3.4, 1.1 + Math.abs(nextX - currentX) / 24));
-      setCatVisitPose('walking');
-      cat.style.setProperty('--visit-face', nextX < currentX ? -1 : 1);
-      cat.style.setProperty('--visit-walk-duration', duration + 's');
-      cat.style.left = nextX + '%';
-      cat.style.top = nextY + '%';
-      let frame = 0;
-      cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-      catVisitFrameTimer = setInterval(function () {
-        frame = (frame + 1) % catWalkFrames.length;
+      setCatVisitPose('walking').then(function (ready) {
+        if (!ready || !document.body.classList.contains('cat-visit-open')) return;
+        cat.style.setProperty('--visit-face', nextX < currentX ? -1 : 1);
+        cat.style.setProperty('--visit-walk-duration', duration + 's');
+        cat.style.left = nextX + '%';
+        cat.style.top = nextY + '%';
+        let frame = 0;
         cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
-      }, 90);
-      catVisitIdleTimer = setTimeout(function () {
-        clearInterval(catVisitFrameTimer);
-        catVisitFrameTimer = null;
-        cat.style.removeProperty('--visit-walk-duration');
-        setCatVisitPose(nextCatVisitNaturalPose());
-        scheduleCatVisitNaturalMotion(4000 + Math.random() * 3200);
-      }, duration * 1000);
+        catVisitFrameTimer = setInterval(function () {
+          frame = (frame + 1) % catWalkFrames.length;
+          cat.style.backgroundImage = "url('" + catWalkFrames[frame] + "')";
+        }, 90);
+        catVisitIdleTimer = setTimeout(function () {
+          clearInterval(catVisitFrameTimer);
+          catVisitFrameTimer = null;
+          cat.style.removeProperty('--visit-walk-duration');
+          setCatVisitPose(nextCatVisitNaturalPose());
+          scheduleCatVisitNaturalMotion(4000 + Math.random() * 3200);
+        }, duration * 1000);
+      });
     } else {
       setCatVisitPose(nextCatVisitNaturalPose());
       scheduleCatVisitNaturalMotion(3600 + Math.random() * 3300);
@@ -2936,8 +3021,6 @@
   function showMainMenu() {
     document.body.classList.add('menu-open');
     resetPageCatChase();
-    stopPageCatWalkFrames();
-    document.getElementById('cat-sprite').className = 'cat-sprite sitting';
     schedulePageCatLife();
     document.getElementById('modal-content').classList.add('main-menu-modal');
     document.getElementById('timer').textContent = "00:00.0";
@@ -2962,8 +3045,6 @@
     document.body.classList.remove('menu-open');
     resetPageCatChase();
     clearTimeout(pageCatLifeTimer);
-    document.getElementById('cat-sprite').className = 'cat-sprite';
-    startPageCatWalkFrames();
     initAudio(); startBGM();
     seqQueue = shuffle(emotionPool);
     seqIndex = 0; penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
@@ -2999,8 +3080,6 @@
     document.body.classList.remove('menu-open');
     resetPageCatChase();
     clearTimeout(pageCatLifeTimer);
-    document.getElementById('cat-sprite').className = 'cat-sprite';
-    startPageCatWalkFrames();
     initAudio(); startBGM();
     diffRound = 1; penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
     document.getElementById('overlay').style.display = 'none';
@@ -3046,8 +3125,6 @@
     document.body.classList.remove('menu-open');
     resetPageCatChase();
     clearTimeout(pageCatLifeTimer);
-    document.getElementById('cat-sprite').className = 'cat-sprite';
-    startPageCatWalkFrames();
     initAudio(); startBGM();
     firstCard = null; secondCard = null; lockBoard = false; matchedPairsCount = 0;
     penaltySeconds = 0; wrongCount = 0; startTime = Date.now();
