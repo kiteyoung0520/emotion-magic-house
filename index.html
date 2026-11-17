@@ -1731,6 +1731,15 @@
   let catChaseTimer = null;
   let catPlayBubbleTimer = null;
   let catPlayBubbleHideTimer = null;
+  let catPlayBubblePositionTimer = null;
+  function positionCatPlayBubble(bubble, sprite) {
+    if (!bubble || !sprite) return;
+    const rect = sprite.getBoundingClientRect();
+    const bubbleRect = bubble.getBoundingClientRect();
+    const halfWidth = bubbleRect.width / 2;
+    bubble.style.left = Math.max(halfWidth + 8, Math.min(window.innerWidth - halfWidth - 8, rect.left + rect.width / 2)) + 'px';
+    bubble.style.top = Math.max(bubbleRect.height + 12, rect.top - 10) + 'px';
+  }
   function showCatPlayBubble(message) {
     const bubble = document.getElementById('cat-play-bubble');
     if (!bubble) return;
@@ -1741,13 +1750,17 @@
     bubble.classList.add('is-visible');
     const sprite = document.getElementById('cat-sprite');
     if (sprite) {
-      const rect = sprite.getBoundingClientRect();
-      bubble.style.left = Math.max(12, Math.min(window.innerWidth - 12, rect.left + rect.width / 2)) + 'px';
-      bubble.style.top = Math.max(12, rect.top - 10) + 'px';
+      positionCatPlayBubble(bubble, sprite);
+      clearInterval(catPlayBubblePositionTimer);
+      catPlayBubblePositionTimer = setInterval(function () { positionCatPlayBubble(bubble, sprite); }, 80);
     }
     catPlayBubbleTimer = setTimeout(function () {
       bubble.style.opacity = '0';
-      catPlayBubbleHideTimer = setTimeout(function () { bubble.classList.remove('is-visible'); bubble.style.removeProperty('opacity'); }, 280);
+      catPlayBubbleHideTimer = setTimeout(function () {
+        clearInterval(catPlayBubblePositionTimer);
+        bubble.classList.remove('is-visible');
+        bubble.style.removeProperty('opacity');
+      }, 280);
     }, catBubbleDuration(message));
   }
 
