@@ -964,7 +964,7 @@
 <div class="cat-companion" aria-label="小邊陪伴區">
     <div class="cat-sprite" id="cat-sprite" role="img" aria-label="小邊，可以拖曳移動" title="拖曳小邊可以帶牠移動"></div>
   <div class="cat-panel">
-    <span id="cat-food">🦴 0</span>
+    <span id="cat-food">🥣 0</span>
     <button class="cat-feed" onclick="feedCat()">餵食</button>
   </div>
 </div>
@@ -977,7 +977,7 @@
     <button class="cat-home-back" onclick="closeCatHome()">← 返回</button>
     <h2 class="cat-home-title">🐶 小邊之家</h2>
     <div class="cat-home-stats" aria-label="小邊狀態">
-      <span class="cat-stat" id="cat-home-food">🦴 0</span>
+      <span class="cat-stat" id="cat-home-food">🥣 0</span>
       <span class="cat-stat" id="cat-home-affection">💛 0</span>
     </div>
   </header>
@@ -1014,7 +1014,7 @@
     <button class="cat-home-action" onclick="catHomeAction('walk')">🐾 散步</button>
     <button class="cat-home-action" onclick="catHomeAction('pet')">🤲 摸摸</button>
     <button class="cat-home-action" onclick="openCatFeelingsDialog()">💛 心情陪伴</button>
-    <button class="cat-home-action" onclick="catHomeAction('feed')">🦴 餵食</button>
+    <button class="cat-home-action" onclick="catHomeAction('feed')">🥣 餵食</button>
     <button class="cat-home-action" onclick="catHomeAction('sleep')">🌙 睡覺</button>
     <button class="cat-home-action cat-call-button" id="cat-call-button" type="button" onclick="summonCat()">✨ 呼喚</button>
   </nav>
@@ -1071,7 +1071,7 @@
   <header class="cat-visit-header">
     <button class="cat-home-back" type="button" onclick="closeCatVisit()">← 回到小邊之家</button>
     <h2 class="cat-visit-title"><span id="cat-visit-name">小邊</span>來啦</h2>
-    <span class="cat-stat" id="cat-visit-food">🦴 0</span>
+    <span class="cat-stat" id="cat-visit-food">🥣 0</span>
   </header>
   <div class="cat-visit-stage" id="cat-visit-stage">
     <div class="cat-visit-bubble" id="cat-visit-bubble" role="status">聽見你叫我了！</div>
@@ -1079,7 +1079,7 @@
     <div class="cat-visit-toy" aria-hidden="true">🎾</div>
   </div>
   <nav class="cat-visit-actions" aria-label="和小邊互動">
-    <button class="cat-home-action" type="button" data-visit-action="feed" aria-pressed="false" onclick="catVisitAction('feed')">🦴 餵牠吃飯</button>
+    <button class="cat-home-action" type="button" data-visit-action="feed" aria-pressed="false" onclick="catVisitAction('feed')">🥣 餵牠吃飯</button>
     <button class="cat-home-action" type="button" data-visit-action="pet" aria-pressed="false" onclick="catVisitAction('pet')">🤲 摸摸牠</button>
     <button class="cat-home-action" type="button" data-visit-action="play" aria-pressed="false" onclick="catVisitAction('play')">🎾 一起玩</button>
   </nav>
@@ -1612,17 +1612,17 @@
   }
 
   function updateCatUI() {
-    document.getElementById('cat-food').textContent = '🦴 ' + catState.food;
+    document.getElementById('cat-food').textContent = '🥣 ' + catState.food;
     const homeFood = document.getElementById('cat-home-food');
     const homeAffection = document.getElementById('cat-home-affection');
-    if (homeFood) homeFood.textContent = '🦴 ' + catState.food;
+    if (homeFood) homeFood.textContent = '🥣 ' + catState.food;
     if (homeAffection) homeAffection.textContent = '💛 ' + catState.affection;
     const nameInput = document.getElementById('cat-name-input');
     if (nameInput && document.activeElement !== nameInput) nameInput.value = catState.name;
     const visitName = document.getElementById('cat-visit-name');
     const visitFood = document.getElementById('cat-visit-food');
     if (visitName) visitName.textContent = catState.name;
-    if (visitFood) visitFood.textContent = '🦴 ' + catState.food;
+    if (visitFood) visitFood.textContent = '🥣 ' + catState.food;
     updateCatGrowthUI();
   }
 
